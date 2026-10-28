@@ -4,52 +4,42 @@ import { scrollToTarget } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
 import './NuriaHero.css'
 
-// 5 Core Services & Capabilities of Nailed It Bro
+// 5 Core Services of Nailed It Bro (strictly following brand palette)
 const SERVICES = [
   {
     id: 'web',
     name: 'Website Dev',
-    tagline: 'Custom websites engineered to convert visitors into clients.',
+    tagline: 'Custom websites engineered to convert visitors into paying clients.',
     accent: '#0077FF',
-    color: '#0088FF',
     target: '#work',
-    description: 'Ultra-fast business websites & web apps. Built with Next-gen performance, high Google rank & seamless responsiveness.',
   },
   {
     id: 'app',
     name: 'Mobile Apps',
     tagline: 'Smooth Android & iOS native apps your users open daily.',
     accent: '#10B981',
-    color: '#10B981',
     target: '#services',
-    description: 'High-performance mobile engineering with cloud sync, offline support & push notifications.',
   },
   {
     id: 'ai',
     name: 'AI & QR Tools',
     tagline: 'Smart QR solutions & automated booking that saves hours daily.',
     accent: '#F59E0B',
-    color: '#F59E0B',
     target: '#services',
-    description: 'Digital menus, automated appointment scheduling, WhatsApp workflows & smart customer capture.',
   },
   {
     id: 'game',
     name: '3D Games',
-    tagline: 'Custom 3D mobile games & experiences players keep replaying.',
+    tagline: 'Custom 3D mobile games & interactive worlds players keep replaying.',
     accent: '#06B6D4',
-    color: '#06B6D4',
     target: '#services',
-    description: 'Custom physics, real-time mechanics & optimized 3D graphics tuned for mid-range mobile devices.',
   },
   {
     id: 'social',
     name: 'Social Media',
     tagline: 'Omnichannel campaigns & content that turn scrollers into buyers.',
     accent: '#EC4899',
-    color: '#EC4899',
     target: '#services',
-    description: 'Short-form video production, creator distribution & tracked conversion funnels with clear ROI.',
   },
 ]
 
@@ -69,34 +59,34 @@ export default function Hero({ ready }) {
       intro
         .fromTo(
           '.nuria-type-line',
-          { autoAlpha: 0, y: 40, scale: 0.95 },
-          { autoAlpha: 1, y: 0, scale: 1, duration: 1.1, stagger: 0.12, ease: 'power3.out' },
+          { autoAlpha: 0, y: 35, scale: 0.96 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 1, stagger: 0.1, ease: 'power3.out' },
           0.05
         )
         .fromTo(
           '.nuria-script-line',
-          { autoAlpha: 0, y: 25 },
-          { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power2.out' },
-          0.3
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.85, ease: 'power2.out' },
+          0.25
         )
         .fromTo(
           '.nuria-sticker',
-          { autoAlpha: 0, scale: 0.4, y: 20 },
+          { autoAlpha: 0, scale: 0.4, y: 15 },
           {
             autoAlpha: 1,
             scale: 1,
             y: 0,
-            duration: 0.9,
-            stagger: 0.06,
+            duration: 0.85,
+            stagger: 0.05,
             ease: 'back.out(1.8)',
           },
-          0.25
+          0.2
         )
         .fromTo(
           '.nuria-compact-bar',
-          { autoAlpha: 0, y: 20 },
-          { autoAlpha: 1, y: 0, duration: 0.8 },
-          0.55
+          { autoAlpha: 0, y: 15 },
+          { autoAlpha: 1, y: 0, duration: 0.75 },
+          0.45
         )
 
       root.current._intro = intro
@@ -119,8 +109,8 @@ export default function Hero({ ready }) {
       const deltaY = (e.clientY - centerY) / (window.innerHeight * 0.5)
 
       gsap.to(canvas, {
-        rotateY: deltaX * 4,
-        rotateX: -deltaY * 4,
+        rotateY: deltaX * 3.5,
+        rotateX: -deltaY * 3.5,
         duration: 0.8,
         ease: 'power2.out',
         transformPerspective: 1200,
@@ -156,20 +146,20 @@ export default function Hero({ ready }) {
       data-theme="dark"
       aria-labelledby="hero-title"
       style={{
-        '--active-service-color': currentService.accent,
+        '--active-service-color': currentService?.accent || '#FF5E14',
       }}
     >
-      {/* Dark Ambient Lighting & Spot matching screenshot */}
+      {/* Brand Electric Orange Ambient Lighting */}
       <div className="nuria-backdrop" aria-hidden="true" />
       <div className="nuria-ambient-spot" aria-hidden="true" />
       <div className="nuria-vignette" aria-hidden="true" />
 
       <div className="nuria-stage">
         {/* ==================================================================
-            Hero Canvas: Giant Typography + Overlapping Floating Stickers
+            Hero Canvas: Giant Typography + 5 Overlapping Stickers (Nuria Style)
             ================================================================== */}
         <div className="nuria-hero-canvas">
-          {/* FLOATING STICKER 1: Avatar Circle (Top Center-Left, overlapping top word) */}
+          {/* STICKER 1: Avatar Circle (Top Left over DIGITAL, matching screenshot) */}
           <div
             className="nuria-sticker sticker-avatar"
             title="Nailed It Bro Studio Mascot"
@@ -195,7 +185,7 @@ export default function Hero({ ready }) {
             <div className="nuria-sticker__tooltip">Nailed It Bro 🔨</div>
           </div>
 
-          {/* FLOATING STICKER 2: Available for Work Pill (Top Center) */}
+          {/* STICKER 2: Available for Work Pill (Top Center, nestled between letters) */}
           <div
             className="nuria-sticker sticker-available"
             title="Available for Q4 projects"
@@ -210,7 +200,7 @@ export default function Hero({ ready }) {
             <div className="nuria-sticker__tooltip">Available for Q4 Projects</div>
           </div>
 
-          {/* FLOATING STICKER 3: Website Dev 3D Blue Squircle (Framer-style, Top Right) */}
+          {/* STICKER 3: Website Dev 3D Blue Squircle (Top Right over DIGITAL) */}
           <div
             className="nuria-sticker sticker-web"
             title="Website Design & Engineering"
@@ -230,7 +220,7 @@ export default function Hero({ ready }) {
             <div className="nuria-sticker__tooltip">Website Dev · High-Converting</div>
           </div>
 
-          {/* FLOATING STICKER 4: Retro Pixel Hand Pointer (Bottom Left, overlapping bottom word) */}
+          {/* STICKER 4: Retro Pixel Hand Cursor (Bottom Left over STUDIO) */}
           <div
             className="nuria-sticker sticker-cursor"
             title="Click to explore work"
@@ -259,7 +249,7 @@ export default function Hero({ ready }) {
             <div className="nuria-sticker__tooltip">Click to Explore</div>
           </div>
 
-          {/* FLOATING STICKER 5: Mobile App 3D Squircle (Figma-style, Bottom Right) */}
+          {/* STICKER 5: Mobile App 3D Squircle (Bottom Right over STUDIO) */}
           <div
             className="nuria-sticker sticker-app"
             title="Mobile App Development"
@@ -279,72 +269,8 @@ export default function Hero({ ready }) {
             <div className="nuria-sticker__tooltip">Mobile Apps · Android &amp; iOS</div>
           </div>
 
-          {/* FLOATING STICKER 6: AI & QR Automation 3D Squircle (Floating Mid-Right) */}
-          <div
-            className="nuria-sticker sticker-ai"
-            title="QR Solutions & AI Automation"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleServiceClick('#services')}
-            onMouseEnter={() => setHoveredService(SERVICES[2])}
-            onMouseLeave={() => setHoveredService(null)}
-          >
-            <div className="nuria-squircle-badge squircle-ai">
-              {/* AI Neural / QR Spark Matrix Icon */}
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                <circle cx="17.5" cy="17.5" r="3" fill="#FFFFFF" />
-              </svg>
-            </div>
-            <div className="nuria-sticker__tooltip">QR &amp; AI Automation</div>
-          </div>
-
-          {/* FLOATING STICKER 7: 3D Mobile Game Controller (Floating Mid-Left) */}
-          <div
-            className="nuria-sticker sticker-game"
-            title="3D Mobile Game Development"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleServiceClick('#services')}
-            onMouseEnter={() => setHoveredService(SERVICES[3])}
-            onMouseLeave={() => setHoveredService(null)}
-          >
-            <div className="nuria-squircle-badge squircle-game">
-              {/* 3D Gamepad Controller Icon */}
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="6" width="20" height="12" rx="6" />
-                <path d="M6 12h4m-2-2v4" />
-                <circle cx="15" cy="11" r="1" fill="#FFFFFF" />
-                <circle cx="18" cy="13" r="1" fill="#FFFFFF" />
-              </svg>
-            </div>
-            <div className="nuria-sticker__tooltip">3D Mobile Games</div>
-          </div>
-
-          {/* FLOATING STICKER 8: Social Media & Growth (Floating Bottom-Center) */}
-          <div
-            className="nuria-sticker sticker-social"
-            title="Social Media Management & Marketing"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleServiceClick('#services')}
-            onMouseEnter={() => setHoveredService(SERVICES[4])}
-            onMouseLeave={() => setHoveredService(null)}
-          >
-            <div className="nuria-squircle-badge squircle-social">
-              {/* Growth Analytics Trend Arrow Icon */}
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-                <polyline points="17 6 23 6 23 12" />
-              </svg>
-            </div>
-            <div className="nuria-sticker__tooltip">Social Media &amp; Growth</div>
-          </div>
-
           {/* ================================================================
-              GIANT MONUMENTAL TYPOGRAPHY (Exactly like screenshot)
+              GIANT MONUMENTAL TYPOGRAPHY (Bold architectural lockup)
               ================================================================ */}
           <h1 className="nuria-giant-type" id="hero-title">
             <span className="nuria-type-line">DIGITAL</span>
@@ -370,7 +296,7 @@ export default function Hero({ ready }) {
             ================================================================== */}
         <div className="nuria-compact-bar">
           <p className="nuria-context-text">
-            {currentService.tagline ||
+            {currentService?.tagline ||
               'We build high-converting websites, mobile apps, QR automation & 3D games that get you customers.'}
           </p>
 
@@ -378,7 +304,7 @@ export default function Hero({ ready }) {
             <Magnetic strength={0.22}>
               <a
                 href="#contact"
-                className="btn btn--dark nuria-primary-btn"
+                className="nuria-primary-btn"
                 onClick={(e) => {
                   e.preventDefault()
                   scrollToTarget('#contact')
@@ -392,7 +318,7 @@ export default function Hero({ ready }) {
             <Magnetic strength={0.22}>
               <a
                 href="#work"
-                className="btn btn--ghost nuria-ghost-btn"
+                className="nuria-ghost-btn"
                 onClick={(e) => {
                   e.preventDefault()
                   scrollToTarget('#work')
@@ -406,7 +332,7 @@ export default function Hero({ ready }) {
           {/* Quick Micro-Service Pills for the 5 services */}
           <div className="nuria-micro-services" role="tablist" aria-label="Services List">
             {SERVICES.map((srv, idx) => {
-              const isActive = srv.id === currentService.id
+              const isActive = srv.id === currentService?.id
               return (
                 <button
                   key={srv.id}
