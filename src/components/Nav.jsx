@@ -20,11 +20,27 @@ export default function Nav({ onNavigate }) {
   const [open, setOpen] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeHref, setActiveHref] = useState(() => (typeof window !== 'undefined' && window.location.hash) || '#top')
   const reduced = useReducedMotion()
   const menuBtn = useRef(null)
   const panel = useRef(null)
 
   useEffect(() => {
+    const handleHash = () => setActiveHref(window.location.hash || '#top')
+    window.addEventListener('hashchange', handleHash)
+    const onScroll = () => {
+      if (window.location.hash === '#about') return
+      const y = window.scrollY || window.pageYOffset || 0
+      if (y < 250) { setActiveHref('#top'); return }
+      for (const id of ['#about', '#process', '#work', '#services']) {
+        const el = document.querySelector(id)
+        if (el) {
+          const r = el.getBoundingClientRect()
+          if (r.top <= 260 && r.bottom >= 120) { setActiveHref(id); return }
+        }
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
     const st = ScrollTrigger.create({
       start: 0,
       end: 'max',
@@ -34,7 +50,7 @@ export default function Nav({ onNavigate }) {
         setHidden(self.direction === 1 && y > 400)
       },
     })
-    return () => st.kill()
+    return () => { st.kill(); window.removeEventListener('hashchange', handleHash); window.removeEventListener('scroll', onScroll) }
   }, [])
 
   // Lock scroll, trap focus and close on Escape while the menu is open.
@@ -84,23 +100,24 @@ export default function Nav({ onNavigate }) {
     <header className={`nav ${hidden && !open ? 'is-hidden' : ''} ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
       <div className="nav__inner">
         <a href="#top" className="nav__logo" onClick={(e) => go(e, '#top')} aria-label="Nailed It Bro, back to top"><Logo /></a>
-        <nav className="nav__links" aria-label="Primary">
-          {NAV.map((l) => (
-            <a key={l.href} href={l.href} className="u-link" onClick={(e) => go(e, l.href)}>{l.label}</a>
-          ))}
+        <nav className="nav__pill-capsule" aria-label="Primary Navigation">
+          {NAV.map((l) => {
+            const isActive = activeHref === l.href || (l.href === '#top' && (!activeHref || activeHref === '#top'))
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`nav__capsule-link ${isActive ? 'is-active' : ''}`}
+                onClick={(e) => {
+                  setActiveHref(l.href)
+                  go(e, l.href)
+                }}
+              >
+                {l.label}
+              </a>
+            )
+          })}
         </nav>
-        <div className="nav__cta-wrap">
-          <a
-            href="#contact"
-            className="nav-quote-btn"
-            onClick={(e) => go(e, '#contact')}
-          >
-            <span>Get a Quote</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
         <button
           ref={menuBtn}
           className="nav__burger"
