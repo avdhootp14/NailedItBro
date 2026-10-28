@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { gsap, useGSAP, EASE } from '../lib/motion'
+import { useState, useCallback } from 'react'
+import { m } from 'motion/react'
 import { scrollToTarget } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
 import './NuriaHero.css'
 
-// 5 Core Services of Nailed It Bro (strictly following brand palette)
+// 5 Core Services of Nailed It Bro
 const SERVICES = [
   {
     id: 'web',
@@ -44,95 +44,11 @@ const SERVICES = [
 ]
 
 export default function Hero({ ready }) {
-  const root = useRef(null)
   const [hoveredService, setHoveredService] = useState(null)
   const [activeChipIdx, setActiveChipIdx] = useState(0)
 
   // Current active service from hover or selection
   const currentService = hoveredService || SERVICES[activeChipIdx]
-
-  // Intro GSAP Timeline
-  useGSAP(
-    () => {
-      const intro = gsap.timeline({ paused: true, defaults: { ease: EASE.out } })
-
-      intro
-        .fromTo(
-          '.nuria-type-line',
-          { autoAlpha: 0, y: 35, scale: 0.96 },
-          { autoAlpha: 1, y: 0, scale: 1, duration: 1, stagger: 0.1, ease: 'power3.out' },
-          0.05
-        )
-        .fromTo(
-          '.nuria-script-line',
-          { autoAlpha: 0, y: 20 },
-          { autoAlpha: 1, y: 0, duration: 0.85, ease: 'power2.out' },
-          0.25
-        )
-        .fromTo(
-          '.nuria-sticker',
-          { autoAlpha: 0, scale: 0.4, y: 15 },
-          {
-            autoAlpha: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.85,
-            stagger: 0.05,
-            ease: 'back.out(1.8)',
-          },
-          0.2
-        )
-        .fromTo(
-          '.nuria-compact-bar',
-          { autoAlpha: 0, y: 15 },
-          { autoAlpha: 1, y: 0, duration: 0.75 },
-          0.45
-        )
-
-      root.current._intro = intro
-      if (ready) intro.play()
-    },
-    { dependencies: [ready], scope: root }
-  )
-
-  // Desktop Pointer Parallax Tilt on the canvas
-  useEffect(() => {
-    const canvas = root.current?.querySelector('.nuria-hero-canvas')
-    if (!canvas) return
-
-    const handlePointerMove = (e) => {
-      if (window.innerWidth < 900) return
-      const rect = canvas.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      const deltaX = (e.clientX - centerX) / (window.innerWidth * 0.5)
-      const deltaY = (e.clientY - centerY) / (window.innerHeight * 0.5)
-
-      gsap.to(canvas, {
-        rotateY: deltaX * 3.5,
-        rotateX: -deltaY * 3.5,
-        duration: 0.8,
-        ease: 'power2.out',
-        transformPerspective: 1200,
-      })
-    }
-
-    const handlePointerLeave = () => {
-      gsap.to(canvas, {
-        rotateY: 0,
-        rotateX: 0,
-        duration: 1,
-        ease: 'power3.out',
-      })
-    }
-
-    window.addEventListener('pointermove', handlePointerMove)
-    canvas.addEventListener('pointerleave', handlePointerLeave)
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove)
-      canvas.removeEventListener('pointerleave', handlePointerLeave)
-    }
-  }, [])
 
   const handleServiceClick = useCallback((target) => {
     scrollToTarget(target || '#services')
@@ -142,30 +58,47 @@ export default function Hero({ ready }) {
     <section
       className="nuria-viewport-hero"
       id="top"
-      ref={root}
       data-theme="dark"
       aria-labelledby="hero-title"
       style={{
         '--active-service-color': currentService?.accent || '#FF5E14',
       }}
     >
-      {/* Brand Electric Orange Ambient Lighting */}
+      {/* Brand Electric Orange & Warm Beige Ambient Lighting */}
       <div className="nuria-backdrop" aria-hidden="true" />
       <div className="nuria-ambient-spot" aria-hidden="true" />
       <div className="nuria-vignette" aria-hidden="true" />
 
       <div className="nuria-stage">
         {/* ==================================================================
-            Hero Canvas: Giant Typography + 5 Overlapping Stickers (Nuria Style)
+            Hero Canvas: Giant Typography + 5 Overlapping Draggable Stickers
             ================================================================== */}
         <div className="nuria-hero-canvas">
-          {/* STICKER 1: Avatar Circle (Top Left over DIGITAL, matching screenshot) */}
-          <div
+          {/* STICKER 1: Avatar Circle (Top Left Shoulder of DIGITAL) */}
+          <m.div
             className="nuria-sticker sticker-avatar"
-            title="Nailed It Bro Studio Mascot"
+            title="Nailed It Bro Studio Mascot (Drag me!)"
             tabIndex={0}
             role="button"
             aria-label="Studio Mascot Avatar"
+            drag
+            dragConstraints={{ top: -20, bottom: 20, left: -20, right: 20 }}
+            dragElastic={0.2}
+            animate={{
+              y: [0, -9, 0],
+              rotate: [-4.5, -3, -4.5],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 5,
+              ease: 'easeInOut',
+            }}
+            whileHover={{
+              scale: 1.15,
+              rotate: 0,
+              transition: { type: 'spring', stiffness: 400, damping: 15 },
+            }}
+            whileTap={{ scale: 0.95 }}
             onMouseEnter={() =>
               setHoveredService({
                 name: 'Nailed It Bro',
@@ -183,14 +116,31 @@ export default function Hero({ ready }) {
               />
             </div>
             <div className="nuria-sticker__tooltip">Nailed It Bro 🔨</div>
-          </div>
+          </m.div>
 
-          {/* STICKER 2: Available for Work Pill (Top Center, nestled between letters) */}
-          <div
+          {/* STICKER 2: Available for Work Pill (Top Center Nestled Indent) */}
+          <m.div
             className="nuria-sticker sticker-available"
             title="Available for Q4 projects"
             role="button"
             tabIndex={0}
+            drag
+            dragConstraints={{ top: -15, bottom: 15, left: -15, right: 15 }}
+            dragElastic={0.2}
+            animate={{
+              y: [0, -7, 0],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 4.6,
+              ease: 'easeInOut',
+              delay: 0.5,
+            }}
+            whileHover={{
+              scale: 1.12,
+              transition: { type: 'spring', stiffness: 400, damping: 15 },
+            }}
+            whileTap={{ scale: 0.96 }}
             onClick={() => scrollToTarget('#contact')}
           >
             <div className="sticker-available__pill">
@@ -198,14 +148,33 @@ export default function Hero({ ready }) {
               <span>Available for work</span>
             </div>
             <div className="nuria-sticker__tooltip">Available for Q4 Projects</div>
-          </div>
+          </m.div>
 
           {/* STICKER 3: Website Dev 3D Blue Squircle (Top Right over DIGITAL) */}
-          <div
+          <m.div
             className="nuria-sticker sticker-web"
-            title="Website Design & Engineering"
+            title="Website Design & Engineering (Drag me!)"
             role="button"
             tabIndex={0}
+            drag
+            dragConstraints={{ top: -20, bottom: 20, left: -20, right: 20 }}
+            dragElastic={0.2}
+            animate={{
+              y: [0, -10, 0],
+              rotate: [6, 7.5, 6],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 5.2,
+              ease: 'easeInOut',
+              delay: 1,
+            }}
+            whileHover={{
+              scale: 1.15,
+              rotate: 0,
+              transition: { type: 'spring', stiffness: 400, damping: 15 },
+            }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleServiceClick('#work')}
             onMouseEnter={() => setHoveredService(SERVICES[0])}
             onMouseLeave={() => setHoveredService(null)}
@@ -218,17 +187,36 @@ export default function Hero({ ready }) {
               </svg>
             </div>
             <div className="nuria-sticker__tooltip">Website Dev · High-Converting</div>
-          </div>
+          </m.div>
 
           {/* STICKER 4: Retro Pixel Hand Cursor (Bottom Left over STUDIO) */}
-          <div
+          <m.div
             className="nuria-sticker sticker-cursor"
-            title="Click to explore work"
+            title="Click to explore work (Drag me!)"
             role="button"
             tabIndex={0}
+            drag
+            dragConstraints={{ top: -20, bottom: 20, left: -20, right: 20 }}
+            dragElastic={0.2}
+            animate={{
+              y: [0, -8, 0],
+              rotate: [0, 1.5, 0],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 4.8,
+              ease: 'easeInOut',
+              delay: 1.4,
+            }}
+            whileHover={{
+              scale: 1.15,
+              rotate: -8,
+              transition: { type: 'spring', stiffness: 400, damping: 15 },
+            }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => scrollToTarget('#work')}
           >
-            {/* Retro 8-Bit Pixel Pointer Cursor matching the screenshot */}
+            {/* Retro 8-Bit Pixel Pointer Cursor matching reference */}
             <svg
               className="sticker-cursor__svg"
               viewBox="0 0 24 24"
@@ -247,14 +235,33 @@ export default function Hero({ ready }) {
               />
             </svg>
             <div className="nuria-sticker__tooltip">Click to Explore</div>
-          </div>
+          </m.div>
 
           {/* STICKER 5: Mobile App 3D Squircle (Bottom Right over STUDIO) */}
-          <div
+          <m.div
             className="nuria-sticker sticker-app"
-            title="Mobile App Development"
+            title="Mobile App Development (Drag me!)"
             role="button"
             tabIndex={0}
+            drag
+            dragConstraints={{ top: -20, bottom: 20, left: -20, right: 20 }}
+            dragElastic={0.2}
+            animate={{
+              y: [0, -9, 0],
+              rotate: [-4.5, -3, -4.5],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 5.1,
+              ease: 'easeInOut',
+              delay: 0.8,
+            }}
+            whileHover={{
+              scale: 1.15,
+              rotate: 0,
+              transition: { type: 'spring', stiffness: 400, damping: 15 },
+            }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleServiceClick('#services')}
             onMouseEnter={() => setHoveredService(SERVICES[1])}
             onMouseLeave={() => setHoveredService(null)}
@@ -267,7 +274,7 @@ export default function Hero({ ready }) {
               </svg>
             </div>
             <div className="nuria-sticker__tooltip">Mobile Apps · Android &amp; iOS</div>
-          </div>
+          </m.div>
 
           {/* ================================================================
               GIANT MONUMENTAL TYPOGRAPHY (Bold architectural lockup)
@@ -292,9 +299,9 @@ export default function Hero({ ready }) {
         </div>
 
         {/* ==================================================================
-            COMPACT BOTTOM BAR (Fits strictly inside 100vh with no scroll)
+            BOTTOM BLOCK: Generously spaced, warm beige & electric orange
             ================================================================== */}
-        <div className="nuria-compact-bar">
+        <div className="nuria-bottom-block">
           <p className="nuria-context-text">
             {currentService?.tagline ||
               'We build high-converting websites, mobile apps, QR automation & 3D games that get you customers.'}
@@ -329,15 +336,15 @@ export default function Hero({ ready }) {
             </Magnetic>
           </div>
 
-          {/* Quick Micro-Service Pills for the 5 services */}
-          <div className="nuria-micro-services" role="tablist" aria-label="Services List">
+          {/* Refined Horizontal Service Discipline Dock */}
+          <nav className="nuria-services-dock" aria-label="Services Dock">
             {SERVICES.map((srv, idx) => {
               const isActive = srv.id === currentService?.id
               return (
                 <button
                   key={srv.id}
                   type="button"
-                  className={`nuria-micro-chip ${isActive ? 'is-active' : ''}`}
+                  className={`nuria-dock-chip ${isActive ? 'is-active' : ''}`}
                   style={{ '--chip-accent': srv.accent }}
                   onClick={() => {
                     setActiveChipIdx(idx)
@@ -345,15 +352,14 @@ export default function Hero({ ready }) {
                   }}
                   onMouseEnter={() => setHoveredService(srv)}
                   onMouseLeave={() => setHoveredService(null)}
-                  role="tab"
-                  aria-selected={isActive}
                 >
-                  <span className="nuria-micro-chip__dot" aria-hidden="true" />
+                  <span className="nuria-dock-chip__num">0{idx + 1}</span>
+                  <span className="nuria-dock-chip__dot" aria-hidden="true" />
                   <span>{srv.name}</span>
                 </button>
               )
             })}
-          </div>
+          </nav>
         </div>
       </div>
     </section>
