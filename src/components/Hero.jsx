@@ -148,7 +148,7 @@ export default function Hero({ ready }) {
 
       {/* ==================================================================
           TOP HEADER: Eyebrow + Headline + Subtitle + Action CTA
-          Clear vertical budgeting - ends cleanly before cards & mascot begin
+          Clean vertical budgeting — ends comfortably above cards & mascot
           ================================================================== */}
       <div className="sky-hero-header">
         <div className="sky-eyebrow">
@@ -183,9 +183,9 @@ export default function Hero({ ready }) {
       </div>
 
       {/* ==================================================================
-          CENTER 3D STAGE (Solma 3D Amphitheater Arc + Bust/Waist 3D Mascot)
+          CENTER 3D STAGE (Solma 3D Amphitheater Arc + Half-Body 3D Mascot)
           - Background: 5 Curved 3D Cards in an arc with deep floating drop shadows
-          - Foreground: Big real-time 3D mascot (mascot.glb) up to waist/stomach
+          - Foreground: Big Zoomed Half-Body Mascot (waist/stomach up) in square area
           ================================================================== */}
       <div className="sky-3d-stage">
         {/* 5 BACKGROUND PERSPECTIVE CARDS IN 3D CURVED ARC (IMAGE-ONLY, NO TEXT) */}
@@ -220,29 +220,27 @@ export default function Hero({ ready }) {
           })}
         </div>
 
-        {/* FOREGROUND: BIGGER 3D MASCOT UP TO WAIST / STOMACH (LIKE REFERENCE GIRL) */}
+        {/* FOREGROUND: SQUARE-WISE BIGGER, ZOOMED-IN HALF-BODY 3D MASCOT (0deg FRONT FACING) */}
         <div className="sky-mascot-wrap">
           {hasModelViewer ? (
             <model-viewer
               src="/mascot.glb"
               alt="Nailed It Bro 3D Studio Mascot"
               camera-controls
-              auto-rotate
-              rotation-per-second="8deg"
-              camera-orbit="90deg 82deg 54%"
-              camera-target="0m 0.42m 0m"
-              min-camera-orbit="auto auto 45%"
-              max-camera-orbit="auto auto 75%"
+              camera-orbit="0deg 78deg 44%"
+              camera-target="0m 0.32m 0m"
+              min-camera-orbit="auto auto 32%"
+              max-camera-orbit="auto auto 60%"
               disable-zoom
               interaction-prompt="none"
               shadow-intensity="1.2"
               shadow-softness="0.9"
-              exposure="1.06"
+              exposure="1.08"
               environment-image="neutral"
               className="sky-mascot-model"
             >
               <img
-                src="/avatar_front_3d.png"
+                src="/avatar_front_clean.png"
                 alt="3D Mascot Fallback"
                 className="sky-mascot-fallback"
                 slot="poster"
@@ -250,7 +248,7 @@ export default function Hero({ ready }) {
             </model-viewer>
           ) : (
             <img
-              src="/avatar_front_3d.png"
+              src="/avatar_front_clean.png"
               alt="Nailed It Bro 3D Mascot"
               className="sky-mascot-fallback"
             />

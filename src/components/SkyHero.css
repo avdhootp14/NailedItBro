@@ -3,7 +3,7 @@
    - Layout: Clean, full-bleed 100svh canvas (NO nested curve box in between)
    - Vertical Spacing: Senior UI/UX hierarchy, zero overlapping content
    - 3D Centerpiece:
-       • Foreground: Real-time 3D Mascot (mascot.glb) up to waist/stomach ONLY, scaled big
+       • Foreground: Real-time 3D Mascot (mascot.glb) — Zoomed Bigger, Square Area, Half-Body (0deg Front Facing)
        • Background: 5 Curved 3D Perspective Cards in amphitheater arc (IMAGE-ONLY, NO TEXT)
    - Floating Shadows: Multi-tiered diffuse 3D shadows matching Solma depth
    - Flanks: 99% Stat on bottom-left, Discover More proof on bottom-right
@@ -24,7 +24,7 @@
   justify-content: flex-start;
   padding-top: clamp(66px, 9vh, 84px);
   background:
-    radial-gradient(ellipse 70% 40% at 50% 20%, rgba(255, 94, 20, 0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 40% at 50% 18%, rgba(255, 94, 20, 0.07) 0%, transparent 65%),
     radial-gradient(ellipse 85% 45% at 50% 55%, rgba(255, 255, 255, 0.75) 0%, transparent 70%),
     linear-gradient(180deg, #FBF8F3 0%, #F5EEE4 40%, #EDE3D4 80%, #FAF7F2 100%);
   box-sizing: border-box;
@@ -188,7 +188,7 @@
 
 /* ==========================================================================
    CENTER 3D STAGE:
-   Foreground: Real-time 3D Mascot (mascot.glb) up to waist/stomach ONLY
+   Foreground: Real-time 3D Mascot (mascot.glb) — Zoomed Bigger, Square Area, Half Body
    Background: 5 Curved 3D Perspective Cards in Amphitheater Arc
    ========================================================================== */
 .sky-3d-stage {
@@ -203,29 +203,28 @@
 
 /* --------------------------------------------------------------------------
    5 BACKGROUND PERSPECTIVE CARDS IN 3D CURVED ARC (IMAGE-ONLY, NO TEXT)
-   Multi-tiered floating drop shadows from Solma reference
    -------------------------------------------------------------------------- */
 .sky-cards-arc {
   position: absolute;
-  top: 54%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1.3vw, 20px);
+  gap: clamp(8px, 1.4vw, 22px);
   perspective: 1300px;
   transform-style: preserve-3d;
   width: 100%;
-  max-width: 1260px;
+  max-width: 1280px;
   z-index: 2;
   pointer-events: auto;
 }
 
 .sky-service-card {
   position: relative;
-  width: clamp(135px, 13vw, 185px);
-  height: clamp(155px, 15.5vh, 210px);
+  width: clamp(140px, 13.5vw, 195px);
+  height: clamp(160px, 16vh, 220px);
   background: #FFFFFF;
   border-radius: 20px;
   padding: 0;
@@ -290,24 +289,24 @@
 }
 
 /* --------------------------------------------------------------------------
-   FOREGROUND: BIGGER 3D MASCOT UP TO WAIST / STOMACH ONLY (LIKE REFERENCE GIRL)
-   Anchored to bottom, cropped at stomach/waistline with soft feathering
+   FOREGROUND: SQUARE-WISE BIGGER, ZOOMED-IN HALF-BODY 3D MASCOT
+   Spans broad square area, cropped at waist/stomach, prominent in center
    -------------------------------------------------------------------------- */
 .sky-mascot-wrap {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(400px, 36vw, 540px);
-  height: clamp(340px, 44vh, 460px);
+  width: clamp(620px, 54vw, 860px);
+  height: clamp(520px, 62vh, 720px);
   z-index: 4;
   pointer-events: auto;
   overflow: hidden;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
 }
 
 model-viewer.sky-mascot-model {
@@ -325,8 +324,8 @@ model-viewer.sky-mascot-model {
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
+  object-fit: contain;
+  object-position: bottom center;
   filter: drop-shadow(0 20px 36px rgba(30, 20, 15, 0.22));
 }
 
@@ -843,17 +842,17 @@ model-viewer.sky-mascot-model {
 
   .sky-3d-stage {
     position: relative;
-    height: 420px;
+    height: 480px;
     margin: 20px 0;
   }
 
   .sky-mascot-wrap {
-    width: 320px;
-    height: 320px;
+    width: 380px;
+    height: 440px;
   }
 
   .sky-cards-arc {
-    top: 48%;
+    top: 45%;
     gap: 8px;
   }
 
