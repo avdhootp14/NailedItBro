@@ -1,188 +1,103 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { gsap, useGSAP, EASE, DUR } from '../lib/motion'
-import { scrollToTarget, getLenis } from '../lib/useSmoothScroll'
+import { gsap, useGSAP, EASE } from '../lib/motion'
+import { scrollToTarget } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
 import './NuriaHero.css'
 
+// 5 Core Services & Capabilities of Nailed It Bro
 const SERVICES = [
   {
-    id: 'studio',
-    label: 'Overview',
-    eyebrow: 'Digital Studio · Brands, Websites & Apps',
-    titlePrefix: 'We craft digital products that get you',
-    titleHighlight: 'customers.',
-    sub: 'Nailed It Bro is a design and engineering studio. We build fast websites, mobile apps and booking automation, and run social media campaigns that turn attention into enquiries.',
-    accent: '#FF5E14',
-    badge: 'Digital Studio',
-    stats: '50+ Launched · 4.9★',
-  },
-  {
     id: 'web',
-    label: 'Website Dev',
-    eyebrow: 'Custom Website Design & Engineering',
-    titlePrefix: 'Websites engineered to convert visitors into',
-    titleHighlight: 'buyers.',
-    sub: 'Custom-designed business websites and web apps that load instantly, work seamlessly on every device, and rank on Google. Easy to maintain, secure, and built for real business enquiries.',
-    accent: '#FF5E14',
-    badge: 'High-Converting Web',
-    stats: 'Sub-second Load · SEO Ready',
+    name: 'Website Dev',
+    tagline: 'Custom websites engineered to convert visitors into clients.',
+    accent: '#0077FF',
+    color: '#0088FF',
+    target: '#work',
+    description: 'Ultra-fast business websites & web apps. Built with Next-gen performance, high Google rank & seamless responsiveness.',
   },
   {
     id: 'app',
-    label: 'Mobile App',
-    eyebrow: 'Android & Cross-Platform Engineering',
-    titlePrefix: 'Mobile apps your users open',
-    titleHighlight: 'daily.',
-    sub: 'Smooth Android apps built from a single high-performance codebase, featuring offline support, real-time push notifications, and a scalable cloud backend. From initial wireframes to Play Store launch.',
+    name: 'Mobile Apps',
+    tagline: 'Smooth Android & iOS native apps your users open daily.',
     accent: '#10B981',
-    badge: 'Android & Cloud',
-    stats: 'Play Store Ready · 60 FPS',
+    color: '#10B981',
+    target: '#services',
+    description: 'High-performance mobile engineering with cloud sync, offline support & push notifications.',
   },
   {
     id: 'ai',
-    label: 'AI Automation',
-    eyebrow: 'QR Menus & AI Booking Systems',
-    titlePrefix: 'QR and AI tools that save you valuable',
-    titleHighlight: 'hours.',
-    sub: 'From digital menus, booking engines, and payments to lead capture and WhatsApp automation. We build tools that handle repetitive workflows so you never answer the same questions twice.',
-    accent: '#D97706',
-    badge: 'Automation & QR',
-    stats: '24/7 Auto-Pilot · Zero Friction',
+    name: 'AI & QR Tools',
+    tagline: 'Smart QR solutions & automated booking that saves hours daily.',
+    accent: '#F59E0B',
+    color: '#F59E0B',
+    target: '#services',
+    description: 'Digital menus, automated appointment scheduling, WhatsApp workflows & smart customer capture.',
   },
   {
     id: 'game',
-    label: '3D Games',
-    eyebrow: '3D Mobile Games & Interactive Worlds',
-    titlePrefix: '3D mobile experiences players keep',
-    titleHighlight: 'replaying.',
-    sub: 'Custom 3D gameplay, realistic physics, responsive touch controls, and immersive mechanics, optimized to run fluidly on mid-range smartphones without battery drain.',
+    name: '3D Games',
+    tagline: 'Custom 3D mobile games & experiences players keep replaying.',
     accent: '#06B6D4',
-    badge: '3D Interactive',
-    stats: 'Custom Physics · Mid-range Optimized',
+    color: '#06B6D4',
+    target: '#services',
+    description: 'Custom physics, real-time mechanics & optimized 3D graphics tuned for mid-range mobile devices.',
   },
   {
     id: 'social',
-    label: 'Social Media',
-    eyebrow: 'Social Media & Performance Growth',
-    titlePrefix: 'Content campaigns that turn scrollers into',
-    titleHighlight: 'clients.',
-    sub: 'High-retention short-form video, creative distribution, and tracked growth campaigns designed to turn passive viewers into qualified enquiries and revenue.',
+    name: 'Social Media',
+    tagline: 'Omnichannel campaigns & content that turn scrollers into buyers.',
     accent: '#EC4899',
-    badge: 'Growth & Content',
-    stats: 'Tracked ROI · Multi-Platform',
+    color: '#EC4899',
+    target: '#services',
+    description: 'Short-form video production, creator distribution & tracked conversion funnels with clear ROI.',
   },
-]
-
-// 3D Avatar Turnaround Frames for Scroll Reaction
-const AVATAR_FRAMES = [
-  '/avatar_front_3d.png',
-  '/turn_1_fl.png',
-  '/turn_2_left.png',
-  '/turn_3_back.png',
-  '/turn_4_right.png',
-  '/turn_5_fr.png',
-  '/avatar_front_nailed.png',
 ]
 
 export default function Hero({ ready }) {
   const root = useRef(null)
-  const [activeServiceIdx, setActiveServiceIdx] = useState(0)
-  const [frameIdx, setFrameIdx] = useState(0)
-  const [isStriking, setIsStriking] = useState(false)
-  const [impactCount, setImpactCount] = useState(0)
-  const hitAudioRef = useRef(null)
+  const [hoveredService, setHoveredService] = useState(null)
+  const [activeChipIdx, setActiveChipIdx] = useState(0)
 
-  const activeService = SERVICES[activeServiceIdx]
+  // Current active service from hover or selection
+  const currentService = hoveredService || SERVICES[activeChipIdx]
 
-  // Preload turnaround images & audio
-  useEffect(() => {
-    AVATAR_FRAMES.forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
-    hitAudioRef.current = new Audio('/hammer_hit.wav')
-    hitAudioRef.current.volume = 0.4
-  }, [])
-
-  // Lenis / Window scroll effect on the 3D Avatar (Nuria focal element)
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop
-      const heroHeight = root.current ? root.current.offsetHeight : 800
-      const progress = Math.min(Math.max(scrollY / (heroHeight * 0.7), 0), 1)
-
-      // Map scroll progress to turnaround frames
-      const targetFrame = Math.min(
-        Math.floor(progress * (AVATAR_FRAMES.length - 1)),
-        AVATAR_FRAMES.length - 1
-      )
-      setFrameIdx(targetFrame)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    const lenis = getLenis()
-    if (lenis) {
-      lenis.on('scroll', handleScroll)
-    }
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      if (lenis) lenis.off('scroll', handleScroll)
-    }
-  }, [])
-
-  // Trigger interactive hammer strike
-  const triggerHammerHit = useCallback(() => {
-    setIsStriking(true)
-    setImpactCount((c) => c + 1)
-    if (hitAudioRef.current) {
-      hitAudioRef.current.currentTime = 0
-      hitAudioRef.current.play().catch(() => {})
-    }
-    setTimeout(() => {
-      setIsStriking(false)
-    }, 650)
-  }, [])
-
-  // Intro timeline animation
+  // Intro GSAP Timeline
   useGSAP(
     () => {
       const intro = gsap.timeline({ paused: true, defaults: { ease: EASE.out } })
+
       intro
-        .fromTo('.nuria-beacon', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.05)
         .fromTo(
-          '.nuria-title__word',
-          { autoAlpha: 0, y: 35, rotateX: 25 },
-          { autoAlpha: 1, y: 0, rotateX: 0, duration: 1.1, stagger: 0.04, ease: 'power3.out' },
-          0.15
+          '.nuria-type-line',
+          { autoAlpha: 0, y: 40, scale: 0.95 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 1.1, stagger: 0.12, ease: 'power3.out' },
+          0.05
         )
         .fromTo(
-          '.nuria-title__serif',
-          { autoAlpha: 0, y: 30, scale: 0.95 },
-          { autoAlpha: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
-          0.35
-        )
-        .fromTo('.nuria-sub', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.45)
-        .fromTo(
-          '.nuria-centerpiece',
-          { autoAlpha: 0, scale: 0.9, y: 40 },
-          { autoAlpha: 1, scale: 1, y: 0, duration: 1.3, ease: 'power3.out' },
+          '.nuria-script-line',
+          { autoAlpha: 0, y: 25 },
+          { autoAlpha: 1, y: 0, duration: 0.9, ease: 'power2.out' },
           0.3
         )
         .fromTo(
-          '.nuria-sticker--left',
-          { autoAlpha: 0, x: -30, rotate: -12 },
-          { autoAlpha: 1, x: 0, rotate: -3.5, duration: 1, ease: 'back.out(1.4)' },
-          0.5
+          '.nuria-sticker',
+          { autoAlpha: 0, scale: 0.4, y: 20 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.06,
+            ease: 'back.out(1.8)',
+          },
+          0.25
         )
         .fromTo(
-          '.nuria-sticker--right',
-          { autoAlpha: 0, x: 30, rotate: 12 },
-          { autoAlpha: 1, x: 0, rotate: 3.5, duration: 1, ease: 'back.out(1.4)' },
+          '.nuria-compact-bar',
+          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 1, y: 0, duration: 0.8 },
           0.55
         )
-        .fromTo('.nuria-ctas', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.65)
-        .fromTo('.nuria-services-nav', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.75)
-        .fromTo('.nuria-meta', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, 0.85)
 
       root.current._intro = intro
       if (ready) intro.play()
@@ -190,22 +105,22 @@ export default function Hero({ ready }) {
     { dependencies: [ready], scope: root }
   )
 
-  // Interactive 3D tilt on desktop pointer move
+  // Desktop Pointer Parallax Tilt on the canvas
   useEffect(() => {
-    const stage = root.current?.querySelector('.nuria-centerpiece')
-    if (!stage) return
+    const canvas = root.current?.querySelector('.nuria-hero-canvas')
+    if (!canvas) return
 
     const handlePointerMove = (e) => {
       if (window.innerWidth < 900) return
-      const rect = stage.getBoundingClientRect()
+      const rect = canvas.getBoundingClientRect()
       const centerX = rect.left + rect.width / 2
       const centerY = rect.top + rect.height / 2
       const deltaX = (e.clientX - centerX) / (window.innerWidth * 0.5)
       const deltaY = (e.clientY - centerY) / (window.innerHeight * 0.5)
 
-      gsap.to(stage, {
-        rotateY: deltaX * 8,
-        rotateX: -deltaY * 8,
+      gsap.to(canvas, {
+        rotateY: deltaX * 4,
+        rotateX: -deltaY * 4,
         duration: 0.8,
         ease: 'power2.out',
         transformPerspective: 1200,
@@ -213,244 +128,307 @@ export default function Hero({ ready }) {
     }
 
     const handlePointerLeave = () => {
-      gsap.to(stage, {
+      gsap.to(canvas, {
         rotateY: 0,
         rotateX: 0,
-        duration: 1.2,
+        duration: 1,
         ease: 'power3.out',
       })
     }
 
     window.addEventListener('pointermove', handlePointerMove)
-    stage.addEventListener('pointerleave', handlePointerLeave)
+    canvas.addEventListener('pointerleave', handlePointerLeave)
     return () => {
       window.removeEventListener('pointermove', handlePointerMove)
-      stage.removeEventListener('pointerleave', handlePointerLeave)
+      canvas.removeEventListener('pointerleave', handlePointerLeave)
     }
+  }, [])
+
+  const handleServiceClick = useCallback((target) => {
+    scrollToTarget(target || '#services')
   }, [])
 
   return (
     <section
-      className="hero nuria-hero"
+      className="nuria-viewport-hero"
       id="top"
       ref={root}
       data-theme="dark"
       aria-labelledby="hero-title"
-      style={{ '--hero-accent': activeService.accent }}
+      style={{
+        '--active-service-color': currentService.accent,
+      }}
     >
-      {/* Nuria-style Moody Atmospheric Glows & Architectural Grid */}
-      <div className="nuria-ambient-mesh" aria-hidden="true" />
-      <div
-        className="nuria-ambient-orb"
-        style={{
-          background: `radial-gradient(ellipse at 50% 35%, ${activeService.accent}33 0%, ${activeService.accent}0d 45%, transparent 72%)`,
-        }}
-        aria-hidden="true"
-      />
-      <div className="nuria-grid-overlay" aria-hidden="true" />
+      {/* Dark Ambient Lighting & Spot matching screenshot */}
+      <div className="nuria-backdrop" aria-hidden="true" />
+      <div className="nuria-ambient-spot" aria-hidden="true" />
+      <div className="nuria-vignette" aria-hidden="true" />
 
-      <div className="nuria-container container">
-        {/* Top Floating Beacon Pill (Nuria style availability indicator) */}
-        <div className="nuria-beacon" data-intro>
-          <span className="nuria-beacon__pulse" aria-hidden="true">
-            <span
-              className="nuria-beacon__ping"
-              style={{ borderColor: activeService.accent }}
-            />
-            <span
-              className="nuria-beacon__dot"
-              style={{ backgroundColor: activeService.accent }}
-            />
-          </span>
-          <span className="nuria-beacon__text">Available for Q4 & New Projects</span>
-          <span className="nuria-beacon__sep" aria-hidden="true">·</span>
-          <span className="nuria-beacon__loc">Mumbai & Worldwide</span>
-        </div>
-
-        {/* Monumental Centered Editorial Headline (Nuria display typography) */}
-        <div className="nuria-title-wrap" data-intro>
-          <p className="nuria-eyebrow">
-            <span className="nuria-eyebrow__dash" style={{ background: activeService.accent }} />
-            <span>{activeService.eyebrow}</span>
-          </p>
-
-          <h1 className="nuria-title display" id="hero-title">
-            <span className="nuria-title__row">
-              <span className="nuria-title__word">We</span>
-              <span className="nuria-title__word">craft</span>
-              <span className="nuria-title__word">digital</span>
-              <span className="nuria-title__word">products</span>
-            </span>
-            <span className="nuria-title__row">
-              <span className="nuria-title__word">that</span>
-              <span className="nuria-title__word">get</span>
-              <span className="nuria-title__word">you</span>
-              <em
-                className="serif nuria-title__serif"
-                style={{ '--highlight-accent': activeService.accent }}
-              >
-                {activeService.titleHighlight}
-              </em>
-            </span>
-          </h1>
-
-          <p className="nuria-sub">{activeService.sub}</p>
-        </div>
-
-        {/* Centrally Located 3D Mascot Showcase & Floating Nuria-Style Badges */}
-        <div className="nuria-stage-wrapper">
-          {/* Floating Left Studio Card (Nuria tilted badge) */}
-          <div className="nuria-sticker nuria-sticker--left">
-            <div className="nuria-sticker__glow" />
-            <div className="nuria-sticker__inner">
-              <span className="nuria-sticker__icon">⭐</span>
-              <div className="nuria-sticker__text">
-                <span className="nuria-sticker__title">50+ Products Nailed</span>
-                <span className="nuria-sticker__sub">4.9★ Client Rating · 100% On-Time</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive 3D Mascot Centerpiece with Scroll-Driven Rotation */}
+      <div className="nuria-stage">
+        {/* ==================================================================
+            Hero Canvas: Giant Typography + Overlapping Floating Stickers
+            ================================================================== */}
+        <div className="nuria-hero-canvas">
+          {/* FLOATING STICKER 1: Avatar Circle (Top Center-Left, overlapping top word) */}
           <div
-            className={`nuria-centerpiece ${isStriking ? 'is-striking' : ''}`}
-            onClick={triggerHammerHit}
-            role="button"
+            className="nuria-sticker sticker-avatar"
+            title="Nailed It Bro Studio Mascot"
             tabIndex={0}
-            title="Click to strike hammer!"
-            aria-label="Interactive 3D Mascot Avatar. Click to nail it!"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                triggerHammerHit()
-              }
-            }}
+            role="button"
+            aria-label="Studio Mascot Avatar"
+            onMouseEnter={() =>
+              setHoveredService({
+                name: 'Nailed It Bro',
+                tagline: 'Design with Taste · Code with Rigour.',
+                accent: '#FF5E14',
+              })
+            }
+            onMouseLeave={() => setHoveredService(null)}
           >
-            {/* Ambient Spotlight Ring behind Avatar */}
-            <div
-              className="nuria-centerpiece__spotlight"
-              style={{
-                background: `radial-gradient(circle at 50% 50%, ${activeService.accent}40 0%, transparent 68%)`,
-              }}
-              aria-hidden="true"
-            />
-
-            {/* Avatar Frame Render (responds smoothly to scroll) */}
-            <div className="nuria-avatar-render">
+            <div className="sticker-avatar__circle">
               <img
-                src={AVATAR_FRAMES[frameIdx] || '/avatar_front_3d.png'}
-                alt="Nailed It Bro 3D Mascot"
-                className="nuria-avatar-img"
+                src="/avatar_front_3d.png"
+                alt="Nailed It Bro Mascot"
                 draggable="false"
               />
             </div>
+            <div className="nuria-sticker__tooltip">Nailed It Bro 🔨</div>
+          </div>
 
-            {/* Hammer Strike Impact Shockwave */}
-            {isStriking && (
-              <div className="nuria-impact-wave" key={impactCount} aria-hidden="true">
-                <span className="nuria-impact-ring" />
-                <span className="nuria-impact-label">NAILED IT! 🔨</span>
-              </div>
+          {/* FLOATING STICKER 2: Available for Work Pill (Top Center) */}
+          <div
+            className="nuria-sticker sticker-available"
+            title="Available for Q4 projects"
+            role="button"
+            tabIndex={0}
+            onClick={() => scrollToTarget('#contact')}
+          >
+            <div className="sticker-available__pill">
+              <span className="sticker-available__dot" aria-hidden="true" />
+              <span>Available for work</span>
+            </div>
+            <div className="nuria-sticker__tooltip">Available for Q4 Projects</div>
+          </div>
+
+          {/* FLOATING STICKER 3: Website Dev 3D Blue Squircle (Framer-style, Top Right) */}
+          <div
+            className="nuria-sticker sticker-web"
+            title="Website Design & Engineering"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleServiceClick('#work')}
+            onMouseEnter={() => setHoveredService(SERVICES[0])}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            <div className="nuria-squircle-badge squircle-web">
+              {/* 3D Web Dev Code Glyphs */}
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+            </div>
+            <div className="nuria-sticker__tooltip">Website Dev · High-Converting</div>
+          </div>
+
+          {/* FLOATING STICKER 4: Retro Pixel Hand Pointer (Bottom Left, overlapping bottom word) */}
+          <div
+            className="nuria-sticker sticker-cursor"
+            title="Click to explore work"
+            role="button"
+            tabIndex={0}
+            onClick={() => scrollToTarget('#work')}
+          >
+            {/* Retro 8-Bit Pixel Pointer Cursor matching the screenshot */}
+            <svg
+              className="sticker-cursor__svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 2V12H9V14H11V16H13V18H15V22H19V16H17V14H15V12H13V10H11V8H9V2H7Z"
+                fill="#FFFFFF"
+              />
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M6 1V13H8V15H10V17H12V19H14V23H20V15H18V13H16V11H14V9H12V7H10V1H6ZM8 3H8.99V7H11V9H13V11H15V13H17V15H19V21H15V17H13V15H11V13H9V3H8Z"
+                fill="#121216"
+              />
+            </svg>
+            <div className="nuria-sticker__tooltip">Click to Explore</div>
+          </div>
+
+          {/* FLOATING STICKER 5: Mobile App 3D Squircle (Figma-style, Bottom Right) */}
+          <div
+            className="nuria-sticker sticker-app"
+            title="Mobile App Development"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleServiceClick('#services')}
+            onMouseEnter={() => setHoveredService(SERVICES[1])}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            <div className="nuria-squircle-badge squircle-app">
+              {/* 3D Mobile Smartphone Icon */}
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="3" />
+              </svg>
+            </div>
+            <div className="nuria-sticker__tooltip">Mobile Apps · Android &amp; iOS</div>
+          </div>
+
+          {/* FLOATING STICKER 6: AI & QR Automation 3D Squircle (Floating Mid-Right) */}
+          <div
+            className="nuria-sticker sticker-ai"
+            title="QR Solutions & AI Automation"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleServiceClick('#services')}
+            onMouseEnter={() => setHoveredService(SERVICES[2])}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            <div className="nuria-squircle-badge squircle-ai">
+              {/* AI Neural / QR Spark Matrix Icon */}
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                <circle cx="17.5" cy="17.5" r="3" fill="#FFFFFF" />
+              </svg>
+            </div>
+            <div className="nuria-sticker__tooltip">QR &amp; AI Automation</div>
+          </div>
+
+          {/* FLOATING STICKER 7: 3D Mobile Game Controller (Floating Mid-Left) */}
+          <div
+            className="nuria-sticker sticker-game"
+            title="3D Mobile Game Development"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleServiceClick('#services')}
+            onMouseEnter={() => setHoveredService(SERVICES[3])}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            <div className="nuria-squircle-badge squircle-game">
+              {/* 3D Gamepad Controller Icon */}
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="6" />
+                <path d="M6 12h4m-2-2v4" />
+                <circle cx="15" cy="11" r="1" fill="#FFFFFF" />
+                <circle cx="18" cy="13" r="1" fill="#FFFFFF" />
+              </svg>
+            </div>
+            <div className="nuria-sticker__tooltip">3D Mobile Games</div>
+          </div>
+
+          {/* FLOATING STICKER 8: Social Media & Growth (Floating Bottom-Center) */}
+          <div
+            className="nuria-sticker sticker-social"
+            title="Social Media Management & Marketing"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleServiceClick('#services')}
+            onMouseEnter={() => setHoveredService(SERVICES[4])}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            <div className="nuria-squircle-badge squircle-social">
+              {/* Growth Analytics Trend Arrow Icon */}
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+            </div>
+            <div className="nuria-sticker__tooltip">Social Media &amp; Growth</div>
+          </div>
+
+          {/* ================================================================
+              GIANT MONUMENTAL TYPOGRAPHY (Exactly like screenshot)
+              ================================================================ */}
+          <h1 className="nuria-giant-type" id="hero-title">
+            <span className="nuria-type-line">DIGITAL</span>
+            <span className="nuria-type-line">STUDIO</span>
+          </h1>
+
+          {/* ================================================================
+              ROMANTIC ITALIC SERIF SCRIPT DIRECTLY UNDER TITLE
+              ================================================================ */}
+          <div className="nuria-script-line serif">
+            {hoveredService ? (
+              <span>
+                focusing on <em>{hoveredService.name}</em>
+              </span>
+            ) : (
+              <span>with taste &amp; rigour</span>
             )}
-
-            {/* Center Status Stamp below mascot */}
-            <div className="nuria-mascot-stamp">
-              <span className="nuria-mascot-stamp__dot" style={{ background: activeService.accent }} />
-              <span className="nuria-mascot-stamp__text">
-                {isStriking ? 'Hammer Strike!' : 'Scroll to rotate · Tap to Nail It!'}
-              </span>
-            </div>
-          </div>
-
-          {/* Floating Right Studio Card (Nuria tilted badge) */}
-          <div className="nuria-sticker nuria-sticker--right">
-            <div className="nuria-sticker__glow" />
-            <div className="nuria-sticker__inner">
-              <span className="nuria-sticker__icon">⚡</span>
-              <div className="nuria-sticker__text">
-                <span className="nuria-sticker__title">Full-Stack Rigour</span>
-                <span className="nuria-sticker__sub">Web · Android · AI · 3D Games</span>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Action Button Pills (Nuria Style) */}
-        <div className="nuria-ctas" data-intro>
-          <Magnetic strength={0.22}>
-            <a
-              href="#contact"
-              className="btn btn--dark nuria-btn-primary"
-              style={{ '--btn-glow': `${activeService.accent}55` }}
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToTarget('#contact')
-              }}
-            >
-              <span className="btn__label" data-text="Start a Project">Start a Project</span>
-              <span className="btn__icon nuria-btn-arrow" aria-hidden="true">→</span>
-            </a>
-          </Magnetic>
+        {/* ==================================================================
+            COMPACT BOTTOM BAR (Fits strictly inside 100vh with no scroll)
+            ================================================================== */}
+        <div className="nuria-compact-bar">
+          <p className="nuria-context-text">
+            {currentService.tagline ||
+              'We build high-converting websites, mobile apps, QR automation & 3D games that get you customers.'}
+          </p>
 
-          <Magnetic strength={0.22}>
-            <a
-              href="#work"
-              className="btn btn--ghost nuria-btn-secondary"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToTarget('#work')
-              }}
-            >
-              <span className="btn__label" data-text="Explore Selected Work">
-                Explore Selected Work
-              </span>
-            </a>
-          </Magnetic>
-        </div>
+          <div className="nuria-compact-ctas">
+            <Magnetic strength={0.22}>
+              <a
+                href="#contact"
+                className="btn btn--dark nuria-primary-btn"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToTarget('#contact')
+                }}
+              >
+                <span>Start a Project</span>
+                <span className="nuria-arrow" aria-hidden="true">→</span>
+              </a>
+            </Magnetic>
 
-        {/* Nuria-Style Interactive Discipline Switcher Strip */}
-        <div className="nuria-services-nav" data-intro aria-label="Studio Disciplines">
-          <div className="nuria-services-nav__pill-wrap">
+            <Magnetic strength={0.22}>
+              <a
+                href="#work"
+                className="btn btn--ghost nuria-ghost-btn"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToTarget('#work')
+                }}
+              >
+                <span>Explore Selected Work</span>
+              </a>
+            </Magnetic>
+          </div>
+
+          {/* Quick Micro-Service Pills for the 5 services */}
+          <div className="nuria-micro-services" role="tablist" aria-label="Services List">
             {SERVICES.map((srv, idx) => {
-              const isActive = idx === activeServiceIdx
+              const isActive = srv.id === currentService.id
               return (
                 <button
                   key={srv.id}
                   type="button"
-                  className={`nuria-service-pill ${isActive ? 'is-active' : ''}`}
-                  onClick={() => setActiveServiceIdx(idx)}
-                  style={{ '--srv-accent': srv.accent }}
-                  aria-pressed={isActive}
+                  className={`nuria-micro-chip ${isActive ? 'is-active' : ''}`}
+                  style={{ '--chip-accent': srv.accent }}
+                  onClick={() => {
+                    setActiveChipIdx(idx)
+                    handleServiceClick(srv.target)
+                  }}
+                  onMouseEnter={() => setHoveredService(srv)}
+                  onMouseLeave={() => setHoveredService(null)}
+                  role="tab"
+                  aria-selected={isActive}
                 >
-                  <span className="nuria-service-pill__num">0{idx + 1}</span>
-                  <span className="nuria-service-pill__label">{srv.label}</span>
-                  {isActive && <span className="nuria-service-pill__indicator" />}
+                  <span className="nuria-micro-chip__dot" aria-hidden="true" />
+                  <span>{srv.name}</span>
                 </button>
               )
             })}
           </div>
         </div>
-      </div>
-
-      {/* Bottom Meta Status Bar (Nuria bottom fold) */}
-      <div className="nuria-meta container" data-intro>
-        <span className="nuria-meta__left">
-          Websites · Mobile Apps · QR Automation · 3D Games · Social Media
-        </span>
-
-        <button
-          type="button"
-          className="nuria-meta__scroll-cue"
-          onClick={() => scrollToTarget('#manifesto')}
-          aria-label="Scroll to explore"
-        >
-          <span className="nuria-meta__scroll-line" aria-hidden="true" />
-          <span>Scroll to explore</span>
-        </button>
-
-        <span className="nuria-meta__right hide-sm">
-          Design with Taste · Code with Rigour
-        </span>
       </div>
     </section>
   )
