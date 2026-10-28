@@ -1,385 +1,457 @@
-import { useEffect, useRef, useState } from 'react'
-import { gsap, useGSAP, splitLines, EASE, DUR, STAGGER } from '../lib/motion'
-import { scrollToTarget } from '../lib/useSmoothScroll'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { gsap, useGSAP, EASE, DUR } from '../lib/motion'
+import { scrollToTarget, getLenis } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
+import './NuriaHero.css'
 
-const SHOWCASE_ITEMS = [
+const SERVICES = [
   {
     id: 'studio',
-    title: 'Nailed It Bro Studio',
-    thumbLabel: 'Overview',
-    accent: '#FF5E14',
-    img: '/naileditbro.png',
-    eyebrow: 'Digital studio · Brands, websites & apps',
+    label: 'Overview',
+    eyebrow: 'Digital Studio · Brands, Websites & Apps',
     titlePrefix: 'We craft digital products that get you',
     titleHighlight: 'customers.',
     sub: 'Nailed It Bro is a design and engineering studio. We build fast websites, mobile apps and booking automation, and run social media campaigns that turn attention into enquiries.',
-    cta1: 'Start a Project',
-    cta2: 'Explore Selected Work',
-    isDesktop: false,
+    accent: '#FF5E14',
+    badge: 'Digital Studio',
+    stats: '50+ Launched · 4.9★',
   },
   {
-    id: 'desktop',
-    title: 'Website Development',
-    thumbLabel: 'Website Dev',
+    id: 'web',
+    label: 'Website Dev',
+    eyebrow: 'Custom Website Design & Engineering',
+    titlePrefix: 'Websites engineered to convert visitors into',
+    titleHighlight: 'buyers.',
+    sub: 'Custom-designed business websites and web apps that load instantly, work seamlessly on every device, and rank on Google. Easy to maintain, secure, and built for real business enquiries.',
     accent: '#FF5E14',
-    img: '/web.png',
-    eyebrow: 'Website Design & Development',
-    titlePrefix: 'Websites built to turn visitors into',
-    titleHighlight: 'customers.',
-    sub: 'Custom-designed business websites and web apps that load fast, work on every device and rank on Google. Easy to update, secure, and built to bring you enquiries.',
-    cta1: 'Build Your Website',
-    cta2: 'Explore Selected Work',
-    isDesktop: true,
+    badge: 'High-Converting Web',
+    stats: 'Sub-second Load · SEO Ready',
   },
   {
     id: 'app',
-    title: 'Mobile App Development',
-    thumbLabel: 'Mobile App',
-    accent: '#10B981',
-    img: '/pet.png',
-    eyebrow: 'Android App Engineering',
+    label: 'Mobile App',
+    eyebrow: 'Android & Cross-Platform Engineering',
     titlePrefix: 'Mobile apps your users open',
     titleHighlight: 'daily.',
-    sub: 'Smooth Android apps from a single codebase, with offline support, push notifications and a scalable cloud backend. We take you from idea to Play Store launch.',
-    cta1: 'Launch an App',
-    cta2: 'Explore Selected Work',
-    isDesktop: false,
+    sub: 'Smooth Android apps built from a single high-performance codebase, featuring offline support, real-time push notifications, and a scalable cloud backend. From initial wireframes to Play Store launch.',
+    accent: '#10B981',
+    badge: 'Android & Cloud',
+    stats: 'Play Store Ready · 60 FPS',
   },
   {
     id: 'ai',
-    title: 'QR Solutions & AI Automation',
-    thumbLabel: 'AI Automation',
-    accent: '#D97706',
-    img: '/qr.png',
-    eyebrow: 'QR Solutions & Booking Automation',
-    titlePrefix: 'QR and AI automation that saves you',
+    label: 'AI Automation',
+    eyebrow: 'QR Menus & AI Booking Systems',
+    titlePrefix: 'QR and AI tools that save you valuable',
     titleHighlight: 'hours.',
-    sub: 'From digital menus, bookings and payments to catalogues, feedback forms and lead capture, we build QR and AI tools that handle repetitive work for you. Customers get instant answers, and you stop answering the same questions all day.',
-    cta1: 'Automate Your Business',
-    cta2: 'Explore Selected Work',
-    isDesktop: false,
+    sub: 'From digital menus, booking engines, and payments to lead capture and WhatsApp automation. We build tools that handle repetitive workflows so you never answer the same questions twice.',
+    accent: '#D97706',
+    badge: 'Automation & QR',
+    stats: '24/7 Auto-Pilot · Zero Friction',
   },
-
   {
     id: 'game',
-    title: 'Mobile Game Development',
-    thumbLabel: 'Mobile Game',
-    accent: '#06B6D4',
-    img: '/game.png',
-    eyebrow: '3D Mobile Game Development',
-    titlePrefix: 'Mobile games players keep',
+    label: '3D Games',
+    eyebrow: '3D Mobile Games & Interactive Worlds',
+    titlePrefix: '3D mobile experiences players keep',
     titleHighlight: 'replaying.',
-    sub: 'Custom 3D gameplay, realistic physics, real-time multiplayer and responsive touch controls, optimised to run smoothly on mid-range phones, not just flagships.',
-    cta1: 'Develop a Game',
-    cta2: 'Explore Selected Work',
-    isDesktop: false,
+    sub: 'Custom 3D gameplay, realistic physics, responsive touch controls, and immersive mechanics, optimized to run fluidly on mid-range smartphones without battery drain.',
+    accent: '#06B6D4',
+    badge: '3D Interactive',
+    stats: 'Custom Physics · Mid-range Optimized',
   },
   {
     id: 'social',
-    title: 'Social Media Management & Marketing',
-    thumbLabel: 'Social Media',
+    label: 'Social Media',
+    eyebrow: 'Social Media & Performance Growth',
+    titlePrefix: 'Content campaigns that turn scrollers into',
+    titleHighlight: 'clients.',
+    sub: 'High-retention short-form video, creative distribution, and tracked growth campaigns designed to turn passive viewers into qualified enquiries and revenue.',
     accent: '#EC4899',
-    img: '/social.png',
-    eyebrow: 'Social Media & Omnichannel Growth',
-    titlePrefix: 'Content and campaigns that bring in',
-    titleHighlight: 'buyers.',
-    sub: 'Short-form video, multi-platform distribution and tracked campaigns that turn viewers into enquiries and enquiries into sales. You get clear reports on reach, leads and conversions.',
-    cta1: 'Scale Your Reach',
-    cta2: 'Explore Selected Work',
-    isDesktop: false,
+    badge: 'Growth & Content',
+    stats: 'Tracked ROI · Multi-Platform',
   },
+]
+
+// 3D Avatar Turnaround Frames for Scroll Reaction
+const AVATAR_FRAMES = [
+  '/avatar_front_3d.png',
+  '/turn_1_fl.png',
+  '/turn_2_left.png',
+  '/turn_3_back.png',
+  '/turn_4_right.png',
+  '/turn_5_fr.png',
+  '/avatar_front_nailed.png',
 ]
 
 export default function Hero({ ready }) {
   const root = useRef(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [hoveredId, setHoveredId] = useState(null)
-  const [isPaused, setIsPaused] = useState(false)
+  const [activeServiceIdx, setActiveServiceIdx] = useState(0)
+  const [frameIdx, setFrameIdx] = useState(0)
+  const [isStriking, setIsStriking] = useState(false)
+  const [impactCount, setImpactCount] = useState(0)
+  const hitAudioRef = useRef(null)
 
-  // Preload all showcase images into browser cache immediately for instant display
+  const activeService = SERVICES[activeServiceIdx]
+
+  // Preload turnaround images & audio
   useEffect(() => {
-    SHOWCASE_ITEMS.forEach((item) => {
+    AVATAR_FRAMES.forEach((src) => {
       const img = new Image()
-      img.src = item.img
+      img.src = src
     })
+    hitAudioRef.current = new Audio('/hammer_hit.wav')
+    hitAudioRef.current.volume = 0.4
   }, [])
 
-  // Auto-cycle items one by one every 6.2s (pauses on hover)
+  // Lenis / Window scroll effect on the 3D Avatar (Nuria focal element)
   useEffect(() => {
-    if (isPaused) return
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % SHOWCASE_ITEMS.length)
-    }, 6200)
-    return () => clearInterval(timer)
-  }, [isPaused])
+    const handleScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop
+      const heroHeight = root.current ? root.current.offsetHeight : 800
+      const progress = Math.min(Math.max(scrollY / (heroHeight * 0.7), 0), 1)
 
-  const activeItem = SHOWCASE_ITEMS[currentIndex]
-  // When hovering over a thumbnail, immediately preview that item bigger and colored at top
-  const displayItem = (hoveredId ? SHOWCASE_ITEMS.find((it) => it.id === hoveredId) : null) || activeItem
-  const displayIndex = SHOWCASE_ITEMS.findIndex((it) => it.id === displayItem.id)
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add(
-        {
-          motion: '(prefers-reduced-motion: no-preference)',
-          desktop: '(min-width: 900px) and (pointer: fine)',
-        },
-        (ctx) => {
-          const { motion, desktop } = ctx.conditions
-          if (!motion) {
-            gsap.set('.hero [data-intro]', { autoAlpha: 1 })
-            return
-          }
-
-          // Animate hero copy on intro without hiding the showcase visual
-          gsap.set('.hero__copy', { autoAlpha: 0 })
-
-          const intro = gsap.timeline({ paused: true, defaults: { ease: EASE.out } })
-          intro
-            .fromTo('.hero__copy', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: DUR.slow }, 0.05)
-            .fromTo('.hero__meta > *', { autoAlpha: 0 }, { autoAlpha: 1, duration: DUR.base, stagger: 0.1 }, 0.4)
-            .from('.hero__bg-n', { autoAlpha: 0, scale: 0.9, duration: 1.6 }, 0)
-
-          root.current._intro = intro
-          if (ready) intro.play()
-
-          // Scroll out: the composition sinks back while the title drifts up.
-          gsap.timeline({
-            scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true },
-          })
-            .to('.hero__showcase-wrapper', { yPercent: 12, scale: 0.95, ease: 'none' }, 0)
-            .to('.hero__copy', { yPercent: -10, ease: 'none' }, 0)
-            .to('.hero__bg-n', { rotate: 18, yPercent: 20, ease: 'none' }, 0)
-            .to('.hero__grid', { yPercent: 15, ease: 'none' }, 0)
-
-          // Smooth pointer parallax on the unified showcase
-          if (desktop) {
-            const showcase = root.current.querySelector('.hero__showcase-wrapper')
-            if (showcase) {
-              const toX = gsap.quickTo(showcase, 'x', { duration: 1.2, ease: 'power3.out' })
-              const toY = gsap.quickTo(showcase, 'y', { duration: 1.2, ease: 'power3.out' })
-              const onMove = (e) => {
-                const nx = e.clientX / window.innerWidth - 0.5
-                const ny = e.clientY / window.innerHeight - 0.5
-                toX(nx * 14)
-                toY(ny * 10)
-              }
-              window.addEventListener('pointermove', onMove)
-              return () => {
-                window.removeEventListener('pointermove', onMove)
-              }
-            }
-          }
-          return () => { }
-        },
+      // Map scroll progress to turnaround frames
+      const targetFrame = Math.min(
+        Math.floor(progress * (AVATAR_FRAMES.length - 1)),
+        AVATAR_FRAMES.length - 1
       )
-      return () => mm.revert()
-    },
-    { dependencies: [ready], scope: root },
-  )
+      setFrameIdx(targetFrame)
+    }
 
-  // Play the intro once the loader hands over (or straight away if skipped).
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    const lenis = getLenis()
+    if (lenis) {
+      lenis.on('scroll', handleScroll)
+    }
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (lenis) lenis.off('scroll', handleScroll)
+    }
+  }, [])
+
+  // Trigger interactive hammer strike
+  const triggerHammerHit = useCallback(() => {
+    setIsStriking(true)
+    setImpactCount((c) => c + 1)
+    if (hitAudioRef.current) {
+      hitAudioRef.current.currentTime = 0
+      hitAudioRef.current.play().catch(() => {})
+    }
+    setTimeout(() => {
+      setIsStriking(false)
+    }, 650)
+  }, [])
+
+  // Intro timeline animation
   useGSAP(
     () => {
-      if (ready && root.current?._intro) {
-        root.current._intro.play()
-      }
+      const intro = gsap.timeline({ paused: true, defaults: { ease: EASE.out } })
+      intro
+        .fromTo('.nuria-beacon', { autoAlpha: 0, y: -16 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.05)
+        .fromTo(
+          '.nuria-title__word',
+          { autoAlpha: 0, y: 35, rotateX: 25 },
+          { autoAlpha: 1, y: 0, rotateX: 0, duration: 1.1, stagger: 0.04, ease: 'power3.out' },
+          0.15
+        )
+        .fromTo(
+          '.nuria-title__serif',
+          { autoAlpha: 0, y: 30, scale: 0.95 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
+          0.35
+        )
+        .fromTo('.nuria-sub', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.45)
+        .fromTo(
+          '.nuria-centerpiece',
+          { autoAlpha: 0, scale: 0.9, y: 40 },
+          { autoAlpha: 1, scale: 1, y: 0, duration: 1.3, ease: 'power3.out' },
+          0.3
+        )
+        .fromTo(
+          '.nuria-sticker--left',
+          { autoAlpha: 0, x: -30, rotate: -12 },
+          { autoAlpha: 1, x: 0, rotate: -3.5, duration: 1, ease: 'back.out(1.4)' },
+          0.5
+        )
+        .fromTo(
+          '.nuria-sticker--right',
+          { autoAlpha: 0, x: 30, rotate: 12 },
+          { autoAlpha: 1, x: 0, rotate: 3.5, duration: 1, ease: 'back.out(1.4)' },
+          0.55
+        )
+        .fromTo('.nuria-ctas', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.65)
+        .fromTo('.nuria-services-nav', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0.75)
+        .fromTo('.nuria-meta', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, 0.85)
+
+      root.current._intro = intro
+      if (ready) intro.play()
     },
-    { dependencies: [ready], scope: root },
+    { dependencies: [ready], scope: root }
   )
+
+  // Interactive 3D tilt on desktop pointer move
+  useEffect(() => {
+    const stage = root.current?.querySelector('.nuria-centerpiece')
+    if (!stage) return
+
+    const handlePointerMove = (e) => {
+      if (window.innerWidth < 900) return
+      const rect = stage.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      const deltaX = (e.clientX - centerX) / (window.innerWidth * 0.5)
+      const deltaY = (e.clientY - centerY) / (window.innerHeight * 0.5)
+
+      gsap.to(stage, {
+        rotateY: deltaX * 8,
+        rotateX: -deltaY * 8,
+        duration: 0.8,
+        ease: 'power2.out',
+        transformPerspective: 1200,
+      })
+    }
+
+    const handlePointerLeave = () => {
+      gsap.to(stage, {
+        rotateY: 0,
+        rotateX: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+      })
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    stage.addEventListener('pointerleave', handlePointerLeave)
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove)
+      stage.removeEventListener('pointerleave', handlePointerLeave)
+    }
+  }, [])
 
   return (
-    <section className="hero" id="top" ref={root} data-theme="light" aria-labelledby="hero-title">
-      <div className="hero__grid" aria-hidden="true" />
-      <div className="hero__bg-n serif" aria-hidden="true">n</div>
+    <section
+      className="hero nuria-hero"
+      id="top"
+      ref={root}
+      data-theme="dark"
+      aria-labelledby="hero-title"
+      style={{ '--hero-accent': activeService.accent }}
+    >
+      {/* Nuria-style Moody Atmospheric Glows & Architectural Grid */}
+      <div className="nuria-ambient-mesh" aria-hidden="true" />
+      <div
+        className="nuria-ambient-orb"
+        style={{
+          background: `radial-gradient(ellipse at 50% 35%, ${activeService.accent}33 0%, ${activeService.accent}0d 45%, transparent 72%)`,
+        }}
+        aria-hidden="true"
+      />
+      <div className="nuria-grid-overlay" aria-hidden="true" />
 
-      <div className="hero__inner container">
-        <div className="hero__copy" data-intro>
-          {/* Ambient atmosphere shifting with current service accent */}
-          <div
-            className="hero__ambient-glow"
-            style={{
-              '--ambient-accent': displayItem.accent,
-            }}
-            aria-hidden="true"
-          />
-
-          <div className="hero__copy-stage" style={{ '--hero-accent': displayItem.accent }}>
-            {SHOWCASE_ITEMS.map((item, index) => {
-              const isActive = index === displayIndex
-              return (
-                <div
-                  key={item.id}
-                  className={`hero__copy-slide ${isActive ? 'is-active' : ''}`}
-                  style={{ '--slide-accent': item.accent }}
-                  aria-hidden={!isActive}
-                >
-                  {/* Modern Eyebrow with Counter Pill & Pulsing Radar */}
-                  <p className="hero__eyebrow eyebrow">
-                    <span className="hero__counter-pill">
-                      <span className="hero__counter-num">0{index + 1}</span>
-                      <span className="hero__counter-slash">/</span>
-                      <span className="hero__counter-total">0{SHOWCASE_ITEMS.length}</span>
-                    </span>
-                    <span
-                      className="hero__radar-dot"
-                      style={{ '--radar-color': item.accent }}
-                    >
-                      <span className="hero__radar-ping" />
-                      <span className="hero__radar-core" />
-                    </span>
-                    <span className="hero__eyebrow-text">{item.eyebrow}</span>
-                  </p>
-
-                  {/* Kinetic Title with Smooth Slower Domino Word Roll */}
-                  <h1 className="hero__title display" id={isActive ? 'hero-title' : undefined}>
-                    {item.titlePrefix.split(' ').map((word, wIdx) => (
-                      <span key={wIdx} className="hero__word-wrap">
-                        <span
-                          className="hero__word"
-                          style={{
-                            transitionDelay: isActive ? `${0.04 + 0.03 * wIdx}s` : '0s',
-                          }}
-                        >
-                          {word}
-                        </span>
-                      </span>
-                    ))}
-                    <span className="hero__word-wrap">
-                      <em
-                        className="serif hero__serif-word"
-                        style={{
-                          transitionDelay: isActive
-                            ? `${0.04 + 0.03 * item.titlePrefix.split(' ').length}s`
-                            : '0s',
-                          '--hero-accent': item.accent,
-                        }}
-                      >
-                        {item.titleHighlight}
-                      </em>
-                    </span>
-                  </h1>
-
-                  {/* Blur-to-focus subtitle description */}
-                  <p className="hero__sub">{item.sub}</p>
-
-                  {/* Magnetic CTA Buttons with Glowing Primary */}
-                  <div className="hero__ctas">
-                    <Magnetic>
-                      <a
-                        href="#contact"
-                        className="btn btn--dark hero__btn-primary"
-                        style={{ '--btn-accent-glow': `${item.accent}44` }}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          scrollToTarget('#contact')
-                        }}
-                        tabIndex={isActive ? 0 : -1}
-                      >
-                        <span className="btn__label" data-text={item.cta1}>
-                          {item.cta1}
-                        </span>
-                        <span className="btn__icon hero__btn-arrow" aria-hidden="true">→</span>
-                      </a>
-                    </Magnetic>
-                    <a
-                      href="#work"
-                      className="btn btn--ghost"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        scrollToTarget('#work')
-                      }}
-                      tabIndex={isActive ? 0 : -1}
-                    >
-                      <span className="btn__label" data-text={item.cta2}>
-                        {item.cta2}
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+      <div className="nuria-container container">
+        {/* Top Floating Beacon Pill (Nuria style availability indicator) */}
+        <div className="nuria-beacon" data-intro>
+          <span className="nuria-beacon__pulse" aria-hidden="true">
+            <span
+              className="nuria-beacon__ping"
+              style={{ borderColor: activeService.accent }}
+            />
+            <span
+              className="nuria-beacon__dot"
+              style={{ backgroundColor: activeService.accent }}
+            />
+          </span>
+          <span className="nuria-beacon__text">Available for Q4 & New Projects</span>
+          <span className="nuria-beacon__sep" aria-hidden="true">·</span>
+          <span className="nuria-beacon__loc">Mumbai & Worldwide</span>
         </div>
 
-        <div className="hero__visual">
+        {/* Monumental Centered Editorial Headline (Nuria display typography) */}
+        <div className="nuria-title-wrap" data-intro>
+          <p className="nuria-eyebrow">
+            <span className="nuria-eyebrow__dash" style={{ background: activeService.accent }} />
+            <span>{activeService.eyebrow}</span>
+          </p>
+
+          <h1 className="nuria-title display" id="hero-title">
+            <span className="nuria-title__row">
+              <span className="nuria-title__word">We</span>
+              <span className="nuria-title__word">craft</span>
+              <span className="nuria-title__word">digital</span>
+              <span className="nuria-title__word">products</span>
+            </span>
+            <span className="nuria-title__row">
+              <span className="nuria-title__word">that</span>
+              <span className="nuria-title__word">get</span>
+              <span className="nuria-title__word">you</span>
+              <em
+                className="serif nuria-title__serif"
+                style={{ '--highlight-accent': activeService.accent }}
+              >
+                {activeService.titleHighlight}
+              </em>
+            </span>
+          </h1>
+
+          <p className="nuria-sub">{activeService.sub}</p>
+        </div>
+
+        {/* Centrally Located 3D Mascot Showcase & Floating Nuria-Style Badges */}
+        <div className="nuria-stage-wrapper">
+          {/* Floating Left Studio Card (Nuria tilted badge) */}
+          <div className="nuria-sticker nuria-sticker--left">
+            <div className="nuria-sticker__glow" />
+            <div className="nuria-sticker__inner">
+              <span className="nuria-sticker__icon">⭐</span>
+              <div className="nuria-sticker__text">
+                <span className="nuria-sticker__title">50+ Products Nailed</span>
+                <span className="nuria-sticker__sub">4.9★ Client Rating · 100% On-Time</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive 3D Mascot Centerpiece with Scroll-Driven Rotation */}
           <div
-            className="hero__showcase-wrapper"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => {
-              setIsPaused(false)
-              setHoveredId(null)
+            className={`nuria-centerpiece ${isStriking ? 'is-striking' : ''}`}
+            onClick={triggerHammerHit}
+            role="button"
+            tabIndex={0}
+            title="Click to strike hammer!"
+            aria-label="Interactive 3D Mascot Avatar. Click to nail it!"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                triggerHammerHit()
+              }
             }}
           >
-            <div className="hero-showcase-row">
-              {/* Vertical Segment Indicator (as shown in user reference) */}
-              <div className="hero-v-nav" aria-label="Showcase slider navigation">
-                {SHOWCASE_ITEMS.map((item, idx) => {
-                  const isActive = displayItem.id === item.id
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      className={`hero-v-nav__seg ${isActive ? 'is-active' : ''}`}
-                      onClick={() => {
-                        setCurrentIndex(idx)
-                        setHoveredId(null)
-                      }}
-                      onMouseEnter={() => setHoveredId(item.id)}
-                      onMouseLeave={() => setHoveredId(null)}
-                      aria-label={item.title}
-                      style={{ '--seg-accent': item.accent }}
-                    >
-                      <span className="hero-v-nav__track">
-                        <span className="hero-v-nav__fill" />
-                      </span>
-                      <span className="hero-v-nav__tooltip">{item.thumbLabel}</span>
-                    </button>
-                  )
-                })}
-              </div>
+            {/* Ambient Spotlight Ring behind Avatar */}
+            <div
+              className="nuria-centerpiece__spotlight"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, ${activeService.accent}40 0%, transparent 68%)`,
+              }}
+              aria-hidden="true"
+            />
 
-              {/* Top Featured Stage: Smooth Layered Crossfade with 16:10 Rounded Frame */}
-              <div className="hero-stage">
-                {SHOWCASE_ITEMS.map((item) => {
-                  const isActive = item.id === displayItem.id
-                  return (
-                    <div
-                      key={item.id}
-                      className={`hero-stage__slide hero-stage--${item.id} ${item.isDesktop ? 'hero-stage--desktop' : 'hero-stage--image'
-                        } ${isActive ? 'is-active' : ''}`}
-                    >
-                      <div className="hero-stage__screen">
-                        <img
-                          src={item.img}
-                          alt={item.title}
-                          className="hero-stage__pure-img"
-                          loading="eager"
-                          fetchPriority={item.id === 'studio' ? 'high' : 'auto'}
-                          decoding="async"
-                        />
-                      </div>
-                    </div>
-                  )
-                })}
+            {/* Avatar Frame Render (responds smoothly to scroll) */}
+            <div className="nuria-avatar-render">
+              <img
+                src={AVATAR_FRAMES[frameIdx] || '/avatar_front_3d.png'}
+                alt="Nailed It Bro 3D Mascot"
+                className="nuria-avatar-img"
+                draggable="false"
+              />
+            </div>
+
+            {/* Hammer Strike Impact Shockwave */}
+            {isStriking && (
+              <div className="nuria-impact-wave" key={impactCount} aria-hidden="true">
+                <span className="nuria-impact-ring" />
+                <span className="nuria-impact-label">NAILED IT! 🔨</span>
+              </div>
+            )}
+
+            {/* Center Status Stamp below mascot */}
+            <div className="nuria-mascot-stamp">
+              <span className="nuria-mascot-stamp__dot" style={{ background: activeService.accent }} />
+              <span className="nuria-mascot-stamp__text">
+                {isStriking ? 'Hammer Strike!' : 'Scroll to rotate · Tap to Nail It!'}
+              </span>
+            </div>
+          </div>
+
+          {/* Floating Right Studio Card (Nuria tilted badge) */}
+          <div className="nuria-sticker nuria-sticker--right">
+            <div className="nuria-sticker__glow" />
+            <div className="nuria-sticker__inner">
+              <span className="nuria-sticker__icon">⚡</span>
+              <div className="nuria-sticker__text">
+                <span className="nuria-sticker__title">Full-Stack Rigour</span>
+                <span className="nuria-sticker__sub">Web · Android · AI · 3D Games</span>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Action Button Pills (Nuria Style) */}
+        <div className="nuria-ctas" data-intro>
+          <Magnetic strength={0.22}>
+            <a
+              href="#contact"
+              className="btn btn--dark nuria-btn-primary"
+              style={{ '--btn-glow': `${activeService.accent}55` }}
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToTarget('#contact')
+              }}
+            >
+              <span className="btn__label" data-text="Start a Project">Start a Project</span>
+              <span className="btn__icon nuria-btn-arrow" aria-hidden="true">→</span>
+            </a>
+          </Magnetic>
+
+          <Magnetic strength={0.22}>
+            <a
+              href="#work"
+              className="btn btn--ghost nuria-btn-secondary"
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToTarget('#work')
+              }}
+            >
+              <span className="btn__label" data-text="Explore Selected Work">
+                Explore Selected Work
+              </span>
+            </a>
+          </Magnetic>
+        </div>
+
+        {/* Nuria-Style Interactive Discipline Switcher Strip */}
+        <div className="nuria-services-nav" data-intro aria-label="Studio Disciplines">
+          <div className="nuria-services-nav__pill-wrap">
+            {SERVICES.map((srv, idx) => {
+              const isActive = idx === activeServiceIdx
+              return (
+                <button
+                  key={srv.id}
+                  type="button"
+                  className={`nuria-service-pill ${isActive ? 'is-active' : ''}`}
+                  onClick={() => setActiveServiceIdx(idx)}
+                  style={{ '--srv-accent': srv.accent }}
+                  aria-pressed={isActive}
+                >
+                  <span className="nuria-service-pill__num">0{idx + 1}</span>
+                  <span className="nuria-service-pill__label">{srv.label}</span>
+                  {isActive && <span className="nuria-service-pill__indicator" />}
+                </button>
+              )
+            })}
+          </div>
+        </div>
       </div>
 
-      <div className="hero__meta container">
-        <span>Websites · Apps · UI/UX · Social Media · Automation · Growth</span>
-        <button className="hero__scroll" onClick={() => scrollToTarget('#manifesto')}>
-          <span className="hero__scroll-line" aria-hidden="true" /> Scroll to explore
+      {/* Bottom Meta Status Bar (Nuria bottom fold) */}
+      <div className="nuria-meta container" data-intro>
+        <span className="nuria-meta__left">
+          Websites · Mobile Apps · QR Automation · 3D Games · Social Media
+        </span>
+
+        <button
+          type="button"
+          className="nuria-meta__scroll-cue"
+          onClick={() => scrollToTarget('#manifesto')}
+          aria-label="Scroll to explore"
+        >
+          <span className="nuria-meta__scroll-line" aria-hidden="true" />
+          <span>Scroll to explore</span>
         </button>
-        <span className="hide-sm">Design · Engineering · Growth</span>
+
+        <span className="nuria-meta__right hide-sm">
+          Design with Taste · Code with Rigour
+        </span>
       </div>
     </section>
   )
 }
-

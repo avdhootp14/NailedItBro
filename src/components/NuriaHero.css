@@ -1,0 +1,691 @@
+/* ==========================================================================
+   Nuria-Inspired Hero Section: Nailed It Bro
+   Atmospheric Studio Architecture, Monumental Headline, Centered 3D Mascot
+   ========================================================================== */
+
+.nuria-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  padding-top: clamp(84px, 12vh, 110px);
+  padding-bottom: 24px;
+  background: #0B0C10; /* Deep Obsidian dark palette matching Nuria */
+  color: #F0EDEB;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Atmospheric Ambient Lighting & Grid Mesh */
+.nuria-ambient-mesh {
+  position: absolute;
+  inset: -15% 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: calc(100% / 8) 120px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.nuria-ambient-orb {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  transform: translate(-50%, -50%);
+  width: min(900px, 92vw);
+  height: min(600px, 70vh);
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.7;
+  z-index: 0;
+  transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nuria-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 0%, transparent 50%, #0B0C10 95%);
+  z-index: 1;
+}
+
+.nuria-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 1320px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* 1. Top Availability Beacon Pill (Nuria signature element) */
+.nuria-beacon {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  font-weight: 550;
+  color: rgba(240, 237, 235, 0.85);
+  margin-bottom: clamp(20px, 3.2vh, 32px);
+  letter-spacing: 0.01em;
+  user-select: none;
+  transition: all 0.3s ease;
+}
+
+.nuria-beacon:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.nuria-beacon__pulse {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+}
+
+.nuria-beacon__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--hero-accent, #FF5E14);
+  transition: background-color 0.4s ease;
+}
+
+.nuria-beacon__ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid;
+  animation: beaconPing 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes beaconPing {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+.nuria-beacon__sep {
+  opacity: 0.3;
+  font-size: 11px;
+}
+
+.nuria-beacon__loc {
+  opacity: 0.65;
+  font-weight: 450;
+}
+
+/* 2. Monumental Centered Editorial Headline */
+.nuria-title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.nuria-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(240, 237, 235, 0.7);
+  margin-bottom: 12px;
+}
+
+.nuria-eyebrow__dash {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  transition: background 0.4s ease;
+}
+
+.nuria-title {
+  font-size: clamp(2.9rem, 6.8vw, 6.6rem);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  color: #FFFFFF;
+  margin: 0;
+  text-transform: uppercase;
+  perspective: 1000px;
+}
+
+.nuria-title__row {
+  display: block;
+}
+
+.nuria-title__word {
+  display: inline-block;
+  margin-inline: 0.12em;
+  transform-origin: center bottom;
+}
+
+.nuria-title__serif {
+  display: inline-block;
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+  padding-left: 0.1em;
+  padding-right: 0.05em;
+  background: linear-gradient(
+    115deg,
+    var(--highlight-accent, #FF5E14) 0%,
+    var(--highlight-accent, #FF5E14) 28%,
+    #FFF8F5 45%,
+    #FFFFFF 50%,
+    #FFF8F5 55%,
+    var(--highlight-accent, #FF5E14) 72%,
+    var(--highlight-accent, #FF5E14) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: nuriaSerifShimmer 2.8s linear infinite;
+  filter: drop-shadow(0 2px 20px color-mix(in oklab, var(--highlight-accent, #FF5E14) 40%, transparent));
+}
+
+@keyframes nuriaSerifShimmer {
+  0% { background-position: 160% 0%; }
+  100% { background-position: -160% 0%; }
+}
+
+.nuria-sub {
+  max-width: 62ch;
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.62;
+  color: rgba(240, 237, 235, 0.72);
+  margin-top: clamp(16px, 2.4vh, 24px);
+  margin-bottom: 0;
+  text-wrap: balance;
+  font-weight: 400;
+}
+
+/* 3. Centrally Located 3D Showcase & Floating Stickers */
+.nuria-stage-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 960px;
+  margin-top: clamp(24px, 4vh, 42px);
+  margin-bottom: clamp(20px, 3vh, 32px);
+  perspective: 1200px;
+}
+
+/* Floating Badges (Nuria tilted sticker cards) */
+.nuria-sticker {
+  position: absolute;
+  z-index: 10;
+  user-select: none;
+  cursor: default;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.nuria-sticker--left {
+  left: 0%;
+  top: 25%;
+  transform: rotate(-3.5deg);
+}
+
+.nuria-sticker--right {
+  right: 0%;
+  top: 30%;
+  transform: rotate(3.5deg);
+}
+
+.nuria-sticker:hover {
+  transform: translateY(-4px) rotate(0deg) scale(1.03);
+}
+
+.nuria-sticker__inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 18px;
+  background: rgba(18, 19, 25, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.nuria-sticker__icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nuria-sticker__text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 2px;
+}
+
+.nuria-sticker__title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+}
+
+.nuria-sticker__sub {
+  font-size: 11px;
+  color: rgba(240, 237, 235, 0.6);
+  font-weight: 500;
+}
+
+/* Central 3D Centerpiece Frame (The Avatar) */
+.nuria-centerpiece {
+  position: relative;
+  z-index: 5;
+  width: clamp(260px, 32vw, 380px);
+  height: clamp(260px, 32vw, 380px);
+  border-radius: 36px;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.08) 0%, rgba(14, 15, 20, 0.95) 85%);
+  border: 1.5px solid rgba(255, 255, 255, 0.13);
+  box-shadow:
+    0 30px 70px -15px rgba(0, 0, 0, 0.8),
+    0 0 50px -10px var(--hero-accent, rgba(255, 94, 20, 0.25)),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.nuria-centerpiece:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 35px 85px -15px rgba(0, 0, 0, 0.9),
+    0 0 65px -5px var(--hero-accent, rgba(255, 94, 20, 0.4)),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.nuria-centerpiece__spotlight {
+  position: absolute;
+  inset: 10px;
+  border-radius: 30px;
+  pointer-events: none;
+  filter: blur(24px);
+  opacity: 0.6;
+}
+
+.nuria-avatar-render {
+  position: relative;
+  width: 82%;
+  height: 82%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.nuria-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.75));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.nuria-centerpiece.is-striking .nuria-avatar-img {
+  transform: scale(1.1) translateY(-8px);
+}
+
+/* Impact shockwave on hammer hit */
+.nuria-impact-wave {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.nuria-impact-ring {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 3px solid var(--hero-accent, #FF5E14);
+  box-shadow: 0 0 30px var(--hero-accent, #FF5E14);
+  animation: nuriaShockwave 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nuria-impact-label {
+  position: absolute;
+  top: 15%;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  background: var(--hero-accent, #FF5E14);
+  padding: 4px 12px;
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: nuriaImpactText 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes nuriaShockwave {
+  0% { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes nuriaImpactText {
+  0% { transform: translateY(10px) scale(0.7); opacity: 0; }
+  30% { transform: translateY(0) scale(1.1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-12px) scale(0.9); opacity: 0; }
+}
+
+/* Centerpiece bottom stamp indicator */
+.nuria-mascot-stamp {
+  position: absolute;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(240, 237, 235, 0.7);
+  letter-spacing: 0.02em;
+  z-index: 3;
+}
+
+.nuria-mascot-stamp__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+/* 4. Nuria-Style CTA Buttons */
+.nuria-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.nuria-btn-primary {
+  --btn-bg: #FFFFFF;
+  --btn-fg: #0B0C10;
+  height: 52px;
+  padding: 0 28px;
+  font-size: 15px;
+  font-weight: 650;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px -5px var(--btn-glow, rgba(255, 94, 20, 0.4));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.nuria-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px -4px var(--btn-glow, rgba(255, 94, 20, 0.6));
+}
+
+.nuria-btn-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nuria-btn-primary:hover .nuria-btn-arrow {
+  transform: translateX(4px);
+}
+
+.nuria-btn-secondary {
+  --btn-bg: rgba(255, 255, 255, 0.05);
+  --btn-fg: #FFFFFF;
+  height: 52px;
+  padding: 0 26px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nuria-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* 5. Nuria-Style Interactive Discipline Switcher Strip */
+.nuria-services-nav {
+  margin-top: clamp(24px, 3.6vh, 36px);
+  margin-bottom: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.nuria-services-nav__pill-wrap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  max-width: 95vw;
+}
+
+.nuria-service-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 550;
+  color: rgba(240, 237, 235, 0.6);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  border: none;
+  background: transparent;
+}
+
+.nuria-service-pill:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nuria-service-pill.is-active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.nuria-service-pill__num {
+  font-size: 10.5px;
+  font-weight: 700;
+  opacity: 0.5;
+}
+
+.nuria-service-pill.is-active .nuria-service-pill__num {
+  opacity: 0.9;
+  color: var(--srv-accent, #FF5E14);
+}
+
+.nuria-service-pill__indicator {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--srv-accent, #FF5E14);
+  box-shadow: 0 0 6px var(--srv-accent, #FF5E14);
+}
+
+/* 6. Nuria Bottom Meta Bar */
+.nuria-meta {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 16px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12.5px;
+  color: rgba(240, 237, 235, 0.55);
+  width: 100%;
+}
+
+.nuria-meta__left {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nuria-meta__left {
+    display: inline;
+  }
+}
+
+.nuria-meta__scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(240, 237, 235, 0.85);
+  font-size: 12.5px;
+  font-weight: 550;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  transition: color 0.3s ease;
+}
+
+.nuria-meta__scroll-cue:hover {
+  color: var(--hero-accent, #FF5E14);
+}
+
+.nuria-meta__scroll-line {
+  position: relative;
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.nuria-meta__scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--hero-accent, #FF5E14);
+  transform: translateY(-100%);
+  animation: nuriaScrollCue 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes nuriaScrollCue {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0%); }
+  100% { transform: translateY(100%); }
+}
+
+.nuria-meta__right {
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .nuria-sticker--left {
+    left: -2%;
+    top: 18%;
+  }
+  .nuria-sticker--right {
+    right: -2%;
+    top: 22%;
+  }
+}
+
+@media (max-width: 860px) {
+  .nuria-stage-wrapper {
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 28px;
+    margin-bottom: 24px;
+  }
+  .nuria-sticker {
+    position: static;
+    transform: none !important;
+  }
+  .nuria-sticker--left,
+  .nuria-sticker--right {
+    width: 100%;
+    max-width: 340px;
+  }
+  .nuria-centerpiece {
+    order: -1;
+    width: min(280px, 75vw);
+    height: min(280px, 75vw);
+  }
+  .nuria-services-nav__pill-wrap {
+    border-radius: 20px;
+    padding: 6px;
+  }
+  .nuria-service-pill {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
