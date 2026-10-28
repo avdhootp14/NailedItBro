@@ -146,32 +146,7 @@ export default function Hero({ ready }) {
         <div className="sky-ambient-glow sky-ambient-glow--floor" />
       </div>
 
-      {/* ==================================================================
-          TOP HEADER: Headline + Action CTA
-          Clean vertical budgeting — ends comfortably above cards & mascot
-          ================================================================== */}
-      <div className="sky-hero-header">
-        <h1 className="sky-headline" id="hero-title">
-          <span className="sky-headline-line">Websites That</span>
-          <span className="sky-headline-line">
-            Actually Convert<span className="sky-brand-dot">.</span>
-          </span>
-        </h1>
 
-        <div className="sky-actions-wrap">
-          <Magnetic strength={0.25}>
-            <button
-              type="button"
-              className="sky-cta-pill"
-              onClick={() => handleScroll('#contact')}
-              aria-label="Start a project with Nailed It Bro"
-            >
-              <span>Start a Project</span>
-              <span className="sky-cta-arrow" aria-hidden="true">↗</span>
-            </button>
-          </Magnetic>
-        </div>
-      </div>
 
       {/* ==================================================================
           CENTER 3D STAGE (Solma 3D Amphitheater Arc + Half-Body 3D Mascot)
@@ -224,11 +199,14 @@ export default function Hero({ ready }) {
               max-camera-orbit="auto auto 60%"
               disable-zoom
               interaction-prompt="none"
-              shadow-intensity="1.2"
-              shadow-softness="0.9"
+              shadow-intensity="0"
+              shadow-softness="0"
               exposure="1.08"
               environment-image="neutral"
+              loading="eager"
+              reveal="auto"
               className="sky-mascot-model"
+              style={{ '--progress-bar-color': 'transparent', '--progress-bar-height': '0px' }}
             >
               <img
                 src="/avatar_front_clean.png"
