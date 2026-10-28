@@ -76,8 +76,8 @@
 }
 
 /* ==========================================================================
-   TOP HEADER: Eyebrow + Headline + Subtitle + Action CTA
-   Fixed vertical budget (~180px) — ends comfortably above cards & mascot
+   TOP HEADER: Headline + Action CTA
+   Fixed vertical budget — ends comfortably above cards & mascot
    ========================================================================== */
 .sky-hero-header {
   position: relative;
@@ -90,27 +90,6 @@
   width: 100%;
   margin: 0 auto;
   pointer-events: auto;
-}
-
-.sky-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(10.5px, 0.82vw, 11.5px);
-  font-weight: 750;
-  letter-spacing: 0.12em;
-  color: #66625B;
-  text-transform: uppercase;
-  margin-bottom: clamp(4px, 0.8vh, 8px);
-}
-
-.sky-eyebrow-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--orange, #FF5E14);
-  box-shadow: 0 0 10px rgba(255, 94, 20, 0.65);
 }
 
 .sky-headline {

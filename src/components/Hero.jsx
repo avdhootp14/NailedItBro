@@ -147,15 +147,10 @@ export default function Hero({ ready }) {
       </div>
 
       {/* ==================================================================
-          TOP HEADER: Eyebrow + Headline + Subtitle + Action CTA
+          TOP HEADER: Headline + Action CTA
           Clean vertical budgeting — ends comfortably above cards & mascot
           ================================================================== */}
       <div className="sky-hero-header">
-        <div className="sky-eyebrow">
-          <span className="sky-eyebrow-dot" aria-hidden="true" />
-          <span className="sky-eyebrow-text">DEFINE YOUR DIGITAL PRESENCE</span>
-        </div>
-
         <h1 className="sky-headline" id="hero-title">
           <span className="sky-headline-line">Websites That</span>
           <span className="sky-headline-line">
