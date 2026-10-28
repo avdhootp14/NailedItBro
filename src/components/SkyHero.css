@@ -120,7 +120,7 @@
   line-height: 1.06;
   letter-spacing: -0.04em;
   color: #141312;
-  margin: 0 0 clamp(6px, 1vh, 10px) 0;
+  margin: 0 0 clamp(12px, 1.6vh, 18px) 0;
   text-shadow: 0 2px 14px rgba(20, 19, 18, 0.04);
 }
 
@@ -130,15 +130,6 @@
 
 .sky-brand-dot {
   color: var(--orange, #FF5E14);
-}
-
-.sky-subtitle {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(12px, 0.88vw, 13.5px);
-  line-height: 1.45;
-  color: #524E48;
-  max-width: 520px;
-  margin: 0 0 clamp(10px, 1.4vh, 16px) 0;
 }
 
 .sky-actions-wrap {

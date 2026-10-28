@@ -163,10 +163,6 @@ export default function Hero({ ready }) {
           </span>
         </h1>
 
-        <p className="sky-subtitle">
-          Custom websites, mobile apps, and smart automations engineered for sub-second load times &amp; high conversion.
-        </p>
-
         <div className="sky-actions-wrap">
           <Magnetic strength={0.25}>
             <button
