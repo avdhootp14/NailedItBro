@@ -227,47 +227,7 @@ export default function Hero({ ready }) {
 
 
 
-      <div className="sky-bottom-right">
-        <a
-          href="#work"
-          className="sky-discover-card"
-          onClick={(e) => {
-            e.preventDefault()
-            handleScroll('#work')
-          }}
-          aria-label="Discover selected client projects"
-        >
-          <div className="sky-discover-header">
-            <span className="sky-discover-title">Discover More</span>
-            <span className="sky-discover-arrow" aria-hidden="true">→</span>
-          </div>
 
-          <div className="sky-discover-body">
-            <div className="sky-avatars-group">
-              <img
-                src="/avatar_front_3d.png"
-                alt="Founder Avatar"
-                className="sky-avatar-chip"
-              />
-              <img
-                src="/avatar_fl_3d.png"
-                alt="Studio Team"
-                className="sky-avatar-chip"
-              />
-              <img
-                src="/pet.png"
-                alt="Client Project"
-                className="sky-avatar-chip"
-              />
-            </div>
-
-            <div className="sky-discover-meta">
-              <span className="sky-discover-tag">Selected Cases</span>
-              <span className="sky-discover-sub">Explore 50+ client projects</span>
-            </div>
-          </div>
-        </a>
-      </div>
 
       {/* ==================================================================
           BOTTOM CREDENTIALS BAR: Social Follow Pill | Tech Stack Ticker
