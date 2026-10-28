@@ -30,7 +30,7 @@ const SERVICES = [
     line2: 'Built For Scale.',
     description:
       'Smooth Android and cross-platform native apps built from a single high-performance codebase with offline caching and real-time push backends.',
-    image: '/qr.png',
+    image: '/pet.png',
     badge: '60 FPS Native UI',
     deliverables: ['Play Store Ready Build', '60 FPS Gesture Engine', 'Offline First Cache', 'Cloud API Sync'],
     techStack: ['Flutter', 'React Native', 'Node.js', 'Supabase'],
@@ -139,169 +139,190 @@ export default function Hero() {
       id="top"
       aria-label="Nailed It Bro Studio Hero"
     >
-      <div className="nova-hero-backdrop" aria-hidden="true" />
-
       {/* ==================================================================
-          MAIN HERO CARD: Large Rounded Canvas with Inverted Cutout
+          MAIN HERO CARD: Full-Bleed Screen-Fitted Image + Screen Overlay
           ================================================================== */}
       <div
         className="nova-hero-card"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="nova-card-overlay" aria-hidden="true" />
+        {/* Full-Screen Fitted Background Image Layer with Cross-fade */}
+        <div className="nova-bg-layer" aria-hidden="true">
+          <AnimatePresence mode="wait">
+            <m.img
+              key={active.id}
+              src={active.image}
+              alt={`${active.line1} ${active.line2} Full Screen Background`}
+              className="nova-bg-image"
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1.0 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            />
+          </AnimatePresence>
+        </div>
 
-        {/* ----------------------------------------------------------------
-            LEFT PANE: Stepper + Typography + CTAs
-            ---------------------------------------------------------------- */}
-        <div className="nova-left-pane">
-          {/* Vertical Stepper (1 to 5) with Connecting Line */}
-          <div className="nova-stepper" role="tablist" aria-label="Services Stepper">
-            <div className="nova-stepper-line" aria-hidden="true" />
-            {SERVICES.map((srv, idx) => {
-              const isActive = idx === activeIdx
-              return (
-                <button
-                  key={srv.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  className={`nova-step-btn ${isActive ? 'is-active' : ''}`}
-                  onClick={() => handleStepClick(idx)}
-                  title={`Service 0${srv.num}: ${srv.line1} ${srv.line2}`}
-                  aria-label={`Select service 0${srv.num}`}
+        {/* Deep Multi-directional Cinematic Screen Overlay */}
+        <div className="nova-screen-overlay" aria-hidden="true" />
+        <div className="nova-screen-vignette" aria-hidden="true" />
+
+        {/* Floating Live Status Badge at Top-Right */}
+        <div className="nova-card-top-bar">
+          <div className="nova-float-badge">
+            <span className="nova-float-badge__dot" aria-hidden="true" />
+            <span>{active.badge}</span>
+          </div>
+        </div>
+
+        {/* ================================================================
+            HERO CARD CONTENT GRID (Bottom-Left Headline | Bottom-Right Dossier)
+            ================================================================ */}
+        <div className="nova-card-content">
+          {/* --------------------------------------------------------------
+              LEFT COLUMN: Stepper (1 to 5) + Eyebrow + Headline + Action CTAs
+              -------------------------------------------------------------- */}
+          <div className="nova-left-cluster">
+            {/* Vertical Stepper with Connected Line */}
+            <div className="nova-stepper" role="tablist" aria-label="Services Stepper">
+              <div className="nova-stepper-line" aria-hidden="true" />
+              {SERVICES.map((srv, idx) => {
+                const isActive = idx === activeIdx
+                return (
+                  <button
+                    key={srv.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={`nova-step-btn ${isActive ? 'is-active' : ''}`}
+                    onClick={() => handleStepClick(idx)}
+                    title={`Service 0${srv.num}: ${srv.line1} ${srv.line2}`}
+                    aria-label={`Select service 0${srv.num}`}
+                  >
+                    {srv.num}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Headline and Eyebrow Stack with Cascade Transition */}
+            <div className="nova-typography-stack">
+              <AnimatePresence mode="wait">
+                <m.div
+                  key={active.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  {srv.num}
+                  <div className="nova-eyebrow">
+                    <span className="nova-eyebrow__dot" aria-hidden="true" />
+                    <span>0{active.num} — {active.eyebrow}</span>
+                  </div>
+
+                  <h1 className="nova-headline" id="hero-title">
+                    <span className="nova-headline-line">{active.line1}</span>
+                    <span className="nova-headline-line">
+                      {active.line2.replace(/\.$/, '')}
+                      <span className="nova-period">.</span>
+                    </span>
+                  </h1>
+                </m.div>
+              </AnimatePresence>
+
+              {/* Action Buttons: Pill CTA + Circular Play Button */}
+              <div className="nova-actions-row">
+                <Magnetic strength={0.2}>
+                  <a
+                    href="#contact"
+                    className="nova-primary-btn"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      scrollToTarget('#contact')
+                    }}
+                  >
+                    <span>Start a Project</span>
+                    <span className="nova-btn-arrow" aria-hidden="true">→</span>
+                  </a>
+                </Magnetic>
+
+                <button
+                  type="button"
+                  className="nova-play-btn"
+                  onClick={() => setModalOpen(true)}
+                  title="View Full Scope & Blueprint"
+                  aria-label="View Service Details and Blueprint"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 </button>
-              )
-            })}
+              </div>
+            </div>
           </div>
 
-          {/* Content Stack with Animated Transitions */}
-          <div className="nova-content-stack">
+          {/* --------------------------------------------------------------
+              RIGHT COLUMN: Rating Proof + Description + Deliverables + Explore ↗
+              -------------------------------------------------------------- */}
+          <div className="nova-right-dossier">
+            {/* Social Proof & Rating Row */}
+            <div className="nova-proof-row">
+              <div className="nova-avatars-group">
+                <img
+                  src="/avatar_front_3d.png"
+                  alt="Founder Avatar"
+                  className="nova-avatar-chip"
+                />
+                <img
+                  src="/avatar_fl_3d.png"
+                  alt="Studio Team"
+                  className="nova-avatar-chip"
+                />
+                <img
+                  src="/pet.png"
+                  alt="Client Project"
+                  className="nova-avatar-chip"
+                />
+              </div>
+
+              <div className="nova-rating-info">
+                <div className="nova-stars" aria-label="5 star rating">★★★★★</div>
+                <span className="nova-proof-text">4.9/5 · 50+ Projects Shipped</span>
+              </div>
+            </div>
+
+            {/* Service Description with Animated Fade */}
             <AnimatePresence mode="wait">
               <m.div
                 key={active.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="nova-eyebrow">
-                  <span className="nova-eyebrow__dot" aria-hidden="true" />
-                  <span>{active.eyebrow}</span>
-                </div>
-
-                <h1 className="nova-headline" id="hero-title">
-                  <span className="nova-headline-line">{active.line1}</span>
-                  <span className="nova-headline-line">
-                    {active.line2.replace(/\.$/, '')}
-                    <span className="nova-period">.</span>
-                  </span>
-                </h1>
-
                 <p className="nova-description">{active.description}</p>
+
+                <div className="nova-deliverables-wrap">
+                  {active.deliverables.map((deliv, idx) => (
+                    <span key={idx} className="nova-deliverable-chip">
+                      {deliv}
+                    </span>
+                  ))}
+                </div>
               </m.div>
             </AnimatePresence>
 
-            {/* Action Row: Pill Button + Circular Play Button */}
-            <div className="nova-actions-row">
-              <Magnetic strength={0.2}>
-                <a
-                  href="#contact"
-                  className="nova-primary-btn"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    scrollToTarget('#contact')
-                  }}
-                >
-                  <span>Start a Project</span>
-                  <span className="nova-btn-arrow" aria-hidden="true">→</span>
-                </a>
-              </Magnetic>
-
-              <button
-                type="button"
-                className="nova-play-btn"
-                onClick={() => setModalOpen(true)}
-                title="View Full Scope & Blueprint"
-                aria-label="View Service Details and Blueprint"
-              >
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </button>
-            </div>
+            {/* Explore Project Action Button */}
+            <button
+              type="button"
+              className="nova-dossier-btn"
+              onClick={() => handleScroll(active.target)}
+            >
+              <span>Explore {active.line1} Work</span>
+              <span className="nova-dossier-arrow" aria-hidden="true">↗</span>
+            </button>
           </div>
         </div>
-
-        {/* ----------------------------------------------------------------
-            RIGHT PANE: Dynamic Showcase Visual with Depth
-            ---------------------------------------------------------------- */}
-        <div className="nova-right-pane">
-          <div className="nova-visual-wrap">
-            <AnimatePresence mode="wait">
-              <m.img
-                key={active.id}
-                src={active.image}
-                alt={`${active.line1} ${active.line2} Showcase`}
-                className="nova-showcase-img"
-                initial={{ opacity: 0, scale: 0.95, y: 14 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.97, y: -10 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </AnimatePresence>
-
-            <div className="nova-float-badge">
-              <span className="nova-float-badge__dot" aria-hidden="true" />
-              <span>{active.badge}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ----------------------------------------------------------------
-            SIGNATURE INVERTED RADIUS CUTOUT CARD AT BOTTOM-RIGHT
-            ---------------------------------------------------------------- */}
-        <a
-          href="#work"
-          className="nova-corner-card"
-          onClick={(e) => {
-            e.preventDefault()
-            handleScroll('#work')
-          }}
-          aria-label="Discover more selected work"
-        >
-          <div className="nova-corner-top">
-            <span className="nova-corner-label">Discover More</span>
-            <span className="nova-corner-arrow" aria-hidden="true">→</span>
-          </div>
-
-          <div className="nova-corner-bottom">
-            <div className="nova-corner-avatars">
-              <img
-                src="/avatar_front_3d.png"
-                alt="Nailed It Bro Avatar"
-                className="nova-avatar-chip"
-              />
-              <img
-                src="/avatar_fl_3d.png"
-                alt="Studio Member"
-                className="nova-avatar-chip"
-              />
-              <img
-                src="/pet.png"
-                alt="Studio Project"
-                className="nova-avatar-chip"
-              />
-            </div>
-
-            <div className="nova-corner-meta">
-              <span className="nova-corner-tag">Selected Cases</span>
-              <span className="nova-corner-sub">Explore 30+ client projects</span>
-            </div>
-          </div>
-        </a>
       </div>
 
       {/* ==================================================================
