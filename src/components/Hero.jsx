@@ -2,122 +2,131 @@ import { useState, useCallback, useEffect } from 'react'
 import { m, AnimatePresence } from 'motion/react'
 import { scrollToTarget } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
-import './NuriaHero.css'
+import './NovaHero.css'
 
-// Comprehensive Founder-Led Services Data with Deep Specs & Outcomes
+// 5 Core Founder-Led Services Data
 const SERVICES = [
   {
     id: 'web',
-    num: '01',
-    badge: 'High-Converting Web',
-    name: 'Website Dev',
-    title: 'Website Design & Development',
-    accent: '#FF5E14',
+    num: 1,
+    eyebrow: 'DEFINE YOUR DIGITAL PRESENCE',
+    line1: 'Websites That',
+    line2: 'Actually Convert.',
     description:
-      'Custom-designed business websites and web platforms that load sub-second, work seamlessly on every device, and rank on Google. Zero bloated templates—clean code, high conversion, and real enquiries.',
-    deliverables: ['Sub-second Load', 'SEO & Schema', 'Responsive Mobile UX', 'Headless CMS & Forms'],
-    techStack: ['React 19', 'Vite', 'Framer Motion', 'Vanilla / CSS'],
+      'Custom business websites and web platforms engineered for sub-second load times, fluid mobile responsiveness, and high Google search rankings.',
+    image: '/web.png',
+    badge: 'Sub-second Load',
+    deliverables: ['Sub-second Load Speed', 'SEO & Schema Markup', 'Fluid Mobile UX', 'Headless CMS & Forms'],
+    techStack: ['React 19', 'Vite', 'Framer Motion', 'Vanilla CSS'],
     timeline: '1 – 2 Weeks Sprint',
-    outcome: 'Top 1% PageSpeed score & verified inbound leads.',
+    outcome: 'Top 1% PageSpeed score & verified inbound client enquiries.',
     target: '#work',
   },
   {
     id: 'app',
-    num: '02',
-    badge: 'Android & iOS Native',
-    name: 'Mobile Apps',
-    title: 'Mobile App Engineering',
-    accent: '#FF5E14',
+    num: 2,
+    eyebrow: 'NATIVE PERFORMANCE & SCALE',
+    line1: 'Mobile Apps',
+    line2: 'Built For Scale.',
     description:
-      'Smooth Android and cross-platform native apps built from a single high-performance codebase. Offline caching, instant push notifications, and high-throughput cloud backends from prototype to Play Store.',
-    deliverables: ['Play Store Ready', '60 FPS Native UI', 'Offline First Cache', 'Cloud API Sync'],
-    techStack: ['Flutter / React Native', 'Node.js', 'Supabase', 'Cloud Sync'],
+      'Smooth Android and cross-platform native apps built from a single high-performance codebase with offline caching and real-time push backends.',
+    image: '/qr.png',
+    badge: '60 FPS Native UI',
+    deliverables: ['Play Store Ready Build', '60 FPS Gesture Engine', 'Offline First Cache', 'Cloud API Sync'],
+    techStack: ['Flutter', 'React Native', 'Node.js', 'Supabase'],
     timeline: '3 – 4 Weeks MVP',
-    outcome: 'Buttery 60fps gestures & production store build.',
+    outcome: 'Buttery gesture navigation and production-ready app store launch.',
     target: '#services',
   },
   {
     id: 'ai',
-    num: '03',
-    badge: 'Smart QR & AI',
-    name: 'AI & QR Tools',
-    title: 'QR Solutions & AI Automation',
-    accent: '#FF5E14',
+    num: 3,
+    eyebrow: 'SMART AUTOMATION ENGINES',
+    line1: 'Smart AI & QR',
+    line2: 'Automating Growth.',
     description:
-      'Digital menus, automated appointment scheduling, WhatsApp workflows, and intelligent customer capture tools that handle repetitive tasks so you stop answering the same questions every day.',
-    deliverables: ['Digital QR Portals', 'Auto Bookings', 'WhatsApp Workflows', 'Instant Lead Capture'],
+      'Digital menus, automated appointment scheduling, WhatsApp workflows, and intelligent customer capture tools that eliminate repetitive tasks.',
+    image: '/qr.png',
+    badge: '24/7 Automation',
+    deliverables: ['Dynamic QR Portals', 'Automated Bookings', 'WhatsApp Workflows', 'Instant Lead Capture'],
     techStack: ['WhatsApp Cloud API', 'LLM Agent APIs', 'Dynamic QR Engine', 'Webhooks'],
     timeline: '3 – 5 Days Setup',
-    outcome: '24/7 automated customer responses with 0 manual effort.',
+    outcome: '24/7 automated customer responses with zero manual workload.',
     target: '#services',
   },
   {
     id: 'game',
-    num: '04',
-    badge: '3D Interactive',
-    name: '3D Games',
-    title: '3D Mobile Game Development',
-    accent: '#FF5E14',
+    num: 4,
+    eyebrow: 'IMMERSIVE 3D EXPERIENCES',
+    line1: '3D Games With',
+    line2: 'Fluid Physics.',
     description:
-      'Custom 3D gameplay, realistic physics, responsive touch gestures, and optimized rendering engines designed to run fluidly on mid-range smartphones without battery burn or frame drops.',
-    deliverables: ['Custom 3D Physics', 'Touch Controls', 'Mid-Range Phone 60fps', 'Multiplayer Engine'],
-    techStack: ['Unity / Three.js', 'WebGL', 'Blender 3D', 'Haptics & Audio'],
+      'Custom 3D gameplay, realistic physics, responsive touch gestures, and optimized rendering engines designed to run fluidly on mid-range smartphones.',
+    image: '/game.png',
+    badge: 'Mobile 60fps',
+    deliverables: ['Custom 3D Physics', 'Touch Gestures', 'Mid-Range Phone 60fps', 'Multiplayer Engine'],
+    techStack: ['Unity', 'Three.js', 'WebGL', 'Blender 3D'],
     timeline: '4 – 6 Weeks Sprint',
-    outcome: 'High-retention mobile gamified experience.',
+    outcome: 'High-retention interactive mobile gaming experience.',
     target: '#services',
   },
   {
     id: 'social',
-    num: '05',
-    badge: 'Omnichannel Growth',
-    name: 'Social Media',
-    title: 'Social Media & Growth Marketing',
-    accent: '#FF5E14',
+    num: 5,
+    eyebrow: 'HIGH-RETENTION MARKETING',
+    line1: 'Content That',
+    line2: 'Drives Revenue.',
     description:
-      'High-retention short-form video production, creator distribution, and tracked growth campaigns designed to turn passive viewers into qualified customer enquiries and measurable revenue.',
+      'High-retention short-form video production, creator distribution, and tracked growth campaigns designed to turn viewers into paying clients.',
+    image: '/social.png',
+    badge: 'Tracked ROI',
     deliverables: ['Short-form Video', 'Multi-Platform Reach', 'Tracked Ads Funnel', 'Clear ROI Reports'],
-    techStack: ['Premiere / After Effects', 'Meta Ads Manager', 'Shorts / Reels', 'Attribution Tracking'],
+    techStack: ['Premiere Pro', 'After Effects', 'Meta Ads Manager', 'Shorts / Reels'],
     timeline: 'Monthly Growth Sprints',
-    outcome: 'Consistent high-intent client pipeline.',
+    outcome: 'Consistent high-intent qualified client pipeline.',
     target: '#services',
   },
+]
+
+const TECH_PARTNERS = [
+  'REACT 19',
+  'NEXT.JS',
+  'FLUTTER',
+  'NODE.JS',
+  'UNITY 3D',
+  'SUPABASE',
+  'VERCEL',
+  'SHOPIFY',
+  'PYTHON',
 ]
 
 export default function Hero() {
   const [activeIdx, setActiveIdx] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [blueprintOpen, setBlueprintOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
-  const activeService = SERVICES[activeIdx]
+  const active = SERVICES[activeIdx]
 
-  // Auto-cycle through services every 5.5s unless hovered or paused
+  // Gentle auto-cycle through services every 5.5s unless hovered or modal open
   useEffect(() => {
-    if (isPaused || blueprintOpen) return
+    if (isPaused || modalOpen) return
     const timer = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % SERVICES.length)
     }, 5500)
     return () => clearInterval(timer)
-  }, [isPaused, blueprintOpen])
+  }, [isPaused, modalOpen])
 
-  // Close blueprint on ESC key
+  // Close modal on ESC key
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setBlueprintOpen(false)
+      if (e.key === 'Escape') setModalOpen(false)
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const handleServiceSelect = useCallback((idx) => {
+  const handleStepClick = useCallback((idx) => {
     setActiveIdx(idx)
-  }, [])
-
-  const handlePrev = useCallback(() => {
-    setActiveIdx((prev) => (prev - 1 + SERVICES.length) % SERVICES.length)
-  }, [])
-
-  const handleNext = useCallback(() => {
-    setActiveIdx((prev) => (prev + 1) % SERVICES.length)
   }, [])
 
   const handleScroll = useCallback((target) => {
@@ -126,35 +135,29 @@ export default function Hero() {
 
   return (
     <section
-      className="nuria-viewport-hero"
+      className="nova-hero-section"
       id="top"
-      data-theme="dark"
-      aria-labelledby="hero-title"
+      aria-label="Nailed It Bro Studio Hero"
     >
-      {/* Brand Electric Orange Warm Ambient Lighting */}
-      <div className="nuria-backdrop" aria-hidden="true" />
-      <div className="nuria-ambient-spot" aria-hidden="true" />
-      <div className="nuria-vignette" aria-hidden="true" />
+      <div className="nova-hero-backdrop" aria-hidden="true" />
 
       {/* ==================================================================
-          WIDESCREEN 3-MODULE GRID:
-          Left: Service Navigator Deck | Center: Hero Typography & CTAs | Right: Live Service Dossier
+          MAIN HERO CARD: Large Rounded Canvas with Inverted Cutout
           ================================================================== */}
       <div
-        className="nuria-studio-grid"
+        className="nova-hero-card"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        {/* ----------------------------------------------------------------
-            LEFT FLANK: Interactive Service Index (01 to 05)
-            ---------------------------------------------------------------- */}
-        <aside className="nuria-side-deck" aria-label="Studio Services Index">
-          <div className="nuria-side-deck__eyebrow">
-            <span>Our Expertise</span>
-            <span>05 Services</span>
-          </div>
+        <div className="nova-card-overlay" aria-hidden="true" />
 
-          <div className="nuria-side-deck__list" role="tablist" aria-label="Services List">
+        {/* ----------------------------------------------------------------
+            LEFT PANE: Stepper + Typography + CTAs
+            ---------------------------------------------------------------- */}
+        <div className="nova-left-pane">
+          {/* Vertical Stepper (1 to 5) with Connecting Line */}
+          <div className="nova-stepper" role="tablist" aria-label="Services Stepper">
+            <div className="nova-stepper-line" aria-hidden="true" />
             {SERVICES.map((srv, idx) => {
               const isActive = idx === activeIdx
               return (
@@ -163,477 +166,307 @@ export default function Hero() {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  className={`nuria-side-item ${isActive ? 'is-active' : ''}`}
-                  onClick={() => handleServiceSelect(idx)}
-                  onMouseEnter={() => handleServiceSelect(idx)}
+                  className={`nova-step-btn ${isActive ? 'is-active' : ''}`}
+                  onClick={() => handleStepClick(idx)}
+                  title={`Service 0${srv.num}: ${srv.line1} ${srv.line2}`}
+                  aria-label={`Select service 0${srv.num}`}
                 >
-                  <span className="nuria-side-item__num">{srv.num}</span>
-                  <span className="nuria-side-item__name">{srv.name}</span>
-                  <span className="nuria-side-item__beacon" aria-hidden="true" />
-                  {isActive && !isPaused && (
-                    <span className="nuria-side-item__progress" aria-hidden="true" />
-                  )}
+                  {srv.num}
                 </button>
               )
             })}
           </div>
 
-          <div className="nuria-side-deck__footer">
-            <button
-              type="button"
-              className="nuria-side-deck__specs-btn"
-              onClick={() => setBlueprintOpen(true)}
-              aria-label="View Full Service Blueprint"
-            >
-              <span>View Full Specs</span>
-              <span className="nuria-deck-icon" aria-hidden="true">↗</span>
-            </button>
-          </div>
-        </aside>
-
-        {/* ----------------------------------------------------------------
-            CENTER STAGE: Architectural Outfit Typography + 3D Stickers + CTAs
-            ---------------------------------------------------------------- */}
-        <div className="nuria-center-wrap">
-          <div className="nuria-hero-canvas">
-            {/* STICKER 1: Avatar Circle (Top Left Shoulder) */}
-            <m.div
-              className="nuria-sticker sticker-avatar"
-              tabIndex={0}
-              role="button"
-              aria-label="Nailed It Bro Studio Mascot"
-              drag
-              dragConstraints={{ top: -16, bottom: 16, left: -16, right: 16 }}
-              dragElastic={0.2}
-              animate={{
-                y: [0, -8, 0],
-                rotate: [-4.5, -3, -4.5],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5.2,
-                ease: 'easeInOut',
-              }}
-              whileHover={{
-                scale: 1.14,
-                rotate: 0,
-                transition: { type: 'spring', stiffness: 400, damping: 15 },
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="sticker-avatar__circle">
-                <img
-                  src="/avatar_front_3d.png"
-                  alt="Nailed It Bro Mascot"
-                  draggable="false"
-                />
-              </div>
-              <div className="nuria-sticker__tooltip">Nailed It Bro 🔨</div>
-            </m.div>
-
-            {/* STICKER 2: Available for Work Pill (Top Center) */}
-            <m.div
-              className="nuria-sticker sticker-available"
-              role="button"
-              tabIndex={0}
-              drag
-              dragConstraints={{ top: -12, bottom: 12, left: -12, right: 12 }}
-              dragElastic={0.2}
-              animate={{
-                y: [0, -6, 0],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 4.6,
-                ease: 'easeInOut',
-                delay: 0.4,
-              }}
-              whileHover={{
-                scale: 1.1,
-                transition: { type: 'spring', stiffness: 400, damping: 15 },
-              }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => scrollToTarget('#contact')}
-            >
-              <div className="sticker-available__pill">
-                <span className="sticker-available__dot" aria-hidden="true" />
-                <span>Available for work</span>
-              </div>
-              <div className="nuria-sticker__tooltip">Available for Q4 Projects</div>
-            </m.div>
-
-            {/* STICKER 3: Website Dev 3D Blue Squircle (Top Right Shoulder) */}
-            <m.div
-              className="nuria-sticker sticker-web"
-              role="button"
-              tabIndex={0}
-              drag
-              dragConstraints={{ top: -16, bottom: 16, left: -16, right: 16 }}
-              dragElastic={0.2}
-              animate={{
-                y: [0, -9, 0],
-                rotate: [6, 7.5, 6],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5.4,
-                ease: 'easeInOut',
-                delay: 0.8,
-              }}
-              whileHover={{
-                scale: 1.14,
-                rotate: 0,
-                transition: { type: 'spring', stiffness: 400, damping: 15 },
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleServiceSelect(0)}
-            >
-              <div className="nuria-squircle-badge squircle-web">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-              </div>
-              <div className="nuria-sticker__tooltip">Website Design &amp; Dev</div>
-            </m.div>
-
-            {/* STICKER 4: Retro Pixel Hand Cursor (Bottom Left Shoulder) */}
-            <m.div
-              className="nuria-sticker sticker-cursor"
-              role="button"
-              tabIndex={0}
-              drag
-              dragConstraints={{ top: -16, bottom: 16, left: -16, right: 16 }}
-              dragElastic={0.2}
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 4.8,
-                ease: 'easeInOut',
-                delay: 1.2,
-              }}
-              whileHover={{
-                scale: 1.15,
-                rotate: -8,
-                transition: { type: 'spring', stiffness: 400, damping: 15 },
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleScroll('#work')}
-            >
-              <svg
-                className="sticker-cursor__svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          {/* Content Stack with Animated Transitions */}
+          <div className="nova-content-stack">
+            <AnimatePresence mode="wait">
+              <m.div
+                key={active.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               >
-                <path
-                  d="M7 2V12H9V14H11V16H13V18H15V22H19V16H17V14H15V12H13V10H11V8H9V2H7Z"
-                  fill="#FFFFFF"
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M6 1V13H8V15H10V17H12V19H14V23H20V15H18V13H16V11H14V9H12V7H10V1H6ZM8 3H8.99V7H11V9H13V11H15V13H17V15H19V21H15V17H13V15H11V13H9V3H8Z"
-                  fill="#121216"
-                />
-              </svg>
-              <div className="nuria-sticker__tooltip">Explore Work</div>
-            </m.div>
+                <div className="nova-eyebrow">
+                  <span className="nova-eyebrow__dot" aria-hidden="true" />
+                  <span>{active.eyebrow}</span>
+                </div>
 
-            {/* STICKER 5: Mobile App 3D Squircle (Bottom Right Shoulder) */}
-            <m.div
-              className="nuria-sticker sticker-app"
-              role="button"
-              tabIndex={0}
-              drag
-              dragConstraints={{ top: -16, bottom: 16, left: -16, right: 16 }}
-              dragElastic={0.2}
-              animate={{
-                y: [0, -9, 0],
-                rotate: [-4.5, -3, -4.5],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5,
-                ease: 'easeInOut',
-                delay: 0.6,
-              }}
-              whileHover={{
-                scale: 1.14,
-                rotate: 0,
-                transition: { type: 'spring', stiffness: 400, damping: 15 },
-              }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => handleServiceSelect(1)}
-            >
-              <div className="nuria-squircle-badge squircle-app">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF5E14" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
-                  <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="3" />
+                <h1 className="nova-headline" id="hero-title">
+                  <span className="nova-headline-line">{active.line1}</span>
+                  <span className="nova-headline-line">
+                    {active.line2.replace(/\.$/, '')}
+                    <span className="nova-period">.</span>
+                  </span>
+                </h1>
+
+                <p className="nova-description">{active.description}</p>
+              </m.div>
+            </AnimatePresence>
+
+            {/* Action Row: Pill Button + Circular Play Button */}
+            <div className="nova-actions-row">
+              <Magnetic strength={0.2}>
+                <a
+                  href="#contact"
+                  className="nova-primary-btn"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    scrollToTarget('#contact')
+                  }}
+                >
+                  <span>Start a Project</span>
+                  <span className="nova-btn-arrow" aria-hidden="true">→</span>
+                </a>
+              </Magnetic>
+
+              <button
+                type="button"
+                className="nova-play-btn"
+                onClick={() => setModalOpen(true)}
+                title="View Full Scope & Blueprint"
+                aria-label="View Service Details and Blueprint"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
                 </svg>
-              </div>
-              <div className="nuria-sticker__tooltip">Mobile Apps · Android &amp; iOS</div>
-            </m.div>
-
-            {/* Modern Architectural Typography with Outfit Font */}
-            <h1 className="nuria-giant-type" id="hero-title">
-              <span className="nuria-type-line">DIGITAL</span>
-              <span className="nuria-type-line">STUDIO</span>
-            </h1>
-
-            {/* Signature Cursive Italic Script with Breathing Space */}
-            <div className="nuria-script-line serif">
-              <span>with taste &amp; rigour</span>
+              </button>
             </div>
-          </div>
-
-          {/* Clean Dual CTAs with Generous Vertical Clearance */}
-          <div className="nuria-cta-row">
-            <Magnetic strength={0.2}>
-              <a
-                href="#contact"
-                className="nuria-primary-btn"
-                onClick={(e) => {
-                  e.preventDefault()
-                  scrollToTarget('#contact')
-                }}
-              >
-                <span>Start a Project</span>
-                <span className="nuria-arrow" aria-hidden="true">→</span>
-              </a>
-            </Magnetic>
-
-            <Magnetic strength={0.2}>
-              <a
-                href="#work"
-                className="nuria-ghost-btn"
-                onClick={(e) => {
-                  e.preventDefault()
-                  scrollToTarget('#work')
-                }}
-              >
-                <span>Explore Selected Work</span>
-              </a>
-            </Magnetic>
           </div>
         </div>
 
         {/* ----------------------------------------------------------------
-            RIGHT FLANK: Dynamic Live Service Dossier Card with Animated Arrivals
+            RIGHT PANE: Dynamic Showcase Visual with Depth
             ---------------------------------------------------------------- */}
-        <aside
-          className="nuria-side-dossier"
-          aria-label="Active Service Details"
-        >
-          {/* Top Dossier Bar: Tag, Timer & Manual Play/Pause / Step Controls */}
-          <div className="nuria-dossier-top">
-            <span className="nuria-dossier-tag">
-              <span className="nuria-dossier-tag__dot" aria-hidden="true" />
-              <span>{activeService.num} / {activeService.badge}</span>
-            </span>
+        <div className="nova-right-pane">
+          <div className="nova-visual-wrap">
+            <AnimatePresence mode="wait">
+              <m.img
+                key={active.id}
+                src={active.image}
+                alt={`${active.line1} ${active.line2} Showcase`}
+                className="nova-showcase-img"
+                initial={{ opacity: 0, scale: 0.95, y: 14 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.97, y: -10 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </AnimatePresence>
 
-            <div className="nuria-dossier-controls">
-              <button
-                type="button"
-                className="nuria-dossier-ctrl-btn"
-                onClick={() => setIsPaused((prev) => !prev)}
-                title={isPaused ? 'Resume auto-cycle' : 'Pause auto-cycle'}
-                aria-label={isPaused ? 'Resume auto-cycle' : 'Pause auto-cycle'}
-              >
-                {isPaused ? '▶' : '⏸'}
-              </button>
-              <button
-                type="button"
-                className="nuria-dossier-ctrl-btn"
-                onClick={handlePrev}
-                title="Previous service"
-                aria-label="Previous service"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                className="nuria-dossier-ctrl-btn"
-                onClick={handleNext}
-                title="Next service"
-                aria-label="Next service"
-              >
-                →
-              </button>
+            <div className="nova-float-badge">
+              <span className="nova-float-badge__dot" aria-hidden="true" />
+              <span>{active.badge}</span>
             </div>
           </div>
+        </div>
 
-          {/* Animated Arrival Section for Service Content */}
-          <AnimatePresence mode="wait">
-            <m.div
-              key={activeService.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="nuria-dossier-body"
-            >
-              <h2 className="nuria-dossier-title">{activeService.title}</h2>
-
-              <p className="nuria-dossier-desc">{activeService.description}</p>
-
-              <div className="nuria-dossier-deliverables">
-                {activeService.deliverables.map((item, dIdx) => (
-                  <span key={dIdx} className="nuria-deliverable-chip">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </m.div>
-          </AnimatePresence>
-
-          {/* Dossier Actions: Direct Blueprint Inspection & Target Link */}
-          <div className="nuria-dossier-footer">
-            <button
-              type="button"
-              className="nuria-dossier-action"
-              onClick={() => handleScroll(activeService.target)}
-            >
-              <span>Explore Projects</span>
-              <span aria-hidden="true">→</span>
-            </button>
-
-            <button
-              type="button"
-              className="nuria-dossier-inspect-btn"
-              onClick={() => setBlueprintOpen(true)}
-              title="Inspect Full Blueprint & Specs"
-            >
-              <span>Inspect Scope</span>
-              <span aria-hidden="true">↗</span>
-            </button>
+        {/* ----------------------------------------------------------------
+            SIGNATURE INVERTED RADIUS CUTOUT CARD AT BOTTOM-RIGHT
+            ---------------------------------------------------------------- */}
+        <a
+          href="#work"
+          className="nova-corner-card"
+          onClick={(e) => {
+            e.preventDefault()
+            handleScroll('#work')
+          }}
+          aria-label="Discover more selected work"
+        >
+          <div className="nova-corner-top">
+            <span className="nova-corner-label">Discover More</span>
+            <span className="nova-corner-arrow" aria-hidden="true">→</span>
           </div>
-        </aside>
+
+          <div className="nova-corner-bottom">
+            <div className="nova-corner-avatars">
+              <img
+                src="/avatar_front_3d.png"
+                alt="Nailed It Bro Avatar"
+                className="nova-avatar-chip"
+              />
+              <img
+                src="/avatar_fl_3d.png"
+                alt="Studio Member"
+                className="nova-avatar-chip"
+              />
+              <img
+                src="/pet.png"
+                alt="Studio Project"
+                className="nova-avatar-chip"
+              />
+            </div>
+
+            <div className="nova-corner-meta">
+              <span className="nova-corner-tag">Selected Cases</span>
+              <span className="nova-corner-sub">Explore 30+ client projects</span>
+            </div>
+          </div>
+        </a>
       </div>
 
       {/* ==================================================================
-          OUT-OF-THE-BOX SERVICE BLUEPRINT MODAL / SPECIFICATION DRAWER
+          BOTTOM META BAR: Social Follow Pill | Tech & Brand Partners
+          ================================================================== */}
+      <footer className="nova-bottom-bar" aria-label="Studio Credentials">
+        {/* Social Follow Pill */}
+        <div className="nova-follow-pill">
+          <span className="nova-follow-label">Follow</span>
+          <div className="nova-social-icons">
+            <a
+              href="https://instagram.com/nailedit.bro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nova-social-link"
+              aria-label="Instagram"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a
+              href="https://facebook.com/naileditbro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nova-social-link"
+              aria-label="Facebook"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/company/naileditbro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nova-social-link"
+              aria-label="LinkedIn"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <a
+              href="https://wa.me/919999999999"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nova-social-link"
+              aria-label="WhatsApp"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Vertical Divider */}
+        <div className="nova-bar-divider" aria-hidden="true" />
+
+        {/* Tech Stack & Brand Marquee */}
+        <div className="nova-logos-wrap" aria-label="Technology Stack">
+          <div className="nova-logos-track">
+            {TECH_PARTNERS.map((partner, i) => (
+              <span key={i} className="nova-logo-item">
+                {partner}
+              </span>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+      {/* ==================================================================
+          INTERACTIVE SERVICE BLUEPRINT & SCOPE MODAL (Triggered by ▶ Button)
           ================================================================== */}
       <AnimatePresence>
-        {blueprintOpen && (
-          <div className="nuria-modal-backdrop" onClick={() => setBlueprintOpen(false)}>
+        {modalOpen && (
+          <div className="nova-modal-backdrop" onClick={() => setModalOpen(false)}>
             <m.div
-              className="nuria-blueprint-card"
+              className="nova-blueprint-card"
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.94, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.94, y: 16 }}
-              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               role="dialog"
               aria-modal="true"
-              aria-labelledby="blueprint-modal-title"
+              aria-labelledby="nova-modal-title"
             >
-              <div className="nuria-blueprint-header">
-                <div className="nuria-blueprint-badge">
-                  <span className="nuria-dossier-tag__dot" aria-hidden="true" />
-                  <span>{activeService.num} — {activeService.badge}</span>
+              <div className="nova-modal-header">
+                <div className="nova-modal-badge">
+                  <span>0{active.num} — {active.eyebrow}</span>
                 </div>
                 <button
                   type="button"
-                  className="nuria-blueprint-close"
-                  onClick={() => setBlueprintOpen(false)}
-                  aria-label="Close Service Blueprint"
+                  className="nova-modal-close"
+                  onClick={() => setModalOpen(false)}
+                  aria-label="Close Blueprint Modal"
                 >
                   ✕
                 </button>
               </div>
 
-              <h3 id="blueprint-modal-title" className="nuria-blueprint-title">
-                {activeService.title}
-              </h3>
-              <p className="nuria-blueprint-desc">
-                {activeService.description}
-              </p>
+              <h2 id="nova-modal-title" className="nova-modal-title">
+                {active.line1} {active.line2}
+              </h2>
 
-              <div className="nuria-blueprint-grid">
-                <div className="nuria-blueprint-col">
-                  <h4 className="nuria-blueprint-col__title">Included Deliverables</h4>
-                  <ul className="nuria-blueprint-checklist">
-                    {activeService.deliverables.map((deliv, i) => (
-                      <li key={i}>
-                        <span className="nuria-check" aria-hidden="true">✓</span>
-                        <span>{deliv}</span>
+              <p className="nova-modal-desc">{active.description}</p>
+
+              <div className="nova-modal-grid">
+                <div>
+                  <h3 className="nova-modal-col__title">Included Deliverables</h3>
+                  <ul className="nova-modal-checklist">
+                    {active.deliverables.map((item, idx) => (
+                      <li key={idx}>
+                        <span className="nova-modal-check" aria-hidden="true">✓</span>
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="nuria-blueprint-col">
-                  <h4 className="nuria-blueprint-col__title">Engine &amp; Tech Stack</h4>
-                  <div className="nuria-blueprint-chips">
-                    {activeService.techStack.map((tech, i) => (
-                      <span key={i} className="nuria-tech-chip">
+                <div>
+                  <h3 className="nova-modal-col__title">Core Tech Stack</h3>
+                  <div className="nova-modal-chips">
+                    {active.techStack.map((tech, idx) => (
+                      <span key={idx} className="nova-tech-pill">
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  <div className="nuria-blueprint-meta-item">
-                    <span className="nuria-meta-label">Typical Turnaround</span>
-                    <span className="nuria-meta-val">{activeService.timeline}</span>
+                  <div className="nova-modal-meta-row">
+                    <span className="nova-modal-meta-label">Typical Sprint</span>
+                    <span className="nova-modal-meta-val">{active.timeline}</span>
                   </div>
 
-                  <div className="nuria-blueprint-meta-item">
-                    <span className="nuria-meta-label">Target Result</span>
-                    <span className="nuria-meta-val">{activeService.outcome}</span>
+                  <div className="nova-modal-meta-row">
+                    <span className="nova-modal-meta-label">Target Result</span>
+                    <span className="nova-modal-meta-val">{active.outcome}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="nuria-blueprint-actions">
+              <div className="nova-modal-actions">
                 <a
                   href="#contact"
-                  className="nuria-primary-btn"
+                  className="nova-primary-btn"
                   onClick={(e) => {
                     e.preventDefault()
-                    setBlueprintOpen(false)
+                    setModalOpen(false)
                     scrollToTarget('#contact')
                   }}
                 >
                   <span>Book Free Consultation for this Service →</span>
                 </a>
-                <button
-                  type="button"
-                  className="nuria-ghost-btn"
-                  onClick={() => setBlueprintOpen(false)}
-                >
-                  Back to Studio
-                </button>
               </div>
             </m.div>
           </div>
         )}
       </AnimatePresence>
-
-      {/* ==================================================================
-          Refined Studio Meta Bar at Bottom Viewport Edge
-          ================================================================== */}
-      <footer className="nuria-bottom-bar container">
-        <span className="nuria-bottom-bar__services">
-          Websites · Mobile Apps · QR Automation · 3D Games · Social Media
-        </span>
-
-        <button
-          type="button"
-          className="nuria-bottom-bar__scroll"
-          onClick={() => scrollToTarget('#manifesto')}
-          aria-label="Scroll to explore"
-        >
-          <span className="nuria-bottom-bar__scroll-line" aria-hidden="true" />
-          <span>Scroll to explore</span>
-        </button>
-
-        <span className="nuria-bottom-bar__loc">
-          Mumbai &amp; Worldwide
-        </span>
-      </footer>
     </section>
   )
 }

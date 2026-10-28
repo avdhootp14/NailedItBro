@@ -1,0 +1,801 @@
+/* ==========================================================================
+   Nailed It Bro — NOVA Clean Editorial Hero Section
+   Inspired by high-fashion / modern lifestyle editorial design
+   - Canvas: Warm Luxury Off-White (#FAF8F5 / #F5F2EB)
+   - Large Central Rounded Hero Card with daylight architectural ambient sky
+   - Vertical Stepper (1 to 5) with active white circle & connector line
+   - Monumental Display Headline in Outfit 850 + Period Accent
+   - Action Pill Button + Circular Play Demo Button (▶)
+   - Dynamic Service Visual Showcase (MacBook, Phone, 3D Game, QR)
+   - Signature Inverted-Radius Cutout Corner Card at Bottom-Right
+   - Bottom Meta Bar: Social Follow Pill | Tech Stack & Partner Marquee
+   ========================================================================== */
+
+.nova-hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  max-height: 100svh;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: clamp(68px, 9.5vh, 84px);
+  padding-bottom: clamp(10px, 1.5vh, 18px);
+  padding-inline: clamp(16px, 3.2vw, 48px);
+  background: #FAF8F5;
+  color: #141312;
+  box-sizing: border-box;
+}
+
+/* Atmospheric Soft Ambient Backdrop */
+.nova-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 20%, rgba(255, 94, 20, 0.04) 0%, transparent 60%),
+    radial-gradient(circle at 10% 80%, rgba(214, 230, 247, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 90% 30%, rgba(245, 230, 218, 0.4) 0%, transparent 50%);
+  z-index: 0;
+}
+
+/* ==========================================================================
+   MAIN HERO CARD: Large Rounded Canvas
+   ========================================================================== */
+.nova-hero-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1440px;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  border-radius: clamp(24px, 3.2vw, 40px);
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, #E6EFF8 0%, #DCE9F5 32%, #EBE5DD 70%, #F5EFEB 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 24px 60px rgba(20, 19, 18, 0.08),
+    0 2px 10px rgba(20, 19, 18, 0.03),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+/* Subtle Sky Horizon & Light Gradient Overlay */
+.nova-card-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 75% 35%, rgba(255, 255, 255, 0.45) 0%, transparent 65%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 40%);
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   LEFT FLANK INSIDE CARD: Vertical Stepper + Typography + CTAs
+   -------------------------------------------------------------------------- */
+.nova-left-pane {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.5vw, 40px);
+  padding: clamp(24px, 3.5vh, 48px) clamp(24px, 3.5vw, 56px);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Stepper Track with Connected Line */
+.nova-stepper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vh, 22px);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.nova-stepper-line {
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  width: 1.5px;
+  background: rgba(20, 19, 18, 0.16);
+  z-index: 0;
+}
+
+.nova-step-btn {
+  position: relative;
+  z-index: 1;
+  width: clamp(32px, 2.8vw, 38px);
+  height: clamp(32px, 2.8vw, 38px);
+  border-radius: 50%;
+  border: 1.5px solid rgba(20, 19, 18, 0.22);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+  color: rgba(20, 19, 18, 0.55);
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(12px, 0.95vw, 13.5px);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nova-step-btn:hover {
+  background: #FFFFFF;
+  color: #141312;
+  border-color: rgba(20, 19, 18, 0.45);
+  transform: scale(1.08);
+}
+
+.nova-step-btn.is-active {
+  background: #FFFFFF;
+  color: #141312;
+  font-weight: 800;
+  border-color: #FFFFFF;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.14),
+    0 0 0 3px rgba(255, 94, 20, 0.25);
+  transform: scale(1.14);
+}
+
+/* Content Stack Next to Stepper */
+.nova-content-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 540px;
+}
+
+.nova-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(10px, 0.8vw, 11.5px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(20, 19, 18, 0.6);
+  margin-bottom: clamp(8px, 1.4vh, 16px);
+}
+
+.nova-eyebrow__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange, #FF5E14);
+  box-shadow: 0 0 8px rgba(255, 94, 20, 0.6);
+}
+
+/* Monumental Display Headline */
+.nova-headline {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+  font-weight: 850;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #141312;
+  margin: 0 0 clamp(10px, 1.8vh, 18px) 0;
+}
+
+.nova-headline-line {
+  display: block;
+}
+
+.nova-period {
+  color: var(--orange, #FF5E14);
+}
+
+.nova-description {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.55;
+  color: rgba(20, 19, 18, 0.72);
+  margin: 0 0 clamp(18px, 2.8vh, 28px) 0;
+  max-width: 480px;
+}
+
+/* Actions: Pill CTA Button + Circular Play Button */
+.nova-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nova-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: clamp(11px, 1.4vh, 14px) clamp(22px, 2vw, 30px);
+  border-radius: 999px;
+  background: var(--orange, #FF5E14);
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(13px, 0.95vw, 14.5px);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    0 10px 24px rgba(255, 94, 20, 0.35),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.nova-primary-btn:hover {
+  background: #FF7533;
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 32px rgba(255, 94, 20, 0.45),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nova-btn-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.nova-primary-btn:hover .nova-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Circular Play Button */
+.nova-play-btn {
+  width: clamp(40px, 3.4vw, 46px);
+  height: clamp(40px, 3.4vw, 46px);
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid rgba(20, 19, 18, 0.08);
+  color: var(--orange, #FF5E14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.09),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.nova-play-btn svg {
+  width: 15px;
+  height: 15px;
+  transform: translateX(1px);
+}
+
+.nova-play-btn:hover {
+  transform: scale(1.1);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.14),
+    0 0 16px rgba(255, 94, 20, 0.25);
+  background: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   RIGHT FLANK INSIDE CARD: Dynamic Visual Showcase
+   -------------------------------------------------------------------------- */
+.nova-right-pane {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: clamp(16px, 2.5vh, 32px);
+  overflow: hidden;
+}
+
+.nova-visual-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nova-showcase-img {
+  width: 100%;
+  height: auto;
+  max-height: 82%;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 45px rgba(20, 19, 18, 0.22));
+  user-select: none;
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+
+/* Floating 3D Badge on Visual */
+.nova-float-badge {
+  position: absolute;
+  top: 10%;
+  right: 8%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #141312;
+  letter-spacing: 0.02em;
+}
+
+.nova-float-badge__dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+/* --------------------------------------------------------------------------
+   BOTTOM-RIGHT INVERTED RADIUS CUTOUT CARD
+   -------------------------------------------------------------------------- */
+.nova-corner-card {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  background: #FAF8F5;
+  border-top-left-radius: 36px;
+  padding: clamp(14px, 2vh, 20px) clamp(18px, 2.2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: -8px -8px 24px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.25s ease;
+  user-select: none;
+}
+
+.nova-corner-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Inverted Concave Corner Fillets */
+.nova-corner-card::before {
+  content: '';
+  position: absolute;
+  top: -28px;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-bottom-right-radius: 28px;
+  box-shadow: 12px 12px 0 12px #FAF8F5;
+  pointer-events: none;
+}
+
+.nova-corner-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -28px;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-bottom-right-radius: 28px;
+  box-shadow: 12px 12px 0 12px #FAF8F5;
+  pointer-events: none;
+}
+
+.nova-corner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.nova-corner-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(12.5px, 0.95vw, 14px);
+  font-weight: 750;
+  color: #141312;
+  letter-spacing: -0.01em;
+}
+
+.nova-corner-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(20, 19, 18, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #141312;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.nova-corner-card:hover .nova-corner-arrow {
+  transform: translateX(2px) translateY(-1px);
+  background: var(--orange, #FF5E14);
+  color: #FFFFFF;
+}
+
+.nova-corner-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nova-corner-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.nova-avatar-chip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #FAF8F5;
+  object-fit: cover;
+  background: #E8E1D4;
+  margin-left: -8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nova-avatar-chip:first-child {
+  margin-left: 0;
+}
+
+.nova-corner-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.nova-corner-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #141312;
+  letter-spacing: 0.02em;
+}
+
+.nova-corner-sub {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  color: rgba(20, 19, 18, 0.58);
+  max-width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   BOTTOM META BAR: Social Follow Pill | Logos & Tech Partners
+   ========================================================================== */
+.nova-bottom-bar {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 36px);
+  padding-block: clamp(6px, 1vh, 10px);
+}
+
+/* Social Follow Pill */
+.nova-follow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 16px 6px 14px;
+  border-radius: 999px;
+  background: #FFFFFF;
+  border: 1px solid rgba(20, 19, 18, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.nova-follow-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: rgba(20, 19, 18, 0.75);
+  letter-spacing: 0.04em;
+}
+
+.nova-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nova-social-link {
+  color: #141312;
+  opacity: 0.75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.nova-social-link:hover {
+  opacity: 1;
+  color: var(--orange, #FF5E14);
+  transform: translateY(-1.5px);
+}
+
+/* Vertical Hairline Divider */
+.nova-bar-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(20, 19, 18, 0.15);
+  flex-shrink: 0;
+}
+
+/* Logos & Partners Bar */
+.nova-logos-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.nova-logos-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(14px, 2.2vw, 36px);
+  width: 100%;
+}
+
+.nova-logo-item {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(11.5px, 0.95vw, 13px);
+  font-weight: 750;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(20, 19, 18, 0.45);
+  white-space: nowrap;
+  transition: color 0.25s ease, transform 0.25s ease;
+  user-select: none;
+}
+
+.nova-logo-item:hover {
+  color: #141312;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   INTERACTIVE BLUEPRINT & REEL MODAL
+   ========================================================================== */
+.nova-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 19, 18, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.nova-blueprint-card {
+  width: 100%;
+  max-width: 600px;
+  background: #FFFFFF;
+  border: 1px solid rgba(20, 19, 18, 0.08);
+  border-radius: 28px;
+  padding: clamp(24px, 3.5vw, 36px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.18),
+    0 4px 14px rgba(0, 0, 0, 0.06);
+  color: #141312;
+  box-sizing: border-box;
+}
+
+.nova-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.nova-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--orange, #FF5E14);
+}
+
+.nova-modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(20, 19, 18, 0.06);
+  border: none;
+  color: #141312;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nova-modal-close:hover {
+  background: rgba(20, 19, 18, 0.12);
+}
+
+.nova-modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(22px, 2.4vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px 0;
+  color: #141312;
+}
+
+.nova-modal-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(20, 19, 18, 0.72);
+  margin: 0 0 20px 0;
+}
+
+.nova-modal-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 18px;
+  background: #FAF8F5;
+  border: 1px solid rgba(20, 19, 18, 0.06);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 22px;
+}
+
+.nova-modal-col__title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(20, 19, 18, 0.5);
+  margin: 0 0 10px 0;
+}
+
+.nova-modal-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nova-modal-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #141312;
+  font-weight: 600;
+}
+
+.nova-modal-check {
+  color: var(--orange, #FF5E14);
+  font-weight: 800;
+}
+
+.nova-modal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.nova-tech-pill {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #FFFFFF;
+  border: 1px solid rgba(20, 19, 18, 0.1);
+  color: #141312;
+}
+
+.nova-modal-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.nova-modal-meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(20, 19, 18, 0.45);
+}
+
+.nova-modal-meta-val {
+  font-size: 12px;
+  font-weight: 600;
+  color: #141312;
+}
+
+.nova-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .nova-hero-card {
+    grid-template-columns: 1fr;
+    overflow: hidden;
+  }
+  .nova-right-pane {
+    display: none;
+  }
+  .nova-left-pane {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .nova-logos-wrap {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nova-hero-section {
+    height: 100svh;
+    padding-top: 72px;
+    padding-inline: 16px;
+  }
+  .nova-left-pane {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+  .nova-headline {
+    font-size: clamp(2.2rem, 9.5vw, 3.2rem);
+  }
+  .nova-corner-card {
+    display: none;
+  }
+  .nova-bottom-bar {
+    justify-content: center;
+  }
+  .nova-bar-divider {
+    display: none;
+  }
+}
