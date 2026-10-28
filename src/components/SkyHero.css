@@ -169,6 +169,7 @@
   justify-content: center;
   pointer-events: none;
   z-index: 2;
+  overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------
@@ -189,6 +190,7 @@
   max-width: 1280px;
   z-index: 2;
   pointer-events: auto;
+  overflow: visible;
 }
 
 .sky-service-card {
