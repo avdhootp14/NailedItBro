@@ -99,8 +99,13 @@ export default function Nav({ onNavigate }) {
   return (
     <header className={`nav ${hidden && !open ? 'is-hidden' : ''} ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-open' : ''}`}>
       <div className="nav__inner">
-        <a href="#top" className="nav__logo" onClick={(e) => go(e, '#top')} aria-label="Nailed It Bro, back to top"><Logo /></a>
-        <nav className="nav__pill-capsule" aria-label="Primary Navigation">
+        {/* Left: Brand Logo */}
+        <a href="#top" className="nav__logo" onClick={(e) => { setActiveHref('#top'); go(e, '#top'); }} aria-label="Nailed It Bro, back to top">
+          <Logo />
+        </a>
+
+        {/* Center: Bigger Solma-style Pill Capsule Navbar */}
+        <nav className="nav__center-capsule" aria-label="Primary Navigation">
           {NAV.map((l) => {
             const isActive = activeHref === l.href || (l.href === '#top' && (!activeHref || activeHref === '#top'))
             return (
@@ -118,6 +123,26 @@ export default function Nav({ onNavigate }) {
             )
           })}
         </nav>
+
+        {/* Top Right: Get a Quote button with arrow (Matching Solma Log-In pill button proportions) */}
+        <div className="nav__right-actions">
+          <a
+            href="#contact"
+            className="nav__quote-pill"
+            onClick={(e) => go(e, '#contact')}
+            aria-label="Get a Quote"
+          >
+            <span className="nav__quote-text">Get a Quote</span>
+            <span className="nav__quote-arrow-badge" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </span>
+          </a>
+        </div>
+
+        {/* Mobile Burger Button */}
         <button
           ref={menuBtn}
           className="nav__burger"
