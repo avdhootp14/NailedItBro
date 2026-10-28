@@ -2,20 +2,20 @@ import { useState, useCallback, useEffect } from 'react'
 import { m, AnimatePresence } from 'motion/react'
 import { scrollToTarget } from '../lib/useSmoothScroll'
 import Magnetic from './Magnetic'
-import './NovaHero.css'
+import './SkyHero.css'
 
 // 5 Core Founder-Led Services Data
 const SERVICES = [
   {
     id: 'web',
     num: 1,
-    eyebrow: 'DEFINE YOUR DIGITAL PRESENCE',
-    line1: 'Websites That',
-    line2: 'Actually Convert.',
+    category: '01 · Web',
+    title: 'Website Dev',
+    headline: 'Websites That Actually Convert',
+    metric: '99% Speed',
+    thumbnail: '/web.png',
     description:
       'Custom business websites and web platforms engineered for sub-second load times, fluid mobile responsiveness, and high Google search rankings.',
-    image: '/web.png',
-    badge: 'Sub-second Load',
     deliverables: ['Sub-second Load Speed', 'SEO & Schema Markup', 'Fluid Mobile UX', 'Headless CMS & Forms'],
     techStack: ['React 19', 'Vite', 'Framer Motion', 'Vanilla CSS'],
     timeline: '1 – 2 Weeks Sprint',
@@ -25,13 +25,13 @@ const SERVICES = [
   {
     id: 'app',
     num: 2,
-    eyebrow: 'NATIVE PERFORMANCE & SCALE',
-    line1: 'Mobile Apps',
-    line2: 'Built For Scale.',
+    category: '02 · Mobile',
+    title: 'Mobile Apps',
+    headline: 'Mobile Apps Built For Scale',
+    metric: '60 FPS Native',
+    thumbnail: '/pet.png',
     description:
       'Smooth Android and cross-platform native apps built from a single high-performance codebase with offline caching and real-time push backends.',
-    image: '/pet.png',
-    badge: '60 FPS Native UI',
     deliverables: ['Play Store Ready Build', '60 FPS Gesture Engine', 'Offline First Cache', 'Cloud API Sync'],
     techStack: ['Flutter', 'React Native', 'Node.js', 'Supabase'],
     timeline: '3 – 4 Weeks MVP',
@@ -41,13 +41,13 @@ const SERVICES = [
   {
     id: 'ai',
     num: 3,
-    eyebrow: 'SMART AUTOMATION ENGINES',
-    line1: 'Smart AI & QR',
-    line2: 'Automating Growth.',
+    category: '03 · AI/QR',
+    title: 'AI & QR Tools',
+    headline: 'Smart AI & QR Automating Growth',
+    metric: '24/7 Engine',
+    thumbnail: '/qr.png',
     description:
       'Digital menus, automated appointment scheduling, WhatsApp workflows, and intelligent customer capture tools that eliminate repetitive tasks.',
-    image: '/qr.png',
-    badge: '24/7 Automation',
     deliverables: ['Dynamic QR Portals', 'Automated Bookings', 'WhatsApp Workflows', 'Instant Lead Capture'],
     techStack: ['WhatsApp Cloud API', 'LLM Agent APIs', 'Dynamic QR Engine', 'Webhooks'],
     timeline: '3 – 5 Days Setup',
@@ -57,13 +57,13 @@ const SERVICES = [
   {
     id: 'game',
     num: 4,
-    eyebrow: 'IMMERSIVE 3D EXPERIENCES',
-    line1: '3D Games With',
-    line2: 'Fluid Physics.',
+    category: '04 · 3D',
+    title: '3D Games',
+    headline: '3D Games With Fluid Physics',
+    metric: 'Mobile 60fps',
+    thumbnail: '/game.png',
     description:
       'Custom 3D gameplay, realistic physics, responsive touch gestures, and optimized rendering engines designed to run fluidly on mid-range smartphones.',
-    image: '/game.png',
-    badge: 'Mobile 60fps',
     deliverables: ['Custom 3D Physics', 'Touch Gestures', 'Mid-Range Phone 60fps', 'Multiplayer Engine'],
     techStack: ['Unity', 'Three.js', 'WebGL', 'Blender 3D'],
     timeline: '4 – 6 Weeks Sprint',
@@ -73,13 +73,13 @@ const SERVICES = [
   {
     id: 'social',
     num: 5,
-    eyebrow: 'HIGH-RETENTION MARKETING',
-    line1: 'Content That',
-    line2: 'Drives Revenue.',
+    category: '05 · Growth',
+    title: 'Social Media',
+    headline: 'Content That Drives Revenue',
+    metric: 'Tracked ROI',
+    thumbnail: '/social.png',
     description:
       'High-retention short-form video production, creator distribution, and tracked growth campaigns designed to turn viewers into paying clients.',
-    image: '/social.png',
-    badge: 'Tracked ROI',
     deliverables: ['Short-form Video', 'Multi-Platform Reach', 'Tracked Ads Funnel', 'Clear ROI Reports'],
     techStack: ['Premiere Pro', 'After Effects', 'Meta Ads Manager', 'Shorts / Reels'],
     timeline: 'Monthly Growth Sprints',
@@ -88,33 +88,24 @@ const SERVICES = [
   },
 ]
 
-const TECH_PARTNERS = [
-  'REACT 19',
-  'NEXT.JS',
-  'FLUTTER',
-  'NODE.JS',
-  'UNITY 3D',
-  'SUPABASE',
-  'VERCEL',
-  'SHOPIFY',
-  'PYTHON',
-]
-
 export default function Hero() {
   const [activeIdx, setActiveIdx] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [hasModelViewer, setHasModelViewer] = useState(false)
 
   const active = SERVICES[activeIdx]
 
-  // Gentle auto-cycle through services every 5.5s unless hovered or modal open
   useEffect(() => {
-    if (isPaused || modalOpen) return
-    const timer = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % SERVICES.length)
-    }, 5500)
-    return () => clearInterval(timer)
-  }, [isPaused, modalOpen])
+    // Check if customElements has registered model-viewer
+    if (typeof window !== 'undefined' && customElements.get('model-viewer')) {
+      setHasModelViewer(true)
+    } else {
+      const timer = setTimeout(() => {
+        if (customElements.get('model-viewer')) setHasModelViewer(true)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [])
 
   // Close modal on ESC key
   useEffect(() => {
@@ -125,8 +116,9 @@ export default function Hero() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  const handleStepClick = useCallback((idx) => {
+  const handleCardClick = useCallback((idx) => {
     setActiveIdx(idx)
+    setModalOpen(true)
   }, [])
 
   const handleScroll = useCallback((target) => {
@@ -135,278 +127,251 @@ export default function Hero() {
 
   return (
     <section
-      className="nova-hero-section"
+      className="sky-hero-section"
       id="top"
-      aria-label="Nailed It Bro Studio Hero"
+      aria-label="Nailed It Bro 3D Studio Hero"
     >
+      {/* Side Vertical Edge Badges */}
+      <div className="sky-edge-left" aria-hidden="true">
+        <span className="sky-heart-icon">♥</span>
+        <span>Follow for more</span>
+      </div>
+
+      <div className="sky-edge-right" aria-hidden="true">
+        <span>Nailed It Bro · Digital Studio</span>
+      </div>
+
       {/* ==================================================================
-          MAIN HERO CARD: Full-Bleed Screen-Fitted Image + Screen Overlay
+          MAIN SKY HERO CARD: Soft Blue Atmospheric Canvas
           ================================================================== */}
-      <div
-        className="nova-hero-card"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        {/* Full-Screen Fitted Background Image Layer with Cross-fade */}
-        <div className="nova-bg-layer" aria-hidden="true">
-          <AnimatePresence mode="wait">
-            <m.img
-              key={active.id}
-              src={active.image}
-              alt={`${active.line1} ${active.line2} Full Screen Background`}
-              className="nova-bg-image"
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1.0 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
-          </AnimatePresence>
+      <div className="sky-hero-card">
+        {/* Sky Clouds and Atmospheric Lighting */}
+        <div className="sky-clouds-overlay" aria-hidden="true" />
+
+        {/* Top-Left Sparkle Accent */}
+        <div className="sky-sparkle-badge" aria-hidden="true">
+          <svg className="sky-sparkle-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+          </svg>
         </div>
 
-        {/* Deep Multi-directional Cinematic Screen Overlay */}
-        <div className="nova-screen-overlay" aria-hidden="true" />
-        <div className="nova-screen-vignette" aria-hidden="true" />
+        {/* ================================================================
+            TOP SECTION: Centered Headline + Subtitle + Action CTA
+            ================================================================ */}
+        <div className="sky-hero-top">
+          <h1 className="sky-headline" id="hero-title">
+            <span className="sky-headline-line">Digital Studio redefined.</span>
+            <span className="sky-headline-line">Engineered with taste &amp; rigour.</span>
+          </h1>
 
-        {/* Floating Live Status Badge at Top-Right */}
-        <div className="nova-card-top-bar">
-          <div className="nova-float-badge">
-            <span className="nova-float-badge__dot" aria-hidden="true" />
-            <span>{active.badge}</span>
+          <p className="sky-subtitle">
+            From first prototype to global launch, Nailed It Bro engineers custom websites, mobile apps, and smart automations for growing businesses.
+          </p>
+
+          <Magnetic strength={0.25}>
+            <button
+              type="button"
+              className="sky-cta-pill"
+              onClick={() => handleScroll('#contact')}
+              aria-label="Start a project with Nailed It Bro"
+            >
+              <span>Start a Project</span>
+              <span className="sky-cta-arrow" aria-hidden="true">↗</span>
+            </button>
+          </Magnetic>
+        </div>
+
+        {/* ================================================================
+            CENTER 3D STAGE:
+            Foreground: 3D Mascot Character (mascot.glb)
+            Background: 5 Curved 3D Perspective Service Cards in an Arc
+            ================================================================ */}
+        <div className="sky-3d-stage">
+          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC */}
+          <div className="sky-cards-arc" role="region" aria-label="Our 5 Core Services">
+            {SERVICES.map((srv, idx) => {
+              const isActive = idx === activeIdx
+              return (
+                <div
+                  key={srv.id}
+                  role="button"
+                  tabIndex={0}
+                  className={`sky-service-card sky-card--${idx + 1} ${isActive ? 'is-active' : ''}`}
+                  onClick={() => handleCardClick(idx)}
+                  onMouseEnter={() => setActiveIdx(idx)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleCardClick(idx)
+                    }
+                  }}
+                  title={`Click to inspect ${srv.title} specs`}
+                  aria-label={`${srv.title}: ${srv.description}`}
+                >
+                  <div className="sky-card-head">
+                    <span className="sky-card-category">{srv.category}</span>
+                    <span className="sky-card-num">0{srv.num}</span>
+                  </div>
+
+                  <h3 className="sky-card-title">{srv.title}</h3>
+
+                  <div className="sky-card-thumb-wrap">
+                    <img
+                      src={srv.thumbnail}
+                      alt={`${srv.title} Thumbnail`}
+                      className="sky-card-thumb"
+                      loading="eager"
+                    />
+                  </div>
+
+                  <div className="sky-card-meta">
+                    <span>Performance</span>
+                    <span className="sky-card-metric">{srv.metric}</span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* FOREGROUND: Real-Time 3D Mascot Character (mascot.glb) */}
+          <div className="sky-mascot-wrap">
+            {hasModelViewer ? (
+              <model-viewer
+                src="/mascot.glb"
+                alt="Nailed It Bro 3D Studio Mascot"
+                camera-controls
+                auto-rotate
+                rotation-per-second="16deg"
+                camera-orbit="90deg 75deg 105%"
+                disable-zoom
+                interaction-prompt="none"
+                shadow-intensity="1.2"
+                shadow-softness="0.9"
+                exposure="1.08"
+                environment-image="neutral"
+                className="sky-mascot-model"
+              >
+                <img
+                  src="/avatar_front_3d.png"
+                  alt="3D Mascot Fallback"
+                  className="sky-mascot-fallback"
+                  slot="poster"
+                />
+              </model-viewer>
+            ) : (
+              <img
+                src="/avatar_front_3d.png"
+                alt="Nailed It Bro 3D Mascot"
+                className="sky-mascot-fallback"
+              />
+            )}
           </div>
         </div>
 
         {/* ================================================================
-            HERO CARD CONTENT GRID (Bottom-Left Headline | Bottom-Right Dossier)
+            BOTTOM SECTION: Left 99% Satisfaction Stat + Right Community Stats
             ================================================================ */}
-        <div className="nova-card-content">
-          {/* --------------------------------------------------------------
-              LEFT COLUMN: Stepper (1 to 5) + Eyebrow + Headline + Action CTAs
-              -------------------------------------------------------------- */}
-          <div className="nova-left-cluster">
-            {/* Vertical Stepper with Connected Line */}
-            <div className="nova-stepper" role="tablist" aria-label="Services Stepper">
-              <div className="nova-stepper-line" aria-hidden="true" />
+        <div className="sky-hero-bottom">
+          {/* Bottom Left: 99% Satisfaction + 5 Service Pill Icons */}
+          <div className="sky-bottom-left">
+            <div className="sky-big-stat">99%</div>
+            <div className="sky-stat-label">Satisfaction for our services</div>
+
+            <div className="sky-service-pills-row" role="tablist" aria-label="Service Selector">
               {SERVICES.map((srv, idx) => {
                 const isActive = idx === activeIdx
                 return (
                   <button
                     key={srv.id}
                     type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    className={`nova-step-btn ${isActive ? 'is-active' : ''}`}
-                    onClick={() => handleStepClick(idx)}
-                    title={`Service 0${srv.num}: ${srv.line1} ${srv.line2}`}
-                    aria-label={`Select service 0${srv.num}`}
+                    className={`sky-icon-circle ${isActive ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setActiveIdx(idx)
+                      setModalOpen(true)
+                    }}
+                    title={srv.title}
+                    aria-label={`View ${srv.title} details`}
                   >
-                    {srv.num}
+                    {idx === 0 && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                    )}
+                    {idx === 1 && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="3" ry="3" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="3" />
+                      </svg>
+                    )}
+                    {idx === 2 && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                      </svg>
+                    )}
+                    {idx === 3 && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="6" width="20" height="12" rx="2" />
+                        <line x1="6" y1="12" x2="10" y2="12" />
+                        <line x1="8" y1="10" x2="8" y2="14" />
+                        <circle cx="15" cy="11" r="1" />
+                        <circle cx="18" cy="13" r="1" />
+                      </svg>
+                    )}
+                    {idx === 4 && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M23 7l-7 5 7 5V7z" />
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                      </svg>
+                    )}
                   </button>
                 )
               })}
             </div>
-
-            {/* Headline and Eyebrow Stack with Cascade Transition */}
-            <div className="nova-typography-stack">
-              <AnimatePresence mode="wait">
-                <m.div
-                  key={active.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <div className="nova-eyebrow">
-                    <span className="nova-eyebrow__dot" aria-hidden="true" />
-                    <span>0{active.num} — {active.eyebrow}</span>
-                  </div>
-
-                  <h1 className="nova-headline" id="hero-title">
-                    <span className="nova-headline-line">{active.line1}</span>
-                    <span className="nova-headline-line">
-                      {active.line2.replace(/\.$/, '')}
-                      <span className="nova-period">.</span>
-                    </span>
-                  </h1>
-                </m.div>
-              </AnimatePresence>
-
-              {/* Action Buttons: Pill CTA + Circular Play Button */}
-              <div className="nova-actions-row">
-                <Magnetic strength={0.2}>
-                  <a
-                    href="#contact"
-                    className="nova-primary-btn"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      scrollToTarget('#contact')
-                    }}
-                  >
-                    <span>Start a Project</span>
-                    <span className="nova-btn-arrow" aria-hidden="true">→</span>
-                  </a>
-                </Magnetic>
-
-                <button
-                  type="button"
-                  className="nova-play-btn"
-                  onClick={() => setModalOpen(true)}
-                  title="View Full Scope & Blueprint"
-                  aria-label="View Service Details and Blueprint"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
           </div>
 
-          {/* --------------------------------------------------------------
-              RIGHT COLUMN: Rating Proof + Description + Deliverables + Explore ↗
-              -------------------------------------------------------------- */}
-          <div className="nova-right-dossier">
-            {/* Social Proof & Rating Row */}
-            <div className="nova-proof-row">
-              <div className="nova-avatars-group">
+          {/* Bottom Right: Star Rating + 50+ Projects + Avatars + Subtext */}
+          <div className="sky-bottom-right">
+            <div className="sky-right-meta-row">
+              <div className="sky-avatars-group">
                 <img
                   src="/avatar_front_3d.png"
                   alt="Founder Avatar"
-                  className="nova-avatar-chip"
+                  className="sky-avatar-chip"
                 />
                 <img
                   src="/avatar_fl_3d.png"
                   alt="Studio Team"
-                  className="nova-avatar-chip"
+                  className="sky-avatar-chip"
                 />
                 <img
                   src="/pet.png"
                   alt="Client Project"
-                  className="nova-avatar-chip"
+                  className="sky-avatar-chip"
                 />
               </div>
 
-              <div className="nova-rating-info">
-                <div className="nova-stars" aria-label="5 star rating">★★★★★</div>
-                <span className="nova-proof-text">4.9/5 · 50+ Projects Shipped</span>
-              </div>
+              <div className="sky-counter-val">50+</div>
             </div>
 
-            {/* Service Description with Animated Fade */}
-            <AnimatePresence mode="wait">
-              <m.div
-                key={active.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <p className="nova-description">{active.description}</p>
-
-                <div className="nova-deliverables-wrap">
-                  {active.deliverables.map((deliv, idx) => (
-                    <span key={idx} className="nova-deliverable-chip">
-                      {deliv}
-                    </span>
-                  ))}
-                </div>
-              </m.div>
-            </AnimatePresence>
-
-            {/* Explore Project Action Button */}
-            <button
-              type="button"
-              className="nova-dossier-btn"
-              onClick={() => handleScroll(active.target)}
-            >
-              <span>Explore {active.line1} Work</span>
-              <span className="nova-dossier-arrow" aria-hidden="true">↗</span>
-            </button>
+            <p className="sky-proof-sub">
+              Our user community keeps growing,
+              <br />
+              proof we build digital products that <strong>scale seamlessly</strong>.
+            </p>
           </div>
         </div>
       </div>
 
       {/* ==================================================================
-          BOTTOM META BAR: Social Follow Pill | Tech & Brand Partners
-          ================================================================== */}
-      <footer className="nova-bottom-bar" aria-label="Studio Credentials">
-        {/* Social Follow Pill */}
-        <div className="nova-follow-pill">
-          <span className="nova-follow-label">Follow</span>
-          <div className="nova-social-icons">
-            <a
-              href="https://instagram.com/nailedit.bro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nova-social-link"
-              aria-label="Instagram"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
-            </a>
-            <a
-              href="https://facebook.com/naileditbro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nova-social-link"
-              aria-label="Facebook"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-              </svg>
-            </a>
-            <a
-              href="https://linkedin.com/company/naileditbro"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nova-social-link"
-              aria-label="LinkedIn"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                <rect x="2" y="9" width="4" height="12" />
-                <circle cx="4" cy="4" r="2" />
-              </svg>
-            </a>
-            <a
-              href="https://wa.me/919999999999"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nova-social-link"
-              aria-label="WhatsApp"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        {/* Vertical Divider */}
-        <div className="nova-bar-divider" aria-hidden="true" />
-
-        {/* Tech Stack & Brand Marquee */}
-        <div className="nova-logos-wrap" aria-label="Technology Stack">
-          <div className="nova-logos-track">
-            {TECH_PARTNERS.map((partner, i) => (
-              <span key={i} className="nova-logo-item">
-                {partner}
-              </span>
-            ))}
-          </div>
-        </div>
-      </footer>
-
-      {/* ==================================================================
-          INTERACTIVE SERVICE BLUEPRINT & SCOPE MODAL (Triggered by ▶ Button)
+          INTERACTIVE SERVICE BLUEPRINT & SCOPE MODAL (Triggered by any card)
           ================================================================== */}
       <AnimatePresence>
         {modalOpen && (
-          <div className="nova-modal-backdrop" onClick={() => setModalOpen(false)}>
+          <div className="sky-modal-backdrop" onClick={() => setModalOpen(false)}>
             <m.div
-              className="nova-blueprint-card"
+              className="sky-blueprint-card"
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.94, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -414,15 +379,15 @@ export default function Hero() {
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               role="dialog"
               aria-modal="true"
-              aria-labelledby="nova-modal-title"
+              aria-labelledby="sky-modal-title"
             >
-              <div className="nova-modal-header">
-                <div className="nova-modal-badge">
-                  <span>0{active.num} — {active.eyebrow}</span>
+              <div className="sky-modal-header">
+                <div className="sky-modal-badge">
+                  <span>0{active.num} — {active.category}</span>
                 </div>
                 <button
                   type="button"
-                  className="nova-modal-close"
+                  className="sky-modal-close"
                   onClick={() => setModalOpen(false)}
                   aria-label="Close Blueprint Modal"
                 >
@@ -430,19 +395,19 @@ export default function Hero() {
                 </button>
               </div>
 
-              <h2 id="nova-modal-title" className="nova-modal-title">
-                {active.line1} {active.line2}
+              <h2 id="sky-modal-title" className="sky-modal-title">
+                {active.headline}
               </h2>
 
-              <p className="nova-modal-desc">{active.description}</p>
+              <p className="sky-modal-desc">{active.description}</p>
 
-              <div className="nova-modal-grid">
+              <div className="sky-modal-grid">
                 <div>
-                  <h3 className="nova-modal-col__title">Included Deliverables</h3>
-                  <ul className="nova-modal-checklist">
+                  <h3 className="sky-modal-col__title">Included Deliverables</h3>
+                  <ul className="sky-modal-checklist">
                     {active.deliverables.map((item, idx) => (
                       <li key={idx}>
-                        <span className="nova-modal-check" aria-hidden="true">✓</span>
+                        <span className="sky-modal-check" aria-hidden="true">✓</span>
                         <span>{item}</span>
                       </li>
                     ))}
@@ -450,39 +415,39 @@ export default function Hero() {
                 </div>
 
                 <div>
-                  <h3 className="nova-modal-col__title">Core Tech Stack</h3>
-                  <div className="nova-modal-chips">
+                  <h3 className="sky-modal-col__title">Core Tech Stack</h3>
+                  <div className="sky-modal-chips">
                     {active.techStack.map((tech, idx) => (
-                      <span key={idx} className="nova-tech-pill">
+                      <span key={idx} className="sky-tech-pill">
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                  <div className="nova-modal-meta-row">
-                    <span className="nova-modal-meta-label">Typical Sprint</span>
-                    <span className="nova-modal-meta-val">{active.timeline}</span>
+                  <div className="sky-modal-meta-row">
+                    <span className="sky-modal-meta-label">Typical Sprint</span>
+                    <span className="sky-modal-meta-val">{active.timeline}</span>
                   </div>
 
-                  <div className="nova-modal-meta-row">
-                    <span className="nova-modal-meta-label">Target Result</span>
-                    <span className="nova-modal-meta-val">{active.outcome}</span>
+                  <div className="sky-modal-meta-row">
+                    <span className="sky-modal-meta-label">Target Result</span>
+                    <span className="sky-modal-meta-val">{active.outcome}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="nova-modal-actions">
-                <a
-                  href="#contact"
-                  className="nova-primary-btn"
-                  onClick={(e) => {
-                    e.preventDefault()
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  type="button"
+                  className="sky-cta-pill"
+                  onClick={() => {
                     setModalOpen(false)
-                    scrollToTarget('#contact')
+                    handleScroll('#contact')
                   }}
+                  style={{ width: '100%', justifyContent: 'center' }}
                 >
-                  <span>Book Free Consultation for this Service →</span>
-                </a>
+                  <span>Book Free Consultation for this Service ↗</span>
+                </button>
               </div>
             </m.div>
           </div>
