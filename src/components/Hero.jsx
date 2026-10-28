@@ -16,7 +16,7 @@ const SERVICES = [
     description:
       'Custom business websites and web platforms engineered for sub-second load times, fluid mobile responsiveness, and high Google search rankings.',
     deliverables: ['Sub-second Load Speed', 'SEO & Schema Markup', 'Fluid Mobile UX', 'Headless CMS & Forms'],
-    techStack: ['React 19', 'Vite', 'Framer Motion', 'Vanilla CSS'],
+    techStack: ['React 19', 'Next.js', 'Vite', 'Framer Motion'],
     timeline: '1 – 2 Weeks Sprint',
     outcome: 'Top 1% PageSpeed score & verified inbound client enquiries.',
     target: '#work',
@@ -83,7 +83,19 @@ const SERVICES = [
   },
 ]
 
-export default function Hero() {
+const TECH_PARTNERS = [
+  'REACT 19',
+  'NEXT.JS',
+  'FLUTTER',
+  'NODE.JS',
+  'UNITY 3D',
+  'SUPABASE',
+  'VERCEL',
+  'SHOPIFY',
+  'PYTHON',
+]
+
+export default function Hero({ ready }) {
   const [activeIdx, setActiveIdx] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [hasModelViewer, setHasModelViewer] = useState(false)
@@ -91,7 +103,6 @@ export default function Hero() {
   const active = SERVICES[activeIdx]
 
   useEffect(() => {
-    // Check if customElements has registered model-viewer
     if (typeof window !== 'undefined' && customElements.get('model-viewer')) {
       setHasModelViewer(true)
     } else {
@@ -126,67 +137,75 @@ export default function Hero() {
       id="top"
       aria-label="Nailed It Bro 3D Studio Hero"
     >
-      {/* Side Vertical Edge Badges */}
-      <div className="sky-edge-left" aria-hidden="true">
-        <span className="sky-heart-icon">♥</span>
-        <span>Follow for more</span>
-      </div>
-
-      <div className="sky-edge-right" aria-hidden="true">
-        <span>Nailed It Bro · Digital Studio</span>
-      </div>
-
       {/* ==================================================================
-          MAIN SKY HERO CARD: Photorealistic Sky Atmosphere & Realistic Clouds
+          MAIN WARM BEIGE HERO CARD
+          - Palette: Warm Beige (#FAF7F2 / #F2EDE4), Electric Orange (#FF5E14), Obsidian (#141312)
+          - Shadows: Multi-tiered diffuse 3D floating shadows from Solma reference
+          - Atmosphere: Soft warm ambient lighting & subtle cream depth
           ================================================================== */}
       <div className="sky-hero-card">
-        {/* Soft Fluffy Cumulus Cloud Billows */}
-        <div className="sky-clouds-overlay" aria-hidden="true">
-          <div className="sky-cloud sky-cloud--1" />
-          <div className="sky-cloud sky-cloud--2" />
-          <div className="sky-cloud sky-cloud--3" />
-        </div>
-
-        {/* Top-Left Sparkle Accent */}
-        <div className="sky-sparkle-badge" aria-hidden="true">
-          <svg className="sky-sparkle-svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
-          </svg>
+        {/* Warm Ambient Radial Flares */}
+        <div className="sky-ambient-overlay" aria-hidden="true">
+          <div className="sky-ambient-glow sky-ambient-glow--top" />
+          <div className="sky-ambient-glow sky-ambient-glow--floor" />
         </div>
 
         {/* ================================================================
-            TOP SECTION: Centered White Display Headline + Subtitle + Action CTA
+            TOP SECTION: Eyebrow + Signature Headline + Subtitle + Actions
             ================================================================ */}
         <div className="sky-hero-top">
+          <div className="sky-eyebrow">
+            <span className="sky-eyebrow-dot" aria-hidden="true" />
+            <span className="sky-eyebrow-text">DEFINE YOUR DIGITAL PRESENCE</span>
+          </div>
+
           <h1 className="sky-headline" id="hero-title">
-            <span className="sky-headline-line">Digital Studio redefined.</span>
-            <span className="sky-headline-line">Engineered with taste &amp; rigour.</span>
+            <span className="sky-headline-line">Websites That</span>
+            <span className="sky-headline-line">
+              Actually Convert<span className="sky-brand-dot">.</span>
+            </span>
           </h1>
 
           <p className="sky-subtitle">
-            From first prototype to global launch, Nailed It Bro engineers custom websites, mobile apps, and smart automations for growing businesses.
+            Custom business websites and web platforms engineered for sub-second load times, fluid mobile responsiveness, and high Google search rankings.
           </p>
 
-          <Magnetic strength={0.25}>
-            <button
-              type="button"
-              className="sky-cta-pill"
-              onClick={() => handleScroll('#contact')}
-              aria-label="Start a project with Nailed It Bro"
-            >
-              <span>Start a Project</span>
-              <span className="sky-cta-arrow" aria-hidden="true">↗</span>
-            </button>
-          </Magnetic>
+          <div className="sky-actions-row">
+            <Magnetic strength={0.25}>
+              <button
+                type="button"
+                className="sky-cta-pill"
+                onClick={() => handleScroll('#contact')}
+                aria-label="Start a project with Nailed It Bro"
+              >
+                <span>Start a Project</span>
+                <span className="sky-cta-arrow" aria-hidden="true">→</span>
+              </button>
+            </Magnetic>
+
+            <Magnetic strength={0.25}>
+              <button
+                type="button"
+                className="sky-play-btn"
+                onClick={() => handleScroll('#work')}
+                aria-label="View showcase portfolio"
+                title="View selected work"
+              >
+                <svg className="sky-play-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            </Magnetic>
+          </div>
         </div>
 
         {/* ================================================================
-            CENTER 3D STAGE:
-            Foreground: Real-time 3D Mascot Character (mascot.glb)
-            Background: 5 Curved 3D Perspective Cards in an Amphitheater Arc
+            CENTER 3D STAGE (Solma 3D Amphitheater + Foreground 3D Mascot)
+            - Background: 5 Curved 3D Cards with image-only showcase and deep drop shadows
+            - Foreground: Big real-time 3D mascot (mascot.glb) facing front with contact floor shadow
             ================================================================ */}
         <div className="sky-3d-stage">
-          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC (THE EXACT SHADOWS & EFFECTS) */}
+          {/* 5 BACKGROUND PERSPECTIVE CARDS IN 3D CURVED ARC (IMAGE-ONLY, NO TEXT) */}
           <div className="sky-cards-arc" role="region" aria-label="Our 5 Showcase Projects">
             {SERVICES.map((srv, idx) => {
               const isActive = idx === activeIdx
@@ -218,7 +237,7 @@ export default function Hero() {
             })}
           </div>
 
-          {/* FOREGROUND: REAL-TIME 3D MASCOT CHARACTER (mascot.glb) WITH CONTACT SHADOW */}
+          {/* FOREGROUND: BIGGER REAL-TIME 3D MASCOT (mascot.glb) WITH CONTACT FLOOR SHADOW */}
           <div className="sky-mascot-wrap">
             <div className="sky-mascot-shadow" aria-hidden="true" />
             {hasModelViewer ? (
@@ -227,13 +246,13 @@ export default function Hero() {
                 alt="Nailed It Bro 3D Studio Mascot"
                 camera-controls
                 auto-rotate
-                rotation-per-second="14deg"
+                rotation-per-second="12deg"
                 camera-orbit="90deg 75deg 105%"
                 disable-zoom
                 interaction-prompt="none"
-                shadow-intensity="1.2"
-                shadow-softness="0.9"
-                exposure="1.08"
+                shadow-intensity="1.3"
+                shadow-softness="0.85"
+                exposure="1.05"
                 environment-image="neutral"
                 className="sky-mascot-model"
               >
@@ -255,10 +274,10 @@ export default function Hero() {
         </div>
 
         {/* ================================================================
-            BOTTOM SECTION: Left 99% Satisfaction Stat + Right Community Stats
+            BOTTOM SECTION: 99% Satisfaction Stat + Community Avatars & Cases
             ================================================================ */}
         <div className="sky-hero-bottom">
-          {/* Bottom Left: 99% Satisfaction + 5 Service Filter Icon Pills */}
+          {/* Bottom Left: 99% Satisfaction + 5 Circular Service Selector Icon Pills */}
           <div className="sky-bottom-left">
             <div className="sky-big-stat">99%</div>
             <div className="sky-stat-label">Satisfaction for our services</div>
@@ -317,38 +336,117 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Bottom Right: Star Rating + 50+ Projects + Avatars + Subtext */}
+          {/* Bottom Right: Discover More / 50+ Projects + Avatars + Subtext */}
           <div className="sky-bottom-right">
-            <div className="sky-right-meta-row">
-              <div className="sky-avatars-group">
-                <img
-                  src="/avatar_front_3d.png"
-                  alt="Founder Avatar"
-                  className="sky-avatar-chip"
-                />
-                <img
-                  src="/avatar_fl_3d.png"
-                  alt="Studio Team"
-                  className="sky-avatar-chip"
-                />
-                <img
-                  src="/pet.png"
-                  alt="Client Project"
-                  className="sky-avatar-chip"
-                />
+            <a
+              href="#work"
+              className="sky-discover-card"
+              onClick={(e) => {
+                e.preventDefault()
+                handleScroll('#work')
+              }}
+              aria-label="Discover selected client projects"
+            >
+              <div className="sky-discover-header">
+                <span className="sky-discover-title">Discover More</span>
+                <span className="sky-discover-arrow" aria-hidden="true">→</span>
               </div>
 
-              <div className="sky-counter-val">50+</div>
-            </div>
+              <div className="sky-discover-body">
+                <div className="sky-avatars-group">
+                  <img
+                    src="/avatar_front_3d.png"
+                    alt="Founder Avatar"
+                    className="sky-avatar-chip"
+                  />
+                  <img
+                    src="/avatar_fl_3d.png"
+                    alt="Studio Team"
+                    className="sky-avatar-chip"
+                  />
+                  <img
+                    src="/pet.png"
+                    alt="Client Project"
+                    className="sky-avatar-chip"
+                  />
+                </div>
 
-            <p className="sky-proof-sub">
-              Our client community keeps growing,
-              <br />
-              proof we build digital products that <strong>scale seamlessly</strong>.
-            </p>
+                <div className="sky-discover-meta">
+                  <span className="sky-discover-tag">Selected Cases</span>
+                  <span className="sky-discover-sub">Explore 50+ client projects</span>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
+
+      {/* ==================================================================
+          BOTTOM META BAR (From Image 2: Social Follow Pill | Tech Stack Ticker)
+          ================================================================== */}
+      <footer className="sky-bottom-bar" aria-label="Studio Credentials">
+        <div className="sky-follow-pill">
+          <span className="sky-follow-label">Follow</span>
+          <div className="sky-social-icons">
+            <a
+              href="https://instagram.com/nailedit.bro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sky-social-link"
+              aria-label="Instagram"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a
+              href="https://facebook.com/naileditbro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sky-social-link"
+              aria-label="Facebook"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a
+              href="https://linkedin.com/company/naileditbro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sky-social-link"
+              aria-label="LinkedIn"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.53 1.53 0 0 0 1.53-1.53c0-.85-.68-1.54-1.53-1.54a1.54 1.54 0 0 0-1.54 1.54c0 .85.69 1.53 1.54 1.53m1.4 9.74v-8.37H5.06v8.37h2.8z" />
+              </svg>
+            </a>
+            <a
+              href="https://wa.me/919405527181"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sky-social-link"
+              aria-label="WhatsApp"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div className="sky-bar-divider" aria-hidden="true" />
+
+        <div className="sky-tech-track" aria-label="Technologies used">
+          {TECH_PARTNERS.map((tech) => (
+            <span key={tech} className="sky-tech-item">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </footer>
 
       {/* ==================================================================
           INTERACTIVE SERVICE BLUEPRINT & SCOPE MODAL (Triggered by any card)
@@ -425,14 +523,14 @@ export default function Hero() {
               <div style={{ display: 'flex', gap: '12px' }}>
                 <button
                   type="button"
-                  className="sky-cta-pill"
+                  className="sky-modal-cta"
                   onClick={() => {
                     setModalOpen(false)
                     handleScroll('#contact')
                   }}
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
-                  <span>Book Free Consultation for this Service ↗</span>
+                  <span>Book Free Consultation for this Service →</span>
                 </button>
               </div>
             </m.div>
