@@ -262,7 +262,7 @@ ul, ol { padding: 0; list-style: none; }
 .logo__it { color: var(--orange); font-weight: 800; }
 .logo__bar { height: 3px; width: 100%; background: var(--orange); border-radius: 999px; box-shadow: 0 0 8px var(--orange-glow); }
 .nav__logo:hover .logo__bar { transform: scaleX(1.1); transition: transform 0.4s var(--ease-out); }
-/* Solma-style Pill Capsule Navbar (Center Top - Bigger, Spacious & Luxurious) */
+/* Solma-style Pill Capsule Navbar (Senior UI/UX Proportions, Clean Geometric Font, Optical Balance) */
 .nav__center-capsule {
   display: none;
   align-items: center;
@@ -271,53 +271,54 @@ ul, ol { padding: 0; list-style: none; }
   top: 50%;
   transform: translate(-50%, -50%);
   background: #FFFFFF;
-  border-radius: 999px;
-  height: 58px;
-  padding: 6px 28px 6px 6px;
-  gap: 10px;
+  border-radius: 9999px;
+  height: 52px;
+  padding: 4px;
   box-shadow:
-    0 14px 40px -6px rgba(25, 20, 15, 0.1),
-    0 4px 14px -2px rgba(25, 20, 15, 0.05),
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
+    0 12px 32px -6px rgba(20, 18, 15, 0.08),
+    0 4px 12px -2px rgba(20, 18, 15, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   box-sizing: border-box;
   z-index: 10;
   pointer-events: auto;
 }
 
 .nav__capsule-link {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 15.5px;
-  font-weight: 550;
-  color: #383531;
+  font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14.5px;
+  font-weight: 450;
+  color: #646059;
+  letter-spacing: -0.015em;
   text-decoration: none;
-  padding: 10px 18px;
-  border-radius: 999px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0 24px;
+  height: 44px;
+  border-radius: 9999px;
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   user-select: none;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .nav__capsule-link:hover:not(.is-active) {
-  color: var(--orange, #FF5E14);
+  color: #141312;
 }
 
 .nav__capsule-link.is-active {
   background: var(--orange, #FF5E14) !important;
   color: #FFFFFF !important;
-  font-weight: 700;
-  font-size: 15.5px;
-  padding: 0 32px;
-  height: 46px;
-  box-sizing: border-box;
-  box-shadow: 0 4px 16px rgba(255, 94, 20, 0.4);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  padding: 0 28px;
+  height: 44px;
+  box-shadow: 0 2px 8px rgba(255, 94, 20, 0.3);
 }
 
-/* Top Right: Get a Quote button with arrow (Matching Solma Log-In pill button proportions) */
+/* Top Right: Get a Quote button with arrow */
 .nav__right-actions {
   display: none;
   align-items: center;
@@ -329,18 +330,18 @@ ul, ol { padding: 0; list-style: none; }
 .nav__quote-pill {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  height: 58px;
-  padding: 6px 6px 6px 24px;
-  border-radius: 999px;
+  gap: 12px;
+  height: 52px;
+  padding: 4px 4px 4px 22px;
+  border-radius: 9999px;
   background: #FFFFFF;
   color: #141312;
   text-decoration: none;
   box-shadow:
-    0 14px 40px -6px rgba(25, 20, 15, 0.1),
-    0 4px 14px -2px rgba(25, 20, 15, 0.05),
-    inset 0 1px 1.5px rgba(255, 255, 255, 0.95);
-  border: 1.5px solid rgba(255, 255, 255, 0.95);
+    0 12px 32px -6px rgba(20, 18, 15, 0.08),
+    0 4px 12px -2px rgba(20, 18, 15, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.95);
   box-sizing: border-box;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
@@ -349,49 +350,50 @@ ul, ol { padding: 0; list-style: none; }
 .nav__quote-pill:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 18px 46px -6px rgba(255, 94, 20, 0.22),
-    0 6px 16px -2px rgba(25, 20, 15, 0.08);
+    0 16px 36px -6px rgba(255, 94, 20, 0.2),
+    0 6px 14px -2px rgba(20, 18, 15, 0.06);
 }
 
 .nav__quote-text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 15.5px;
-  font-weight: 750;
-  letter-spacing: -0.01em;
+  font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14.5px;
+  font-weight: 550;
+  letter-spacing: -0.015em;
   color: #141312;
 }
 
 .nav__quote-arrow-badge {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--orange, #FF5E14);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(255, 94, 20, 0.38);
+  box-shadow: 0 2px 8px rgba(255, 94, 20, 0.35);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav__quote-pill:hover .nav__quote-arrow-badge {
   background: #FF7533;
-  transform: scale(1.05) rotate(6deg);
+  transform: scale(1.04) rotate(4deg);
 }
 
 .nav__links { display: none; }
 .nav__cta-wrap { display: none; }
 
 .nav__burger {
-  margin-left: auto; width: 48px; height: 48px; border-radius: 50%;
-  display: grid; place-content: center; gap: 6px;
-  background: var(--surface); color: var(--fg); border: 1px solid var(--line);
+  margin-left: auto; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-content: center; gap: 5px;
+  background: #FFFFFF; color: var(--fg); border: 1px solid rgba(20, 19, 18, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   transition: background-color 0.4s, transform 0.3s var(--ease-out);
 }
-.nav__burger span { display: block; width: 18px; height: 1.5px; background: currentColor; transition: transform 0.5s var(--ease-out); }
+.nav__burger span { display: block; width: 16px; height: 1.5px; background: currentColor; transition: transform 0.5s var(--ease-out); }
 .nav.is-open .nav__burger { background: var(--orange); color: #FFFFFF; }
-.nav.is-open .nav__burger span:first-child { transform: translateY(3.75px) rotate(45deg); }
-.nav.is-open .nav__burger span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+.nav.is-open .nav__burger span:first-child { transform: translateY(3.25px) rotate(45deg); }
+.nav.is-open .nav__burger span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
 
 /* Desktop Display: Center Capsule + Top Right Quote Pill */
 @media (min-width: 960px) {
