@@ -137,13 +137,17 @@ export default function Hero() {
       </div>
 
       {/* ==================================================================
-          MAIN HERO CARD: Warm Luxury Beige Canvas with Ambient Light
+          MAIN SKY HERO CARD: Photorealistic Sky Atmosphere & Realistic Clouds
           ================================================================== */}
       <div className="sky-hero-card">
-        {/* Soft Ambient Flares */}
-        <div className="sky-clouds-overlay" aria-hidden="true" />
+        {/* Soft Fluffy Cumulus Cloud Billows */}
+        <div className="sky-clouds-overlay" aria-hidden="true">
+          <div className="sky-cloud sky-cloud--1" />
+          <div className="sky-cloud sky-cloud--2" />
+          <div className="sky-cloud sky-cloud--3" />
+        </div>
 
-        {/* Top-Left Sparkle Accent in Brand Orange */}
+        {/* Top-Left Sparkle Accent */}
         <div className="sky-sparkle-badge" aria-hidden="true">
           <svg className="sky-sparkle-svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
@@ -151,16 +155,16 @@ export default function Hero() {
         </div>
 
         {/* ================================================================
-            TOP SECTION: Centered Headline + Subtitle + Action CTA
+            TOP SECTION: Centered White Display Headline + Subtitle + Action CTA
             ================================================================ */}
         <div className="sky-hero-top">
           <h1 className="sky-headline" id="hero-title">
             <span className="sky-headline-line">Digital Studio redefined.</span>
-            <span className="sky-headline-line serif">with taste &amp; rigour.</span>
+            <span className="sky-headline-line">Engineered with taste &amp; rigour.</span>
           </h1>
 
           <p className="sky-subtitle">
-            Founder-led digital studio engineering high-converting websites, mobile apps, and smart AI automations for growing businesses.
+            From first prototype to global launch, Nailed It Bro engineers custom websites, mobile apps, and smart automations for growing businesses.
           </p>
 
           <Magnetic strength={0.25}>
@@ -178,11 +182,11 @@ export default function Hero() {
 
         {/* ================================================================
             CENTER 3D STAGE:
-            Foreground: BIGGER 3D Mascot Character (mascot.glb)
-            Background: 5 Curved 3D Perspective Cards (IMAGE ONLY, NO TEXT)
+            Foreground: Real-time 3D Mascot Character (mascot.glb)
+            Background: 5 Curved 3D Perspective Cards in an Amphitheater Arc
             ================================================================ */}
         <div className="sky-3d-stage">
-          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC (IMAGE ONLY, NO TEXT) */}
+          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC (THE EXACT SHADOWS & EFFECTS) */}
           <div className="sky-cards-arc" role="region" aria-label="Our 5 Showcase Projects">
             {SERVICES.map((srv, idx) => {
               const isActive = idx === activeIdx
@@ -214,8 +218,9 @@ export default function Hero() {
             })}
           </div>
 
-          {/* FOREGROUND: BIGGER REAL-TIME 3D MASCOT CHARACTER (mascot.glb) */}
+          {/* FOREGROUND: REAL-TIME 3D MASCOT CHARACTER (mascot.glb) WITH CONTACT SHADOW */}
           <div className="sky-mascot-wrap">
+            <div className="sky-mascot-shadow" aria-hidden="true" />
             {hasModelViewer ? (
               <model-viewer
                 src="/mascot.glb"
