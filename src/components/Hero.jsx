@@ -9,10 +9,9 @@ const SERVICES = [
   {
     id: 'web',
     num: 1,
-    category: '01 · Web',
+    category: '01 · Web Design',
     title: 'Website Dev',
     headline: 'Websites That Actually Convert',
-    metric: '99% Speed',
     thumbnail: '/web.png',
     description:
       'Custom business websites and web platforms engineered for sub-second load times, fluid mobile responsiveness, and high Google search rankings.',
@@ -25,10 +24,9 @@ const SERVICES = [
   {
     id: 'app',
     num: 2,
-    category: '02 · Mobile',
+    category: '02 · Mobile Engineering',
     title: 'Mobile Apps',
     headline: 'Mobile Apps Built For Scale',
-    metric: '60 FPS Native',
     thumbnail: '/pet.png',
     description:
       'Smooth Android and cross-platform native apps built from a single high-performance codebase with offline caching and real-time push backends.',
@@ -41,10 +39,9 @@ const SERVICES = [
   {
     id: 'ai',
     num: 3,
-    category: '03 · AI/QR',
+    category: '03 · AI & Smart QR',
     title: 'AI & QR Tools',
     headline: 'Smart AI & QR Automating Growth',
-    metric: '24/7 Engine',
     thumbnail: '/qr.png',
     description:
       'Digital menus, automated appointment scheduling, WhatsApp workflows, and intelligent customer capture tools that eliminate repetitive tasks.',
@@ -57,10 +54,9 @@ const SERVICES = [
   {
     id: 'game',
     num: 4,
-    category: '04 · 3D',
+    category: '04 · 3D Games',
     title: '3D Games',
     headline: '3D Games With Fluid Physics',
-    metric: 'Mobile 60fps',
     thumbnail: '/game.png',
     description:
       'Custom 3D gameplay, realistic physics, responsive touch gestures, and optimized rendering engines designed to run fluidly on mid-range smartphones.',
@@ -73,10 +69,9 @@ const SERVICES = [
   {
     id: 'social',
     num: 5,
-    category: '05 · Growth',
+    category: '05 · Social Growth',
     title: 'Social Media',
     headline: 'Content That Drives Revenue',
-    metric: 'Tracked ROI',
     thumbnail: '/social.png',
     description:
       'High-retention short-form video production, creator distribution, and tracked growth campaigns designed to turn viewers into paying clients.',
@@ -142,13 +137,13 @@ export default function Hero() {
       </div>
 
       {/* ==================================================================
-          MAIN SKY HERO CARD: Soft Blue Atmospheric Canvas
+          MAIN HERO CARD: Warm Luxury Beige Canvas with Ambient Light
           ================================================================== */}
       <div className="sky-hero-card">
-        {/* Sky Clouds and Atmospheric Lighting */}
+        {/* Soft Ambient Flares */}
         <div className="sky-clouds-overlay" aria-hidden="true" />
 
-        {/* Top-Left Sparkle Accent */}
+        {/* Top-Left Sparkle Accent in Brand Orange */}
         <div className="sky-sparkle-badge" aria-hidden="true">
           <svg className="sky-sparkle-svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
@@ -161,11 +156,11 @@ export default function Hero() {
         <div className="sky-hero-top">
           <h1 className="sky-headline" id="hero-title">
             <span className="sky-headline-line">Digital Studio redefined.</span>
-            <span className="sky-headline-line">Engineered with taste &amp; rigour.</span>
+            <span className="sky-headline-line serif">with taste &amp; rigour.</span>
           </h1>
 
           <p className="sky-subtitle">
-            From first prototype to global launch, Nailed It Bro engineers custom websites, mobile apps, and smart automations for growing businesses.
+            Founder-led digital studio engineering high-converting websites, mobile apps, and smart AI automations for growing businesses.
           </p>
 
           <Magnetic strength={0.25}>
@@ -183,12 +178,12 @@ export default function Hero() {
 
         {/* ================================================================
             CENTER 3D STAGE:
-            Foreground: 3D Mascot Character (mascot.glb)
-            Background: 5 Curved 3D Perspective Service Cards in an Arc
+            Foreground: BIGGER 3D Mascot Character (mascot.glb)
+            Background: 5 Curved 3D Perspective Cards (IMAGE ONLY, NO TEXT)
             ================================================================ */}
         <div className="sky-3d-stage">
-          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC */}
-          <div className="sky-cards-arc" role="region" aria-label="Our 5 Core Services">
+          {/* 5 BACKGROUND CARDS IN 3D CURVED PERSPECTIVE ARC (IMAGE ONLY, NO TEXT) */}
+          <div className="sky-cards-arc" role="region" aria-label="Our 5 Showcase Projects">
             {SERVICES.map((srv, idx) => {
               const isActive = idx === activeIdx
               return (
@@ -206,34 +201,20 @@ export default function Hero() {
                     }
                   }}
                   title={`Click to inspect ${srv.title} specs`}
-                  aria-label={`${srv.title}: ${srv.description}`}
+                  aria-label={`${srv.title}: ${srv.headline}`}
                 >
-                  <div className="sky-card-head">
-                    <span className="sky-card-category">{srv.category}</span>
-                    <span className="sky-card-num">0{srv.num}</span>
-                  </div>
-
-                  <h3 className="sky-card-title">{srv.title}</h3>
-
-                  <div className="sky-card-thumb-wrap">
-                    <img
-                      src={srv.thumbnail}
-                      alt={`${srv.title} Thumbnail`}
-                      className="sky-card-thumb"
-                      loading="eager"
-                    />
-                  </div>
-
-                  <div className="sky-card-meta">
-                    <span>Performance</span>
-                    <span className="sky-card-metric">{srv.metric}</span>
-                  </div>
+                  <img
+                    src={srv.thumbnail}
+                    alt={`${srv.title} Showcase`}
+                    className="sky-card-img"
+                    loading="eager"
+                  />
                 </div>
               )
             })}
           </div>
 
-          {/* FOREGROUND: Real-Time 3D Mascot Character (mascot.glb) */}
+          {/* FOREGROUND: BIGGER REAL-TIME 3D MASCOT CHARACTER (mascot.glb) */}
           <div className="sky-mascot-wrap">
             {hasModelViewer ? (
               <model-viewer
@@ -241,7 +222,7 @@ export default function Hero() {
                 alt="Nailed It Bro 3D Studio Mascot"
                 camera-controls
                 auto-rotate
-                rotation-per-second="16deg"
+                rotation-per-second="14deg"
                 camera-orbit="90deg 75deg 105%"
                 disable-zoom
                 interaction-prompt="none"
@@ -272,7 +253,7 @@ export default function Hero() {
             BOTTOM SECTION: Left 99% Satisfaction Stat + Right Community Stats
             ================================================================ */}
         <div className="sky-hero-bottom">
-          {/* Bottom Left: 99% Satisfaction + 5 Service Pill Icons */}
+          {/* Bottom Left: 99% Satisfaction + 5 Service Filter Icon Pills */}
           <div className="sky-bottom-left">
             <div className="sky-big-stat">99%</div>
             <div className="sky-stat-label">Satisfaction for our services</div>
@@ -356,7 +337,7 @@ export default function Hero() {
             </div>
 
             <p className="sky-proof-sub">
-              Our user community keeps growing,
+              Our client community keeps growing,
               <br />
               proof we build digital products that <strong>scale seamlessly</strong>.
             </p>
