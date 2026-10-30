@@ -8,10 +8,13 @@ import Magnetic from './Magnetic'
 export function Logo() {
   return (
     <span className="logo">
-      <span className="logo__brand">
-        <span className="logo__text">Nailed<span className="logo__it">It</span>Bro</span>
-        <span className="logo__bar" />
-      </span>
+      <img
+        src="/logo.jpeg"
+        alt="Nailed It Bro Logo"
+        className="logo__img"
+        width="44"
+        height="44"
+      />
     </span>
   )
 }
@@ -124,7 +127,7 @@ export default function Nav({ onNavigate }) {
           })}
         </nav>
 
-        {/* Top Right: Get a Quote button with arrow (Matching Solma Log-In pill button proportions) */}
+        {/* Top Right: Get a Quote button with animated arrow */}
         <div className="nav__right-actions">
           <a
             href="#contact"
@@ -134,10 +137,16 @@ export default function Nav({ onNavigate }) {
           >
             <span className="nav__quote-text">Get a Quote</span>
             <span className="nav__quote-arrow-badge" aria-hidden="true">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="7" y1="17" x2="17" y2="7" />
-                <polyline points="7 7 17 7 17 17" />
-              </svg>
+              <span className="nav__arrow-slider">
+                <svg className="nav__arrow-svg nav__arrow-svg--primary" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+                <svg className="nav__arrow-svg nav__arrow-svg--clone" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </span>
             </span>
           </a>
         </div>
